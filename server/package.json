@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "install-dependencies": "cd api-sample-2 && npm install",
+    "install-dependencies": "npm install",
     "deploy": "sls deploy",
     "deploy-v": "sls deploy --verbose"
   },
