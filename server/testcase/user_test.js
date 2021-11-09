@@ -2,5 +2,8 @@ const User = require("../models/User");
 
 module.exports.user_test = async (event) => {
   await User.createUserTable();
-  await User.insertOne({ username: "test", password: "test" });
+
+  const testAccount = { username: "test2", password: "test" };
+  // await User.insertOne({ username: "test", password: "test" });
+  console.log(await User.insertNewUser(testAccount));
 };
