@@ -12,11 +12,11 @@ const FlexBox = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 50px 0px 12px 0px;
-`
+`;
 const Logo = styled.img`
-    display: inline-block;
-    width: 48px;
-    height: 52px;
+  display: inline-block;
+  width: 48px;
+  height: 52px;
 `;
 const LogoTitle = styled.h2`
   color: #757575;
@@ -26,7 +26,7 @@ const LogoTitle = styled.h2`
   letter-spacing: -0.045rem;
 `;
 const StyledDiv = styled.div`
-  color: #c62917;
+  color: #40a940;
   text-align: center;
   margin-top: 20px;
   font-weight: 500;
@@ -65,15 +65,14 @@ function Login({ history }) {
     if (!userId || !userPw) {
       alert("필수 항목을 작성하세요!");
     } else {
-      dispatch(loginUser(body))
-        .then((response) => {
-          if (response.payload.loginSuccess) {
-            window.localStorage.setItem('userId', response.payload.userId);
-            history.push("/board");
-          } else {
-            alert(response.payload.message);
-          }
-        })
+      dispatch(loginUser(body)).then((response) => {
+        if (response.payload.loginSuccess) {
+          window.localStorage.setItem("userId", response.payload.userId);
+          history.push("/board");
+        } else {
+          alert(response.payload.message);
+        }
+      });
     }
   };
 
@@ -82,9 +81,9 @@ function Login({ history }) {
       <div>
         <FlexBox>
           <Logo src={logo} alt="logo" />
-          <LogoTitle>지금 
-            <strong> 에브리타임</strong>
-            을 시작하세요!
+          <LogoTitle>
+            지금
+            <strong> 그룹 카운슬링</strong>을 시작하세요!
           </LogoTitle>
         </FlexBox>
         <form onSubmit={onSubmit}>
@@ -106,7 +105,7 @@ function Login({ history }) {
         </form>
         <StyledDiv>
           <Link to="./register">
-            <StyledSpan>에브리타임에 처음이신가요?</StyledSpan>회원가입
+            <StyledSpan>그룹 카운슬링에 처음이신가요?</StyledSpan>회원가입
           </Link>
         </StyledDiv>
       </div>
