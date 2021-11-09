@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "install-dependencies": "npm install",
+    "start": "sls offline start",
     "deploy": "sls deploy",
     "deploy-v": "sls deploy --verbose"
   },
