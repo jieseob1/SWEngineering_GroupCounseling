@@ -1,0 +1,90 @@
+API Specification (Back-End)
+
+1. User
+ - 유저의 관리에 직접 관여하는 API들이 해당 하위에 들어감
+ a. /user/login
+    - parameter : username (or email), password
+    - 사용자의 username, password가 넘어오게 되면 /user/check로 넘겨서 존재 여부를 확인하고 존재할 경우
+      해당 사용자 데이터의 userid, usertype 등을 되돌려주고 세션에 token 정보를 등록함
+
+ b. /user/register
+    - parameter : usertype, username, password, email
+    - 사용자의 username, password 등을 /user/check를 통해 존재 여부를 확인하고 없을 경우 해당 정보를 기반으로 데이터베이스에
+      새로운 유저 정보를 기록함
+
+ c. /user/check
+    - parameter : username, password
+    - 사용자의 계정 정보를 받아 데이터베이스에 존재하는지 확인하고 존재하면 1, 없으면 0을 리턴함 (json을 사용하는게 좋을듯)
+    - 예시 : {"status": 1}
+             {"status": 0, "reason": "does not exists"}
+
+ d. /user/delete
+    - parameter : username, password (혹은 이 둘을 이용해 만든 토큰 정보)
+    - 사용자의 계정 정보를 받아, 데이터베이스에서 지움, 다만 지우기 이전에는 현재 세션정보를 기반으로 사용자의 로그인 정보가
+      해당 삭제를 원하는 계정과 동일한지 확인
+
+ e. /user/token-check
+    - parameter : username
+    - 전달 받은 username과 현재 사용자의 token 정보를 확인하여 정상적인 정보인지 확인함
+
+
+2. Setting
+ - 알람이나 계정 설정 등 '설정' 에 포함되는 API들이 해당 하위에 들어감
+
+ a. /setting/modify-info
+    - parameter : username, modified_data
+    - 사용자의 계정 정보를 받아서 데이터베이스에 해당 요청받은 필드를 수정하도록 함
+    - 다만 token 세션 정보를 확인해서 본인이 맞을 경우에만 수행할 수 있게 하고, 그게 아니면 권한 에러 발생
+    - 또한 만일 usertype과 같은 정보를 수정하려고 할 시에는 정상적으로 동작하지 못하도록함
+
+ b. /setting/alarm-setting
+    - parameter : username, set
+    - 넘어온 username을 기반으로 해당 사용자의 알람을 설정함, set은 어떻게 설정할지를 나타내는 부분 true아니면 false값으로 넘김
+
+
+3. Communicate
+ - 게시글, 대화방 생성 및 게시글 조회 등에 대한 API들이 해당 하위에 들어감
+ a. /communicate/create-chat
+    - parameter : title, private, counselor
+    - 넘어온 title 정보, 그리고 공개 비공개 여부 private 정보, 그리고 상대 상담사를 지정하는 counselor 정보를 통해
+    - 채팅을 만들고, 현재 채팅의 목록 정보 리스트 데이터베이스에 새로운 채팅 정보를 저장함
+
+ b. /communicate/create-board
+    - parameter : title, content, username, date, tags ..
+    - 넘어온 정보를 기반으로 게시글을 작성할 수 있게 함
+
+ c. /communicate/alarm
+    - parameter : no parameter
+    - 현재 로그인된 사용자의 토큰 정보를 기반으로 현재 존재하는 알람이 있는지 확인하는 역할
+    - 혹은 그저 relay 해주는 역할로 써야 할 수도 있음, 이벤트 기반으로 구현한다고 했기 때문에..
+
+ d. /communicate/view-boards
+    - parameter : page
+    - 이는 전문 카운셀러 유저에게 해당되는 기능으로 현재 자신이 주로 관심을 두는 상담 주제에 대한
+      고민을 작성한 사람이 누가 있는지, 그 공개 여하에 따라 게시글 목록을 확인할 수 있는 기능
+    - page 파라미터를 기준으로 선별적으로 10~20개씩 페이지에 보여줄 수 있도록 구현
+
+ e. /communicate/view-chats
+    - parameter : page
+    - /communicate/view-boards와 비슷한 기능
+
+ f. /communicate/my-chats
+    - parameter : page
+    - 이 경우에는 기존 view-chats과는 다르게, 채팅방 목록을 확인하고자 하는 기능은 같지만
+      계정에 귀속된 자신의 대화방 내역만을 볼 수 있음
+
+ g. /communicate/send
+    - parameter : chat_id, message
+    - 현재 해당 채팅방의 id를 기준으로 해당 채팅방의 대화 내용을 message를 기반으로 추가, 업데이트
+
+
+4. Analysis
+ - 직접적으로 내부 데이터를 분석하고 파일을 생성하고 하는 등의 코어 API들이 하위에 들어감
+ a. /analysis/analyze-info
+    - parameter : username
+    - 특정 사용자의 username을 넣음으로 그 사람의 채팅 내역을 기반으로 분석해주기 위한 엔진을 구동시키는 API
+
+ b. /analysis/create-file
+    - paramter : username
+    - 현재 해당 username에 해당하는 사용자의 분석 데이터 결과가 있다면, 해당 정보를 그대로 주고, 그게 없을 경우에는
+      새롭게 분석을 진행하고, 새롭게 분석된 결과를 파일로 가공해서 해당 파일을 내려줌

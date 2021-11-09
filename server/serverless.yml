@@ -2,7 +2,7 @@ org: groupcounseling
 app: groupcounseling-app
 service: GroupCounseling-app
 
-frameworkVersion: '2'
+frameworkVersion: "2"
 
 provider:
   name: aws
@@ -12,3 +12,5 @@ provider:
 functions:
   - ${file(./resource-functions/api-sample.yml)}
   - ${file(./resource-functions/api-sample-2.yml)}
+  - ${file(./resource-functions/user.yml)}
+  - ${file(./resource-functions/debug.yml)}
