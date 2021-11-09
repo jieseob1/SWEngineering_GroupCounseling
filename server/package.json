@@ -1,0 +1,17 @@
+{
+  "name": "groupcounseling-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install-dependencies": "npm install",
+    "deploy": "sls deploy",
+    "deploy-v": "sls deploy --verbose"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fxsql": "^1.6.1",
+    "pg": "^8.7.1"
+  }
+}
