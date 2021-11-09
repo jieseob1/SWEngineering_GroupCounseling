@@ -2,6 +2,16 @@ org: groupcounseling
 app: groupcounseling-app
 service: GroupCounseling-app
 
+plugins:
+  - serverless-offline
+
+custom:
+  stage: dev
+  serverless-offline:
+    httpPort: 3000
+    stageVariables:
+      foo: "bar"
+
 frameworkVersion: '2'
 
 provider:
