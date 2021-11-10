@@ -5,7 +5,7 @@ const { CONNECT } = PostgreSQL;
 
 const POOL = CONNECT(config.db_config);
 
-const { QUERY, VALUES, TABLE } = POOL;
+const { QUERY, VALUES, TABLE, EQ } = POOL;
 
 const TABLE_NAME = "user_info";
 
@@ -67,6 +67,22 @@ async function findOne(object) {
   return _fetched || [];
 }
 
+//
+async function deleteOne(object) {
+  const test = `
+  DELETE FROM ${TABLE(TABLE_NAME)} WHERE ${EQ(object)}
+  `;
+  console.log(test);
+  try {
+    await QUERY`
+    DELETE FROM ${TABLE(TABLE_NAME)} WHERE ${EQ(object)}
+    `;
+  } catch (err) {
+    console.log(err);
+  }
+  return;
+}
+
 if (config.DEBUG_MODE) {
   module.exports.insertOne = insertOne;
   module.exports.findOne = findOne;
@@ -85,4 +101,26 @@ module.exports.insertNewUser = async (object) => {
     console.log(err);
   }
   return true;
+};
+
+module.exports.deleteUser = async (object) => {
+  try {
+    const _fetched = await findOne(object);
+    if (_fetched.length < 1) {
+      return false;
+    }
+    await deleteOne(object);
+  } catch (err) {
+    console.log(err);
+  }
+  return true;
+};
+
+module.exports.findUserRecords = async (object) => {
+  try {
+    var _fetched = await findOne(object);
+  } catch (err) {
+    console.log(err);
+  }
+  return _fetched || [];
 };
