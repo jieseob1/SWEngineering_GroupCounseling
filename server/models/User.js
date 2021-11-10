@@ -103,6 +103,19 @@ module.exports.insertNewUser = async (object) => {
   return true;
 };
 
+module.exports.deleteUser = async (object) => {
+  try {
+    const _fetched = await findOne(object);
+    if (_fetched.length < 1) {
+      return false;
+    }
+    await deleteOne(object);
+  } catch (err) {
+    console.log(err);
+  }
+  return true;
+};
+
 module.exports.findUserRecords = async (object) => {
   try {
     var _fetched = await findOne(object);
