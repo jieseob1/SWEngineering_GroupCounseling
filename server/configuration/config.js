@@ -16,4 +16,5 @@ module.exports = {
   DEBUG_MODE: DEBUG_MODE,
   db_config: database_config,
   server_info: server_info,
+  server_url: `http://${server_info.host}`,
 };

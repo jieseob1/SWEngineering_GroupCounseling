@@ -86,3 +86,12 @@ module.exports.insertNewUser = async (object) => {
   }
   return true;
 };
+
+module.exports.findUserRecords = async (object) => {
+  try {
+    var _fetched = await findOne(object);
+  } catch (err) {
+    console.log(err);
+  }
+  return _fetched || [];
+};

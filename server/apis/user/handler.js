@@ -4,9 +4,70 @@ const config = require("../../configuration/config");
 
 // Database library
 const User = require("../../models/User");
+const { default: axios } = require("axios");
 
-module.exports.login = async (data) => {};
-module.exports.register = async (data) => {};
+module.exports.register = async (event) => {
+  const _queryParam = event.queryStringParameters;
+
+  try {
+    var _records_info = await axios.get(
+      config.server_url.concat("/dev/user/check"),
+      {
+        params: _queryParam,
+      }
+    );
+  } catch (err) {
+    // Http Request Exception
+    // return exception_handler()
+  }
+
+  if (_records_info.data.status === "success") {
+    await User.insertNewUser(_queryParam);
+    return {
+      statusCode: 200,
+      body: JSON.stringify(
+        { status: "success", message: "register successful" },
+        null,
+        2
+      ),
+    };
+  } else {
+    return exception_handler(300);
+  }
+};
+module.exports.login = async (event) => {
+  const _queryParam = event.queryStringParameters;
+
+  if (!utils.hasKeys(_queryParam, ["username", "password"])) {
+    return exception_handler(403);
+  }
+  try {
+    var _information = await User.findUserRecords(_queryParam);
+    if (_information.length > 1) {
+      // there are no records more than 1 row (critical security exception)
+      return exception_handler(400);
+    } else if (_information.length < 1) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify(
+          { status: "failed", message: "login failed" },
+          null,
+          2
+        ),
+      };
+    }
+    // Now, there is only one record matched user
+    // JWT Token generation logic will be implement to below
+  } catch (err) {}
+  return {
+    statusCode: 200,
+    body: JSON.stringify(
+      { status: "success", message: "login successful", token: "token.." },
+      null,
+      2
+    ),
+  };
+};
 module.exports.check = async (event) => {
   const _queryParam = event.queryStringParameters;
 
@@ -26,26 +87,3 @@ module.exports.check = async (event) => {
 };
 module.exports.delete = (data) => {};
 module.exports.token_check = async (data) => {};
-
-/*
-module.exports.hello_2 = async (event) => {
-  let error = 0;
-  try {
-    const list = await QUERY`SELECT * FROM sample`;
-    return {
-      statusCode: 200,
-      body: JSON.stringify(
-        {
-          message: list,
-          input: event,
-        },
-        null,
-        2
-      ),
-    };
-  } catch (err) {
-    error = 1;
-  }
-};
-
-*/
