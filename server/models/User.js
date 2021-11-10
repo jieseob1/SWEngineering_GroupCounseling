@@ -3,7 +3,7 @@ const config = require("../configuration/config");
 const { PostgreSQL } = require("fxsql");
 const { CONNECT } = PostgreSQL;
 
-const POOL = CONNECT(config.config);
+const POOL = CONNECT(config.db_config);
 
 const { QUERY, VALUES, TABLE } = POOL;
 
