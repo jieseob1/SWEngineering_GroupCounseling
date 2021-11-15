@@ -9,5 +9,6 @@ module.exports = function (app) {
         })
     );
 };
+
 // target을 통해 node와 연결시킬 수 있다
 // 이렇게 proxy를 이용해야지 서로 req res가 가능하다
