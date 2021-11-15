@@ -1,6 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 
+const Container = styled.div`
+  margin: 0 auto;
+  padding-top: 10px;
+  text-align: center;
+`;
+const Project = styled.span`
+  color: #999;
+  font-size: 12px;
+  font-weight: normal;
+  padding-right: 4px;
+`;
 const Copyright = styled.span`
   color: #aaa;
   font-size: 12px;
@@ -10,8 +21,8 @@ const Copyright = styled.span`
 function Footer() {
   return (
     <Container>
-      <Project>© 그룹 카운슬링</Project>
-      <Copyright> All rights reserved by jisub,yuna </Copyright>
+      <Project>© Group Counseling</Project>
+      <Copyright> All rights reserved by T3 </Copyright>
     </Container>
   );
 }
