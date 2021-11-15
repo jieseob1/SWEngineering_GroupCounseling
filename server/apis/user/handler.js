@@ -85,5 +85,20 @@ module.exports.check = async (event) => {
     body: JSON.stringify({ status: "success", message: "no record" }, null, 2),
   };
 };
-module.exports.delete = (data) => {};
+module.exports.delete = async (event) => {
+  const _queryParam = event.queryStringParameters;
+  if (!utils.hasKeys(_queryParam, ["username", "password"])) {
+    return exception_handler(403);
+  }
+  // We need to check received user token information for user record accessibility
+  await User.deleteUser(_queryParam);
+  return {
+    statusCode: 200,
+    body: JSON.stringify(
+      { status: "success", message: "delete complete" },
+      null,
+      2
+    ),
+  };
+};
 module.exports.token_check = async (data) => {};
