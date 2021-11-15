@@ -8,7 +8,6 @@ import BoardInput from "./Section/BoardInput";
 import CheckNickname from "./Section/CheckNickname";
 import BoardTextarea from "./Section/BoardTextarea";
 import UserProfile from "./Section/UserProfile";
-import LogoutButton from "../Common/LogoutButton";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 import Pagination from "@material-ui/lab/Pagination";
@@ -30,6 +29,7 @@ const Profilebtn = styled.div`
   color: #505050;
   pointer: cursor;
 `;
+/*제목과 내용 쓰는 칸 + submit 칸*/
 const BoardForm = styled.form`
   position: relative;
   height: 165px;
@@ -37,7 +37,35 @@ const BoardForm = styled.form`
   margin: 0px -1px;
   box-sizing: border-box;
 `;
-
+/*베스트 게시글 탭*/
+const BestPostBox = styled.div`
+  height: 110px;
+  border-bottom: 1px solid #ddd;
+`;
+const StyledDiv = styled.div`
+  color: #505050;
+  text-align: left;
+  margin-top: 10px;
+  font-size: 13px;
+  margin-left: 10px;
+`;
+const FlexBox = styled.div`
+  display: flex;
+  justify-content: start;
+  margin: 0px 0px 0px 0px;
+`;
+const StyledSpan = styled.span`
+  font-size: 10px;
+  color: #505050;
+  margin: 10px 0px 0px 5px;
+`;
+const ProfileImage = styled.img`
+  width: 20px;
+  height: 20px;
+  margin: 10px 5px 10px 10px;
+  border-radius: 6px;
+  pointer: cursor;
+`;
 const PaginationBox = styled.div`
   text-align: center;
   margin-top: 1em;
@@ -50,11 +78,11 @@ function BoardView({ history, match }) {
   // 파라미터:history,match
   const userFrom = localStorage.getItem("userId");
   const writerFrom = localStorage.getItem("userNickname"); // writerFrom은 userNickname 관련
-  const [totalPage, settotalPage] = useState(0);//전체 페이지 설정 
+  const [totalPage, settotalPage] = useState(0); //전체 페이지 설정
   const [currentPage, setcurrentPage] = useState(1); //현재 페이지 설정
   const [WriterIcon, setWriterIcon] = useState(true);
   const [BoardWriter, setBoardWriter] = useState("익명"); //게시판 적는 사람 이름
-  const [Content, setContent] = useState([]);//컨텐츠
+  const [Content, setContent] = useState([]); //컨텐츠
   const [inputs, setInput] = useState({
     boardTitle: "",
     boardContent: "",
@@ -63,7 +91,7 @@ function BoardView({ history, match }) {
 
   useEffect(() => {
     FetchBoard();
-    console.log('fetch')
+    console.log("fetch");
   }, [currentPage]);
 
   const FetchBoard = () => {
@@ -79,9 +107,10 @@ function BoardView({ history, match }) {
       });
   };
 
-  const onRemove = (id) => { //
+  const onRemove = (id) => {
+    //
     setContent(Content.filter((Content) => Content._id !== id)); // 컨텐츠를 filter 함수를 통해 다시 재구성한다
-    FetchBoard(); //게시판을 가지고 온다 
+    FetchBoard(); //게시판을 가지고 온다
   };
 
   const onChange = (e) => {
@@ -92,17 +121,20 @@ function BoardView({ history, match }) {
     });
   };
 
-  const onIconClick = () => { // 닉네임을 보여줄시, 익명으로 처리할지 보여주는 부분
-    if (WriterIcon) { // writerIcon이 true이게 되면
+  const onIconClick = () => {
+    // 닉네임을 보여줄시, 익명으로 처리할지 보여주는 부분
+    if (WriterIcon) {
+      // writerIcon이 true이게 되면
       setWriterIcon(false); //writericon을 false로 설정하고
-      setBoardWriter(writerFrom);//닉네임을 설정하게 된다
+      setBoardWriter(writerFrom); //닉네임을 설정하게 된다
     } else {
       setWriterIcon(true); //writericon이 true가 되면 글쓴이의 아이콘이 보이지 않는다.
       setBoardWriter("익명");
     }
   };
 
-  const onSubmit = (e) => { //제출하는 부분
+  const onSubmit = (e) => {
+    //제출하는 부분
     e.preventDefault();
     if (!boardTitle) {
       alert(`제목을 작성해주세요`);
@@ -128,14 +160,15 @@ function BoardView({ history, match }) {
           boardTitle: "",
           boardContent: "",
         });
-        FetchBoard();//게시글 보여주기 
+        FetchBoard(); //게시글 보여주기
       } else {
         alert("게시글 업로드에 실패하였습니다.");
       }
     });
   };
 
-  const handlePageChange = (e) => { //페이지 바꾸면 벌어지는 이벤트
+  const handlePageChange = (e) => {
+    //페이지 바꾸면 벌어지는 이벤트
     const currentPage = parseInt(e.target.textContent);
     setcurrentPage(currentPage); // ????
   };
@@ -146,12 +179,6 @@ function BoardView({ history, match }) {
         <Profilebox>
           <UserProfile boardPage={true} />
           {/* userprofile 부분에 프로필과,아이디,학교등이 들어가게 된다. */}
-          <Link to="/mypage">
-            <Profilebtn>내정보</Profilebtn>
-          </Link>
-          <Profilebtn>
-            <LogoutButton />
-          </Profilebtn>
         </Profilebox>
         <BoardForm onSubmit={onSubmit}>
           <BoardInput
@@ -172,8 +199,6 @@ function BoardView({ history, match }) {
             submit={onSubmit}
           />
         </BoardForm>
-
-
         {Content && //아까 서버로 보낸 컨텐츠를 Content안에에다가 넣어주게 된다
           Content.map((board, index) => {
             return (
@@ -191,8 +216,6 @@ function BoardView({ history, match }) {
               </React.Fragment>
             );
           })}
-
-
 
         <PaginationBox>
           <Pagination
