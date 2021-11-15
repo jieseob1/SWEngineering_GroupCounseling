@@ -6,7 +6,7 @@ const Container = styled.div`
     padding-top: 10px;
     text-align: center;
 `
-const Project = styled.span`
+const Project = styled.div`
     color: #999;
     font-size: 12px;
     font-weight: normal;
@@ -21,8 +21,8 @@ const Copyright = styled.span`
 function Footer() {
   return (
     <Container>
-      <Project>© 에브리타임 클론코딩</Project>
-      <Copyright> All rights reserved by Boeun, Jiyeon </Copyright>
+      <Project>© 그룹 카운슬링</Project>
+      <Copyright> All rights reserved by jisub,yuna </Copyright>
     </Container>
   )
 }
