@@ -110,6 +110,38 @@ function BoardView({ history, match }) {
         }
       });
   };
+  const onSubmit = (e) => { //제출하는 부분
+    e.preventDefault();
+    if (!boardTitle) {
+      alert(`제목을 작성해주세요`);
+      return;
+    } else if (!boardContent) {
+      alert(`내용을 작성해주세요`);
+      return;
+    } else if (boardContent.length > 300) {
+      alert(`내용을 300자 이내로 작성해주세요`);
+      return;
+    }
+    // 유효성 검증
+
+    let variables = {
+      userFrom: userFrom,
+      boardTitle: boardTitle,
+      boardContent: boardContent,
+      boardWriter: BoardWriter,
+    }; // variable에 필요한 변수들 넣고 post로 서버에 넘겨준다
+    axios.post("/board/upload", variables).then((response) => {
+      if (response.status === 200) {
+        setInput({
+          boardTitle: "",
+          boardContent: "",
+        });
+        FetchBoard();//게시글 보여주기 
+      } else {
+        alert("게시글 업로드에 실패하였습니다.");
+      }
+    });
+  };
 
   // 
   const onRemove = (id) => {
@@ -138,40 +170,9 @@ function BoardView({ history, match }) {
     }
   };
 
-  const onSubmit = (e) => {
-    //제출하는 부분
-    e.preventDefault();
-    if (!boardTitle) {
-      alert(`제목을 작성해주세요`);
-      return;
-    } else if (!boardContent) {
-      alert(`내용을 작성해주세요`);
-      return;
-    } else if (boardContent.length > 300) {
-      alert(`내용을 300자 이내로 작성해주세요`);
-      return;
-    }
-    // 유효성 검증
 
-    let variables = {
-      userFrom: userFrom,
-      boardTitle: boardTitle,
-      boardContent: boardContent,
-      boardWriter: BoardWriter,
-    }; // variable에 필요한 변수들 넣고 post로 서버에 넘겨준다
-    axios.post("/board/upload", variables).then((response) => {
-      if (response.status === 200) {
-        setInput({
-          boardTitle: "",
-          boardContent: "",
-        });
-        FetchBoard(); //게시글 보여주기
-      } else {
-        alert("게시글 업로드에 실패하였습니다.");
-      }
-    });
-  };
 
+  console.log("match.params:", match.params)
   const handlePageChange = (e) => {
     //페이지 바꾸면 벌어지는 이벤트
     const currentPage = parseInt(e.target.textContent);
@@ -187,10 +188,9 @@ function BoardView({ history, match }) {
         </Profilebox>
 
         {/* 글쓰기 부분 */}
-        <WriteBoard link={"/board"} title={"글쓰기"} />
-        <BoardSubmit BoardForm={BoardForm} onSubmit={onSubmit} BoardInput={BoardInput}
-          boardTitle={boardTitle} onChange={onChange} BoardTextarea={BoardTextarea} boardContent={boardContent}
-          WriterIcon={WriterIcon} onIconClick={onIconClick} />
+        <WriteBoard link={`/board/${match.params.view}/writeboard`} title={"글쓰기"} />
+
+
         {/* 게시판submit부분 컴포넌트화 */}
 
         {/* 게시판 보여주는 부분 */}
