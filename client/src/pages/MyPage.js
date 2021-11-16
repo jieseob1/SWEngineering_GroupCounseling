@@ -8,6 +8,7 @@ import MyBoardList from "../components/MyPage/Section/MyBoardList";
 import Comment from "../components/MyPage/Section/Comment";
 import Favorite from "../components/MyPage/Section/Favorite";
 import WithDrawal from "../components/MyPage/Section/WithDrawal";
+import Profile from "../components/MyPage/Section/Profile";
 
 function MyPage({ match }) {
   return (
@@ -20,6 +21,7 @@ function MyPage({ match }) {
       <Route path={`${match.path}/comment`} component={Comment} />
       <Route path={`${match.path}/favorite`} component={Favorite} />
       <Route path={`${match.path}/withdrawal`} component={WithDrawal} />
+      <Route path={`${match.path}/profile`} component={Profile} />
     </>
   );
 }

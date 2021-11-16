@@ -87,20 +87,6 @@ function BoardMain() {
           <ContextTextDiv to="/board/companyview">직장 게시판</ContextTextDiv>
         </StyledDiv>
       </BoardListbox>
-      <BestPostBox>
-        <StyledDiv>
-          <HeadTextDiv>실시간 인기 글</HeadTextDiv>
-        </StyledDiv>
-        <FlexBox>
-          <ProfileImage src={profile} alt="profile"></ProfileImage>
-          <StyledSpan>익명</StyledSpan>
-          {/* 이 부분  따로 컴포넌트로 뺄 예정->나중에 데이터로  받아서 추천 높은 부분 필터링 해서 진행할 예정  */}
-        </FlexBox>
-        <FlexBox>
-          <ProfileImage src={profile} alt="profile"></ProfileImage>
-          <StyledSpan>익명</StyledSpan>
-        </FlexBox>
-      </BestPostBox>
     </>
   );
 }
