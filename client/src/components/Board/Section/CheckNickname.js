@@ -1,8 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 import writeIcon from "../../../assets/write.png";
 import uncheckWriter from "../../../assets/writer.png";
-import checkWriter from "../../../assets/writeractive.png";
+import checkWriter from "../../../assets/writer_active.png";
 
 const CheckButton = styled.li`
   position: absolute;
@@ -12,7 +12,7 @@ const CheckButton = styled.li`
   left: ${(props) => props.left || "10px"};
 `;
 const SubmitButton = styled.li`
-  background-color: #c62917;
+  background-color: #40a940;
   position: absolute;
   bottom: 0px;
   right: 0px;
@@ -28,18 +28,21 @@ function CheckNickname({ icon, left, click, submit }) {
   return (
     <>
       <CheckButton left={left} onClick={click}>
+
         {icon &&
           <InputIcon src={checkWriter} />
         }
         {!icon && //아이콘이 없으면 uncheckwriter
           <InputIcon src={uncheckWriter} />
         }
+        {icon && <InputIcon src={checkWriter} />}
+        {!icon && <InputIcon src={uncheckWriter} />}
       </CheckButton>
       <SubmitButton onClick={submit}>
         <InputIcon src={writeIcon} />
       </SubmitButton>
     </>
-  )
+  );
 }
 
 export default CheckNickname;
