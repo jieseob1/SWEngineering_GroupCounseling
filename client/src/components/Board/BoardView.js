@@ -13,6 +13,7 @@ import Footer from "../Common/Footer";
 import Pagination from "@material-ui/lab/Pagination";
 import BoardSubmit from "./Section/BoardSubmit";
 import WriteBoard from "./Section/WriteBoard";
+import BestPost from "./Section/BestPost";
 
 const Profilebox = styled.div`
   width: 100%;
@@ -92,11 +93,9 @@ function BoardView({ history, match }) {
   const { boardTitle, boardContent } = inputs;
 
   useEffect(() => {
-
     FetchBoard();
     console.log("fetch");
   }, [currentPage]);
-
 
   const FetchBoard = () => {
     axios
@@ -111,7 +110,7 @@ function BoardView({ history, match }) {
       });
   };
 
-  // 
+  //
   const onRemove = (id) => {
     //
     setContent(Content.filter((Content) => Content._id !== id)); // 컨텐츠를 filter 함수를 통해 다시 재구성한다
@@ -181,16 +180,24 @@ function BoardView({ history, match }) {
     <>
       <Header title="자유게시판" link="/board" />
       <StyledBox backColor="#fafafa" padding="10px 0px" lineHeight="auto">
-        <Profilebox>
-          <UserProfile boardPage={true} />
-          {/* userprofile 부분에 프로필과,아이디,학교등이 들어가게 된다. */}
-        </Profilebox>
-
+        {/*<Profilebox>*/}
+        {/*<UserProfile boardPage={true} />*/}
+        {/* userprofile 부분에 프로필과,아이디,학교등이 들어가게 된다. */}
+        {/*</Profilebox>*/}
         {/* 글쓰기 부분 */}
         <WriteBoard link={"/board"} title={"글쓰기"} />
-        <BoardSubmit BoardForm={BoardForm} onSubmit={onSubmit} BoardInput={BoardInput}
-          boardTitle={boardTitle} onChange={onChange} BoardTextarea={BoardTextarea} boardContent={boardContent}
-          WriterIcon={WriterIcon} onIconClick={onIconClick} />
+        {/*<BoardSubmit
+          BoardForm={BoardForm}
+          onSubmit={onSubmit}
+          BoardInput={BoardInput}
+          boardTitle={boardTitle}
+          onChange={onChange}
+          BoardTextarea={BoardTextarea}
+          boardContent={boardContent}
+          WriterIcon={WriterIcon}
+          onIconClick={onIconClick}
+        />*/}
+        <BestPost />
         {/* 게시판submit부분 컴포넌트화 */}
 
         {/* 게시판 보여주는 부분 */}
@@ -226,7 +233,6 @@ function BoardView({ history, match }) {
           {/* 페이지네이션 하는 부분 */}
         </PaginationBox>
         <Footer />
-
       </StyledBox>
     </>
   );
