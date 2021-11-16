@@ -7,6 +7,7 @@ import BoardDetail from "./components/Board/BoardDetail";
 import MyPage from "./pages/MyPage";
 import Chat from "./pages/Chat";
 import Auth from "./hoc/auth";
+import BoardMain from "./components/Board/BoardMain";
 
 const Container = styled.div`
   margin: 10px auto;

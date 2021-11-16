@@ -69,22 +69,22 @@ function BoardMain() {
       <Header title="자유게시판" link="/board"></Header>
       <BoardListbox>
         <StyledDiv>
-          <HeadTextDiv to="/board/view">게시판 목록</HeadTextDiv>
+          <HeadTextDiv>게시판 목록</HeadTextDiv>
         </StyledDiv>
         <StyledDiv>
-          <ContextTextDiv to="/board/view">연애 게시판</ContextTextDiv>
+          <ContextTextDiv to="/board/loveview">연애 게시판</ContextTextDiv>
         </StyledDiv>
         <StyledDiv>
-          <ContextTextDiv to="/board/view">가정 게시판</ContextTextDiv>
+          <ContextTextDiv to="/board/homeview">가정 게시판</ContextTextDiv>
         </StyledDiv>
         <StyledDiv>
-          <ContextTextDiv to="/board/view">학업 게시판</ContextTextDiv>
+          <ContextTextDiv to="/board/schoolview">학업 게시판</ContextTextDiv>
         </StyledDiv>
         <StyledDiv>
-          <ContextTextDiv to="/board/view">진로 게시판</ContextTextDiv>
+          <ContextTextDiv to="/board/futrueview">진로 게시판</ContextTextDiv>
         </StyledDiv>
         <StyledDiv>
-          <ContextTextDiv to="/board/view">직장 게시판</ContextTextDiv>
+          <ContextTextDiv to="/board/companyview">직장 게시판</ContextTextDiv>
         </StyledDiv>
       </BoardListbox>
       <BestPostBox>
@@ -94,6 +94,7 @@ function BoardMain() {
         <FlexBox>
           <ProfileImage src={profile} alt="profile"></ProfileImage>
           <StyledSpan>익명</StyledSpan>
+          {/* 이 부분  따로 컴포넌트로 뺄 예정->나중에 데이터로  받아서 추천 높은 부분 필터링 해서 진행할 예정  */}
         </FlexBox>
         <FlexBox>
           <ProfileImage src={profile} alt="profile"></ProfileImage>
