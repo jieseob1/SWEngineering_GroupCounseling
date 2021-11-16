@@ -11,6 +11,8 @@ import UserProfile from "./Section/UserProfile";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 import Pagination from "@material-ui/lab/Pagination";
+import BoardSubmit from "./Section/BoardSubmit";
+import WriteBoard from "./Section/WriteBoard";
 
 const Profilebox = styled.div`
   width: 100%;
@@ -95,18 +97,7 @@ function BoardView({ history, match }) {
     console.log("fetch");
   }, [currentPage]);
 
-  // const FetchBoard = () => {
-  //   axios
-  //     .post("/board/getBoard", { page: currentPage }) //현재 페이지에 관련된 게시판들을 가져 온다
-  //     .then((response) => {
-  //       if (response.data.success) {
-  //         setContent(response.data.boards); // 성공한경우 서버에서 준 데이터 안에 있는 게시판을 가지고 와서 세팅해줌
-  //         settotalPage(Math.ceil(response.data.count / 5)); //소수점 이하를 반올림 한다 즉, 한페이지에 5개씩만 보여줄 예정인듯
-  //       } else {
-  //         alert("게시글을 보여줄 수 없습니다.");
-  //       }
-  //     });
-  // };
+
   const FetchBoard = () => {
     axios
       .post("/communicate/view-chats", { page: currentPage }) //현재 페이지에 관련된 게시판들을 가져 온다
@@ -120,6 +111,7 @@ function BoardView({ history, match }) {
       });
   };
 
+  // 
   const onRemove = (id) => {
     //
     setContent(Content.filter((Content) => Content._id !== id)); // 컨텐츠를 filter 함수를 통해 다시 재구성한다
@@ -129,7 +121,7 @@ function BoardView({ history, match }) {
   const onChange = (e) => {
     const { value, name } = e.target;
     setInput({
-      ...inputs,
+      ...inputs, //spread 함수
       [name]: value,
     });
   };
@@ -194,27 +186,12 @@ function BoardView({ history, match }) {
           {/* userprofile 부분에 프로필과,아이디,학교등이 들어가게 된다. */}
         </Profilebox>
 
-        <BoardForm onSubmit={onSubmit}>
-          <BoardInput
-            name="boardTitle"
-            placeholder="제목을 작성해주세요."
-            value={boardTitle}
-            onChange={onChange}
-          />
-          <BoardTextarea
-            name="boardContent"
-            placeholder="여기를 눌러서 글을 작성할 수 있습니다."
-            value={boardContent}
-            onChange={onChange}
-          />
-          <CheckNickname
-            icon={WriterIcon}
-            click={onIconClick}
-            submit={onSubmit}
-          />
-          {/* CHECKNICKNAME은 익명으로 보여줄지 말지 부분 */}
-        </BoardForm>
-
+        {/* 글쓰기 부분 */}
+        <WriteBoard link={"/board"} title={"글쓰기"} />
+        <BoardSubmit BoardForm={BoardForm} onSubmit={onSubmit} BoardInput={BoardInput}
+          boardTitle={boardTitle} onChange={onChange} BoardTextarea={BoardTextarea} boardContent={boardContent}
+          WriterIcon={WriterIcon} onIconClick={onIconClick} />
+        {/* 게시판submit부분 컴포넌트화 */}
 
         {/* 게시판 보여주는 부분 */}
 
@@ -249,6 +226,7 @@ function BoardView({ history, match }) {
           {/* 페이지네이션 하는 부분 */}
         </PaginationBox>
         <Footer />
+
       </StyledBox>
     </>
   );
