@@ -6,6 +6,7 @@ import BoardTextarea from "../Section/BoardTextarea";
 import Header from "../../Common/Header"
 
 
+
 const WriteBoardPage = ({ match }) => {
   const userFrom = localStorage.getItem("userId");
   const writerFrom = localStorage.getItem("userNickname"); // writerFrom은 userNickname 관련
@@ -78,12 +79,14 @@ const WriteBoardPage = ({ match }) => {
 
 
   return (
+
     <>
-      <Header title="닉네임 설정" link="/board" backbutton={true} />
+      <Header title="게시글 작성" link="/board" backbutton={false} />
       <BoardSubmit onSubmit={onSubmit} BoardInput={BoardInput}
         boardTitle={boardTitle} onChange={onChange} BoardTextarea={BoardTextarea} boardContent={boardContent}
         WriterIcon={WriterIcon} onIconClick={onIconClick} />
     </>
+
   )
 }
 

@@ -13,6 +13,7 @@ import Footer from "../Common/Footer";
 import Pagination from "@material-ui/lab/Pagination";
 import BoardSubmit from "./Section/BoardSubmit";
 import WriteBoard from "./Section/WriteBoard";
+import BestPost from "./Section/BestPost";
 
 const Profilebox = styled.div`
   width: 100%;
@@ -92,11 +93,9 @@ function BoardView({ history, match }) {
   const { boardTitle, boardContent } = inputs;
 
   useEffect(() => {
-
     FetchBoard();
     console.log("fetch");
   }, [currentPage]);
-
 
   const FetchBoard = () => {
     axios
@@ -110,7 +109,37 @@ function BoardView({ history, match }) {
         }
       });
   };
-  const onSubmit = (e) => { //제출하는 부분
+
+
+  //
+  const onRemove = (id) => {
+    //
+    setContent(Content.filter((Content) => Content._id !== id)); // 컨텐츠를 filter 함수를 통해 다시 재구성한다
+    FetchBoard(); //게시판을 가지고 온다
+  };
+
+  const onChange = (e) => {
+    const { value, name } = e.target;
+    setInput({
+      ...inputs, //spread 함수
+      [name]: value,
+    });
+  };
+
+  const onIconClick = () => {
+    // 닉네임을 보여줄시, 익명으로 처리할지 보여주는 부분
+    if (WriterIcon) {
+      // writerIcon이 true이게 되면
+      setWriterIcon(false); //writericon을 false로 설정하고
+      setBoardWriter(writerFrom); //닉네임을 설정하게 된다
+    } else {
+      setWriterIcon(true); //writericon이 true가 되면 글쓴이의 아이콘이 보이지 않는다.
+      setBoardWriter("익명");
+    }
+  };
+
+  const onSubmit = (e) => {
+    //제출하는 부분
     e.preventDefault();
     if (!boardTitle) {
       alert(`제목을 작성해주세요`);
@@ -143,36 +172,10 @@ function BoardView({ history, match }) {
     });
   };
 
-  // 
-  const onRemove = (id) => {
-    //
-    setContent(Content.filter((Content) => Content._id !== id)); // 컨텐츠를 filter 함수를 통해 다시 재구성한다
-    FetchBoard(); //게시판을 가지고 온다
-  };
-
-  const onChange = (e) => {
-    const { value, name } = e.target;
-    setInput({
-      ...inputs, //spread 함수
-      [name]: value,
-    });
-  };
-
-  const onIconClick = () => {
-    // 닉네임을 보여줄시, 익명으로 처리할지 보여주는 부분
-    if (WriterIcon) {
-      // writerIcon이 true이게 되면
-      setWriterIcon(false); //writericon을 false로 설정하고
-      setBoardWriter(writerFrom); //닉네임을 설정하게 된다
-    } else {
-      setWriterIcon(true); //writericon이 true가 되면 글쓴이의 아이콘이 보이지 않는다.
-      setBoardWriter("익명");
-    }
-  };
 
 
 
-  console.log("match.params:", match.params)
+
   const handlePageChange = (e) => {
     //페이지 바꾸면 벌어지는 이벤트
     const currentPage = parseInt(e.target.textContent);
@@ -182,13 +185,13 @@ function BoardView({ history, match }) {
     <>
       <Header title="자유게시판" link="/board" />
       <StyledBox backColor="#fafafa" padding="10px 0px" lineHeight="auto">
-        <Profilebox>
-          <UserProfile boardPage={true} />
-          {/* userprofile 부분에 프로필과,아이디,학교등이 들어가게 된다. */}
-        </Profilebox>
-
+        {/*<Profilebox>*/}
+        {/*<UserProfile boardPage={true} />*/}
+        {/* userprofile 부분에 프로필과,아이디,학교등이 들어가게 된다. */}
+        {/*</Profilebox>*/}
         {/* 글쓰기 부분 */}
         <WriteBoard link={`/board/${match.params.view}/writeboard`} title={"글쓰기"} />
+
 
 
         {/* 게시판submit부분 컴포넌트화 */}
@@ -226,7 +229,6 @@ function BoardView({ history, match }) {
           {/* 페이지네이션 하는 부분 */}
         </PaginationBox>
         <Footer />
-
       </StyledBox>
     </>
   );

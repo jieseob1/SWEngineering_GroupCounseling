@@ -11,15 +11,15 @@ const Input = styled.input`
   line-height: 40px;
 `
 
-const BoardInput = function({name, placeholder, value, onChange}) {
+const BoardInput = function ({ name, placeholder, value, onChange }) {
   return (
     <Input
-        name={name}
-        placeholder={placeholder}
-        onChange={onChange}
-        value={value}
+      name={name}
+      placeholder={placeholder}
+      onChange={onChange}
+      value={value}
     />
-  );   
+  );
 }
 
 export default BoardInput;
