@@ -36,7 +36,7 @@ const MenuIcon = styled.img`
   padding: 12px 0px;
   margin-right: 4px;
 `
-
+// 게시판 디테일을 보여준다
 function BoardDetail(props) {
   const BoardId = props.match.params.id; //Board에 {match.path}/:id가 되어 있고, 여기서 match.params.id라는 것은 params안에 있는 변수중 id 값을 가지고 온다고 하는 것이다
   //addboard 부분 확인 하면 된다

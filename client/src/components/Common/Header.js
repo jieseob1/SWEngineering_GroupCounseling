@@ -51,8 +51,8 @@ function Header(props) {
       <div style={{ width: "140px" }}>
         <Link to={props.link}>
           <Logo src={logo} alt="logo" />
+          <HeaderTitle>{props.title}</HeaderTitle>
         </Link>
-        <HeaderTitle>{props.title}</HeaderTitle>
       </div>
       {props.backbutton && (
         <Link to="./">

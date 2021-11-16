@@ -24,19 +24,19 @@ const InputIcon = styled.img`
   height: 38px;
 `;
 
-function CheckNickname({icon, left, click, submit}) {
+function CheckNickname({ icon, left, click, submit }) {
   return (
     <>
       <CheckButton left={left} onClick={click}>
-          {icon &&
-              <InputIcon src={checkWriter} />
-          }
-          {!icon &&
-              <InputIcon src={uncheckWriter} />
-          }
+        {icon &&
+          <InputIcon src={checkWriter} />
+        }
+        {!icon && //아이콘이 없으면 uncheckwriter
+          <InputIcon src={uncheckWriter} />
+        }
       </CheckButton>
       <SubmitButton onClick={submit}>
-          <InputIcon src={writeIcon} />
+        <InputIcon src={writeIcon} />
       </SubmitButton>
     </>
   )

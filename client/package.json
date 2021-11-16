@@ -47,5 +47,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://u0fq9wg435.execute-api.us-east-1.amazonaws.com"
+  "proxy": "https://u0fq9wg435.execute-api.us-east-1.amazonaws.com/dev"
 }

@@ -62,13 +62,24 @@ function BoardView({ history, match }) {
   const { boardTitle, boardContent } = inputs;
 
   useEffect(() => {
-    FetchBoard();
-    console.log('fetch')
+    FetchBoard(); //처음 렌더링 할때 가지고 오는 부분
   }, [currentPage]);
 
+  // const FetchBoard = () => {
+  //   axios
+  //     .post("/board/getBoard", { page: currentPage }) //현재 페이지에 관련된 게시판들을 가져 온다
+  //     .then((response) => {
+  //       if (response.data.success) {
+  //         setContent(response.data.boards); // 성공한경우 서버에서 준 데이터 안에 있는 게시판을 가지고 와서 세팅해줌
+  //         settotalPage(Math.ceil(response.data.count / 5)); //소수점 이하를 반올림 한다 즉, 한페이지에 5개씩만 보여줄 예정인듯
+  //       } else {
+  //         alert("게시글을 보여줄 수 없습니다.");
+  //       }
+  //     });
+  // };
   const FetchBoard = () => {
     axios
-      .post("/board/getBoard", { page: currentPage }) //현재 페이지에 관련된 게시판들을 가져 온다
+      .post("/communicate/view-chats", { page: currentPage }) //현재 페이지에 관련된 게시판들을 가져 온다
       .then((response) => {
         if (response.data.success) {
           setContent(response.data.boards); // 성공한경우 서버에서 준 데이터 안에 있는 게시판을 가지고 와서 세팅해줌
@@ -153,6 +164,7 @@ function BoardView({ history, match }) {
             <LogoutButton />
           </Profilebtn>
         </Profilebox>
+
         <BoardForm onSubmit={onSubmit}>
           <BoardInput
             name="boardTitle"
@@ -171,9 +183,11 @@ function BoardView({ history, match }) {
             click={onIconClick}
             submit={onSubmit}
           />
+          {/* CHECKNICKNAME은 익명으로 보여줄지 말지 부분 */}
         </BoardForm>
 
 
+        {/* 게시판 보여주는 부분 */}
         {Content && //아까 서버로 보낸 컨텐츠를 Content안에에다가 넣어주게 된다
           Content.map((board, index) => {
             return (

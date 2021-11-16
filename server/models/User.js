@@ -26,7 +26,7 @@ async function createUserTable() {
       );
     `;
     console.log("[DB Info] createUserTable() Done");
-  } catch (err) {}
+  } catch (err) { }
 }
 
 async function deleteUserTable() {
@@ -35,7 +35,7 @@ async function deleteUserTable() {
       DROP TABLE ${TABLE(TABLE_NAME)}o
     `;
     console.log("[DB Info] deleteUserTable() Done");
-  } catch (err) {}
+  } catch (err) { }
 }
 
 /*
