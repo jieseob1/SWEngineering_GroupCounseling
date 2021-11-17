@@ -11,7 +11,7 @@ module.exports.register = async (event) => {
 
   try {
     var _records_info = await axios.get(
-      config.server_url.concat("/dev/user/check"),
+      config.server_info.concat("/dev/user/check"),
       {
         params: _queryParam,
       }
@@ -19,6 +19,7 @@ module.exports.register = async (event) => {
   } catch (err) {
     // Http Request Exception
     // return exception_handler()
+    console.log(err)
   }
 
   if (_records_info.data.status === "success") {
@@ -58,7 +59,7 @@ module.exports.login = async (event) => {
     }
     // Now, there is only one record matched user
     // JWT Token generation logic will be implement to below
-  } catch (err) {}
+  } catch (err) { }
   return {
     statusCode: 200,
     body: JSON.stringify(
@@ -101,4 +102,4 @@ module.exports.delete = async (event) => {
     ),
   };
 };
-module.exports.token_check = async (data) => {};
+module.exports.token_check = async (data) => { };

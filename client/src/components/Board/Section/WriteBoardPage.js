@@ -56,6 +56,7 @@ const WriteBoardPage = ({ match }) => {
   // 
 
 
+  console.log()
   const onChange = (e) => {
     const { value, name } = e.target;
     setInput({

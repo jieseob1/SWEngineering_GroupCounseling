@@ -38,15 +38,6 @@ const WriteBoard = (props) => {
                 <HeaderTitle>{props.title}</HeaderTitle>
             </Link>
 
-            {/* {props.backbutton && (
-                <Link to="./">
-                    <BackButton style={{ lineHeight: "56px" }}>
-                        <Border>
-                            <Back src={back} alt="back" />
-                        </Border>
-                    </BackButton>
-                </Link>
-            )} */}
         </StyledHeader>
     )
 }
