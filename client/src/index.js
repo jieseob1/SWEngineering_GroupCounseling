@@ -7,6 +7,8 @@ import promiseMiddleware from "redux-promise";
 import "./index.css";
 import App from "./App";
 import Reducer from "./_reducers";
+import reportWebVitals from './reportWebVitals';
+import * as serviceWorker from './serviceWorker';
 
 const createStoreWithMiddleware = applyMiddleware(
   promiseMiddleware,
@@ -19,7 +21,7 @@ ReactDOM.render(
       store={createStoreWithMiddleware(
         Reducer,
         window.__REDUX_DEVTOOLS_EXTENSION__ &&
-          window.__REDUX_DEVTOOLS_EXTENSION__()
+        window.__REDUX_DEVTOOLS_EXTENSION__()
       )}
     >
       <App />
@@ -27,3 +29,8 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById("root")
 );
+
+reportWebVitals();
+serviceWorker.register();
+
+

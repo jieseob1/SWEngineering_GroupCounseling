@@ -9,26 +9,26 @@ const Button = styled.button`
   line-height: 22px;
 `
 
-function DeleteBoard(props) { 
+function DeleteBoard(props) {
   const onDelete = () => {
     let variables = {
-        boardFrom: props.board,
-        userFrom: props.user,
+      boardFrom: props.board,
+      userFrom: props.user,
     }
     let confirmDelete = window.confirm("삭제하시겠습니까?");
     confirmDelete && axios.post("/board/deleteBoard", variables)
-    .then(response => {
-        if(response.data.success) {
-            alert("게시글 삭제에 성공했습니다.");
-            props.onRemove(response.data.result._id);
+      .then(response => {
+        if (response.data.success) {
+          alert("게시글 삭제에 성공했습니다.");
+          props.onRemove(response.data.result._id);
         } else {
-            alert("게시글 삭제에 실패했습니다.");
+          alert("게시글 삭제에 실패했습니다.");
         }
-    }) 
+      })
   }
-  return(
+  return (
     <Button onClick={onDelete}>
-        삭제
+      삭제
     </Button>
   )
 }
