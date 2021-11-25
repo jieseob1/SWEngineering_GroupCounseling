@@ -33,10 +33,9 @@ const StyledDiv = styled.div`
 `;
 const HeadTextDiv = styled.div`
   color: #505050;
-  text-align: left;
+  text-align: center;
   font-size: 15px;
   font-weight: bold;
-  margin-left: 10px;
 `;
 const ContextTextDiv = styled(Link)`
   display: block;
@@ -63,6 +62,19 @@ const ProfileImage = styled.img`
   pointer: cursor;
 `;
 
+const ChatBox = styled.div`
+  color: #212121;
+  width: 200px;
+  height: 50px;
+  margin: 8px 0px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  border: 1px solid #eaeaea;
+  box-sizing: border-box;
+  line-height: 50px;
+  margin: 0px auto;
+`;
+
 function BoardMain() {
   return (
     <>
@@ -87,6 +99,9 @@ function BoardMain() {
           <ContextTextDiv to="/board/companyview">직장 게시판</ContextTextDiv>
         </StyledDiv>
       </BoardListbox>
+      <ChatBox>
+        <ContextTextDiv to="/chat">채팅방으로 이동하기</ContextTextDiv>
+      </ChatBox>
     </>
   );
 }
