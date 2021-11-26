@@ -24,3 +24,4 @@ functions:
   - ${file(./resource-functions/api-sample-2.yml)}
   - ${file(./resource-functions/user.yml)}
   - ${file(./resource-functions/debug.yml)}
+  - ${file(./resource-functions/communicate.yml)}
