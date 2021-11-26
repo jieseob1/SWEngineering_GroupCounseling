@@ -1,0 +1,79 @@
+create-chat:
+  handler: apis/communicate/handler.create_chat
+  events:
+    - http:
+        path: communicate/create-chat
+        method: get
+        cors: true
+
+create-board:
+  handler: apis/communicate/handler.create_board
+  events:
+    - http:
+        path: communicate/create-board
+        method: get
+        cors: true
+
+alarm:
+  handler: apis/communicate/handler.alarm
+  events:
+    - http:
+        path: communicate/alarm
+        method: get
+        cors: true
+
+view-boards:
+  handler: apis/communicate/handler.view_boards
+  events:
+    - http:
+        path: communicate/view-boards
+        method: get
+        cors: true
+
+view-chats:
+  handler: apis/communicate/handler.view_chats
+  events:
+    - http:
+        path: communicate/view-chats
+        method: get
+        cors: true
+
+my-chats:
+  handler: apis/communicate/handler.my_chat
+  events:
+    - http:
+        path: communicate/my-chat
+        method: get
+        cors: true
+
+send:
+  handler: apis/communicate/handler.send
+  events:
+    - http:
+        path: communicate/send
+        method: get
+        cors: true
+
+board-debug:
+  handler: apis/communicate/handler.board_debug
+  events:
+    - http:
+        path: communicate/board_debug
+        method: get
+        cors: true
+
+get-board-test:
+  handler: apis/communicate/handler.get_board_test
+  events:
+    - http:
+        path: communicate/get_board_test
+        method: get
+        cors: true
+
+delete-board-test:
+  handler: apis/communicate/handler.delete_board_test
+  events:
+    - http:
+        path: communicate/delete_board_test
+        method: get
+        cors: true

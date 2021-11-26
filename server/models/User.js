@@ -26,16 +26,16 @@ async function createUserTable() {
       );
     `;
     console.log("[DB Info] createUserTable() Done");
-  } catch (err) {}
+  } catch (err) { }
 }
 
 async function deleteUserTable() {
   try {
     await QUERY`
-      DROP TABLE ${TABLE(TABLE_NAME)}
+      DROP TABLE ${TABLE(TABLE_NAME)}o
     `;
     console.log("[DB Info] deleteUserTable() Done");
-  } catch (err) {}
+  } catch (err) { }
 }
 
 /*
