@@ -10,6 +10,10 @@ const { QUERY, VALUES, TABLE, EQ, SET, ROLLBACK } = POOL;
 
 const TABLE_NAME = "board_list";
 
+module.exports.initializer = async () => {
+  await createBoardTable();
+};
+
 async function createBoardTable() {
   try {
     await QUERY`
@@ -18,12 +22,20 @@ async function createBoardTable() {
         board_title text,
         board_contents text,
         author text,
-        author_id text
-        board_time timestamp
+        author_id text,
+        board_time timestamptz not null default now()
       );
     `;
     console.log("[DB Info] createBoardTable() Done");
-  } catch (err) {}
+  } catch (err) {
+    if (err.code === "42P07") {
+      console.log(`${TABLE_NAME} is already exists`);
+    } else {
+      console.log("createBoardTable() error");
+    }
+    return false;
+  }
+  return true;
 }
 
 async function deleteBoardTable() {
@@ -36,11 +48,13 @@ async function deleteBoardTable() {
 }
 
 async function insertOne(object) {
+  const { board_time, ...remains } = object;
   try {
     await QUERY`
-        INSERT INTO ${TABLE(TABLE_NAME)} ${VALUES(object)};
+        INSERT INTO ${TABLE(TABLE_NAME)} ${VALUES(remains)};
       `;
   } catch (err) {
+    console.log("insertOne error");
     console.log(err);
     return false;
   }
@@ -57,10 +71,23 @@ async function deleteOne(object) {
       DELETE FROM ${TABLE(TABLE_NAME)} WHERE ${EQ(object)}
       `;
   } catch (err) {
+    console.log("deleteOne error");
     console.log(err);
     return false;
   }
   return true;
+}
+
+async function getRows(object, rows = 10) {
+  try {
+    var fetched = await QUERY`
+    SELECT * FROM ${TABLE(TABLE_NAME)} WHERE ${EQ(object)} LIMIT ${rows}`;
+  } catch (err) {
+    console.log("getRows() error");
+    console.log(err);
+    return undefined;
+  }
+  return fetched || [];
 }
 
 async function checkBoardbyId(board_id) {
@@ -87,7 +114,7 @@ module.exports.createNewBoard = async function createNewBoard(board_info) {
     // need to append board_id generation logic
     return await insertOne(board_info);
   } catch (err) {
-    console.log(err);
+    console.log("createNewBoard() error");
     return false;
   }
 };
@@ -95,7 +122,7 @@ module.exports.createNewBoard = async function createNewBoard(board_info) {
 module.exports.deleteBoardById = async function deleteBoardById(board_id) {
   try {
     if (await checkBoardbyId(board_id)) {
-      return await deleteOne(board_id);
+      return await deleteOne({ board_id: board_id });
     }
   } catch (err) {
     console.log(err);
@@ -121,4 +148,14 @@ module.exports.modifyBoardById = async function modifyBoardById(
     console.log(err);
     return false;
   }
+};
+
+module.exports.getBoardRecords = async (columns, rows = 10) => {
+  try {
+    var fetched = await getRows(columns, rows);
+  } catch (err) {
+    console.log("getBoardRecords() error");
+  }
+  console.log(fetched);
+  return fetched || [];
 };
