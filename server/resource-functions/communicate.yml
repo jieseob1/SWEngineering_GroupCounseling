@@ -38,6 +38,14 @@ view-chats:
         method: get
         cors: true
 
+delete-board:
+  handler: apis/communicate/handler.delete_board
+  events:
+    - http:
+        path: communicate/delete-board
+        method: get
+        cors: true
+
 my-chats:
   handler: apis/communicate/handler.my_chat
   events:
