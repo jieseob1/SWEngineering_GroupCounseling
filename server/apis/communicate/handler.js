@@ -8,20 +8,69 @@ const Board = require("../../models/Board");
 
 const { default: axios } = require("axios");
 
-create_chat = async (event) => {};
 create_board = async (event) => {
   if (!utils.hasKeys(event.queryStringParameters, ["board_title", "author_id"]))
     return false;
 
-  const { board_title, ...remainElements } = event.queryStringParameters;
+  const columnElements = event.queryStringParameters;
+  const result = await Board.createNewBoard(columnElements);
 
+  if (result === false) {
+    return {
+      statusCode: 200,
+      body: JSON.stringify(
+        { message: "Some errors in createNewBoard()" },
+        null,
+        2
+      ),
+    };
+  } else {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: "ok" }, null, 2),
+    };
+  }
+};
+
+view_boards = async (event) => {
+  const query = event.queryStringParameters;
+
+  var record = undefined;
+  if (typeof query === "object" && "board_id" in query) {
+    // search board with id
+    const { board_id, ...remainElements } = query;
+    record = await Board.getBoardRecords({ board_id: board_id });
+  } else {
+    record = await Board.getBoardRecords(query);
+  }
   return {
     statusCode: 200,
-    body: JSON.stringify(event, null, 2),
+    body: JSON.stringify({ message: record }, null, 2),
   };
 };
+
+delete_board = async (event) => {
+  if (!utils.hasKeys(event.queryStringParameters, ["board_id"])) return false;
+
+  const { board_id, ...remainElements } = event.queryStringParameters;
+  const result = await Board.deleteBoardById(board_id);
+
+  if (result === false) {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: "error" }, null, 2),
+    };
+  } else {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: "ok" }, null, 2),
+    };
+  }
+};
+
 alarm = async (data) => {};
-view_boards = async (data) => {};
+
+create_chat = async (event) => {};
 view_chats = async (data) => {};
 my_chats = async (data) => {};
 send = async (data) => {};
@@ -87,6 +136,8 @@ get_board_test = async (event) => {
 
 module.exports = {
   create_board: create_board,
+  view_boards: view_boards,
+  delete_board: delete_board,
   board_debug: board_debug,
   get_board_test: get_board_test,
   delete_board_test: delete_board_test,

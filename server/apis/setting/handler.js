@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 const User = require("../../models/User");
 
 const { default: axios } = require("axios");
@@ -41,6 +42,8 @@ module.exports.alarm_setting = async (event) => {
   };
 };
 =======
+=======
+>>>>>>> jhlim_dev
 const User = require("../../models/User");
 
 const { default: axios } = require("axios");
@@ -82,4 +85,7 @@ module.exports.alarm_setting = async (event) => {
     ),
   };
 };
+<<<<<<< HEAD
+>>>>>>> jhlim_dev
+=======
 >>>>>>> jhlim_dev
