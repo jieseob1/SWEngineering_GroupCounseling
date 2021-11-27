@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 import { withRouter, Link } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../Common/Header";
-import StyledBox from '../Style/styledBox';
-import LogoutButton from '../Common/LogoutButton';
+import StyledBox from "../Style/styledBox";
+import LogoutButton from "../Common/LogoutButton";
 
 const BoxTitle = styled.li`
   font-size: 16px;
@@ -17,9 +17,12 @@ const BoxMenu = styled.li`
 function PageList() {
   return (
     <>
-      <Header title="마이페이지" link="/board"/>
+      <Header title="마이페이지" link="/board" />
       <StyledBox>
         <BoxTitle>계정</BoxTitle>
+        <BoxMenu>
+          <Link to="mypage/profile">프로필 확인</Link>
+        </BoxMenu>
         <BoxMenu>
           <Link to="/mypage/nickname">닉네임 설정</Link>
         </BoxMenu>
@@ -45,14 +48,14 @@ function PageList() {
       <StyledBox>
         <BoxTitle>기타</BoxTitle>
         <BoxMenu>
-          <LogoutButton/>
+          <LogoutButton />
         </BoxMenu>
         <BoxMenu>
           <Link to="/mypage/withdrawal">회원탈퇴</Link>
         </BoxMenu>
       </StyledBox>
     </>
-  )
+  );
 }
 
 export default withRouter(PageList);

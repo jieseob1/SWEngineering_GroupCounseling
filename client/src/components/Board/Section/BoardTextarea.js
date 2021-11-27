@@ -15,18 +15,18 @@ const Textarea = styled.textarea`
   flex-direction: column;
 `
 
-const BoardTextarea = function({name, placeholder, value, onChange }) {
+const BoardTextarea = function ({ name, placeholder, value, onChange }) {
   return (
     <>
       <Textarea
-          name={name}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
+        name={name}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
       >
       </Textarea>
     </>
-  )   
+  )
 }
 
 export default BoardTextarea;

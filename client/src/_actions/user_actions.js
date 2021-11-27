@@ -16,8 +16,12 @@ export function registerUser(dataToSubmit) {
 }
 
 export function loginUser(dataToSubmit) {
+  // datatosubmit:username(or email),password->
+  // 사용자의 username, password가 넘어오게 되면 /user/check로 넘겨서 존재 여부를 확인, 존재할 경우
+  //     해당 사용자 데이터의 userid, usertype 등을 되돌려주고 세션에 token 정보를 등록함
+
   const request = axios
-    .post("/login", dataToSubmit)
+    .post("/user/login", dataToSubmit)
     .then((response) => response.data);
   return {
     type: LOGIN_USER,

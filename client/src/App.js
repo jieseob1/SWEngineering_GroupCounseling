@@ -5,7 +5,9 @@ import Register from "./pages/Register";
 import Board from "./pages/Board";
 import BoardDetail from "./components/Board/BoardDetail";
 import MyPage from "./pages/MyPage";
+import Chat from "./pages/Chat";
 import Auth from "./hoc/auth";
+import BoardMain from "./components/Board/BoardMain";
 
 const Container = styled.div`
   margin: 10px auto;
@@ -21,6 +23,7 @@ function App() {
           <Route path="/register" component={Auth(Register, false)} />
           <Route path="/board" component={Auth(Board, true)} />
           <Route path="/board/:boardId" component={Auth(BoardDetail, true)} />
+          <Route path="/chat" component={Auth(Chat, true)} />
           <Route path="/mypage" component={Auth(MyPage, true)} />
         </Switch>
       </Router>
