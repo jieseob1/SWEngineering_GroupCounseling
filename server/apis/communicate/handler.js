@@ -5,6 +5,7 @@ const config = require("../../configuration/config");
 // Database library
 const User = require("../../models/User");
 const Board = require("../../models/Board");
+const Room = require("../../models/Room");
 
 const { default: axios } = require("axios");
 
@@ -68,12 +69,62 @@ delete_board = async (event) => {
   }
 };
 
-alarm = async (data) => {};
+/*
+ * @ Room Database Schema
+ */
+/*
+        room_id int generated always as identity primary key,
+        room_title text,
+        room_description text,
+        create_time timestamp,
+        joined_users text[]
+*/
 
-create_chat = async (event) => {};
-view_chats = async (data) => {};
-my_chats = async (data) => {};
-send = async (data) => {};
+create_chat_room = async (event) => {
+  const room_info = event.queryStringParameters;
+};
+delete_chat_room = async (event) => {};
+join_chat_room = async (event) => {};
+
+/*
+ * Room Database testing function is located below
+ */
+
+room_debug = async (event) => {
+  await Room.initializer();
+
+  const obj = {
+    room_title: "this is test room",
+    room_description: "this is test description",
+    joined_users: "{aaa}",
+  };
+
+  const result = await Room.createNewRoom(obj);
+  if (result === false) {
+    console.log("there is some errors in createNewRoom");
+  }
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: "ok" }, null, 2),
+  };
+};
+
+get_room_test = async (event) => {
+  const obj = {
+    room_title: "this is test room",
+  };
+  const result = await Room.findRoomByInfo(obj);
+  if (result !== false) {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: result }, null, 2),
+    };
+  }
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: "error" }, null, 2),
+  };
+};
 
 /*
  * Board Database testing function is located below
@@ -138,6 +189,10 @@ module.exports = {
   create_board: create_board,
   view_boards: view_boards,
   delete_board: delete_board,
+
+  room_debug: room_debug,
+  get_room_test: get_room_test,
+
   board_debug: board_debug,
   get_board_test: get_board_test,
   delete_board_test: delete_board_test,
