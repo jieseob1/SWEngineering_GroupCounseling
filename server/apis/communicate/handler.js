@@ -109,7 +109,25 @@ delete_chat_room = async (event) => {
     body: JSON.stringify({ message: message }, null, 2),
   };
 };
-join_chat_room = async (event) => {};
+join_chat_room = async (event) => {
+  // 지금은 username이라고 되어있지만, 이후에 토큰 기능 활성화 되면, 토큰 복호화 한 결과에서
+  // username 항목 추출해서 사용하도록 변경할 필요가 있음
+  const { userid, room_id } = event.queryStringParameters;
+  const status = await Room.appendUserToRoom(userid, room_id);
+
+  var message = undefined;
+  if (status === false) {
+    message = "Some errors in joining chat room";
+  } else message = "ok";
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: message }, null, 2),
+  };
+};
+leave_chat_room = async (event) => {
+  // 해당 함수는 특정 사용자가 룸을 떠나고 싶을 때 쓰는 함수
+};
 
 /*
  * Room Database testing function is located below
@@ -135,9 +153,7 @@ room_debug = async (event) => {
 };
 
 get_room_test = async (event) => {
-  const obj = {
-    room_title: "this is test room",
-  };
+  const obj = event.queryStringParameters;
   const result = await Room.findRoomByInfo(obj);
   if (result !== false) {
     return {
@@ -217,6 +233,10 @@ module.exports = {
 
   room_debug: room_debug,
   get_room_test: get_room_test,
+
+  create_chat_room: create_chat_room,
+  delete_chat_room: delete_chat_room,
+  join_chat_room: join_chat_room,
 
   board_debug: board_debug,
   get_board_test: get_board_test,

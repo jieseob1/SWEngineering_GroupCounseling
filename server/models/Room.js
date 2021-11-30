@@ -74,7 +74,7 @@ async function deleteOne(object) {
 async function findRoomByInfo_internal(informations) {
   try {
     var fetched = await QUERY`
-    SELECT * FROM ${TABLE(TABLE_NAME)} WHERE ${EQ(informations)}`;
+    SELECT * FROM ${TABLE(TABLE_NAME)} WHERE ${EQ(informations)} LIMIT 1`;
   } catch (err) {
     console.log(err);
     return undefined;
@@ -90,12 +90,36 @@ async function checkRoombyId(room_id) {
     console.log(err);
     return false;
   }
-  if (fetched !== undefined && fetched != null) {
-    if (fetched.length !== 0) return false;
+  console.log(fetched);
+  if (fetched !== undefined && fetched !== null) {
+    if (parseInt(fetched[0].count) === 0) return false;
     return true;
   } else {
     return false;
   }
+}
+
+async function updateRoomInfo(room_id, new_user) {
+  try {
+    await QUERY`
+    UPDATE room_list SET joined_users = array_append(joined_users, ${new_user}) WHERE room_id=${room_id}`;
+    console.log("ok");
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+  return true;
+}
+
+async function removeUserFromRoom_internal(room_id, userid) {
+  try {
+    await QUERY`
+    UPDATE room_list SET joined_users = array_remove(joined_users, ${userid}) WHERE room_id=${room_id}`;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+  return true;
 }
 
 module.exports.createNewRoom = async function createNewRoom(newroom_info) {
@@ -109,13 +133,39 @@ module.exports.createNewRoom = async function createNewRoom(newroom_info) {
 
 module.exports.deleteRoomById = async function deleteRoomById(room_id) {
   try {
-    if (await checkRoombyId()) {
+    if (await checkRoombyId(room_id)) {
       return await deleteOne({ room_id: room_id });
     }
   } catch (err) {
     console.log(err);
     return false;
   }
+};
+
+module.exports.appendUserToRoom = async (userid, room_id) => {
+  try {
+    if (await checkRoombyId(room_id)) {
+      await updateRoomInfo(room_id, userid);
+      return true;
+    }
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+  return false;
+};
+
+module.exports.removeUserFromRoom = async (room_id, userid) => {
+  try {
+    if (await checkRoombyId(room_id)) {
+      await removeUserFromRoom_internal(room_id, userid);
+      return true;
+    }
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+  return false;
 };
 
 module.exports.modifyRoomInfo = async ({ room_id, changedObject }) => {};

@@ -101,3 +101,27 @@ get-room-test:
         path: communicate/get-room-test
         method: get
         cors: true
+
+create-chat-room:
+  handler: apis/communicate/handler.create_chat_room
+  events:
+    - http:
+        path: communicate/create-chat-room
+        method: get
+        cors: true
+
+delete-chat-room:
+  handler: apis/communicate/handler.delete_chat_room
+  events:
+    - http:
+        path: communicate/delete-chat-room
+        method: get
+        cors: true
+
+join-chat-room:
+  handler: apis/communicate/handler.join_chat_room
+  events:
+    - http:
+        path: communicate/join-chat-room
+        method: get
+        cors: true
