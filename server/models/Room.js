@@ -110,7 +110,7 @@ module.exports.createNewRoom = async function createNewRoom(newroom_info) {
 module.exports.deleteRoomById = async function deleteRoomById(room_id) {
   try {
     if (await checkRoombyId()) {
-      return await deleteOne(room_id);
+      return await deleteOne({ room_id: room_id });
     }
   } catch (err) {
     console.log(err);

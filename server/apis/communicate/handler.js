@@ -82,8 +82,33 @@ delete_board = async (event) => {
 
 create_chat_room = async (event) => {
   const room_info = event.queryStringParameters;
+  const result = await Room.createNewRoom(room_info);
+
+  var message = undefined;
+  if (result === false) {
+    message = "Some errors in creating chat room";
+  } else {
+    message = "ok";
+  }
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: message }, null, 2),
+  };
 };
-delete_chat_room = async (event) => {};
+delete_chat_room = async (event) => {
+  const { room_id, ...remains } = event.queryStringParameters;
+  const delete_status = await Room.deleteRoomById(room_id);
+
+  var message = undefined;
+  if (delete_status === false) {
+    message = "Some errors in deleting chat room";
+  } else message = "ok";
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: message }, null, 2),
+  };
+};
 join_chat_room = async (event) => {};
 
 /*
