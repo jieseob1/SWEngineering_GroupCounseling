@@ -16,6 +16,6 @@
     "login": "^0.8.0",
     "pg": "^8.7.1",
     "serverless": "^2.66.1",
-    "serverless-offline": "^8.2.0"
+    "serverless-offline": "^8.3.1"
   }
 }
