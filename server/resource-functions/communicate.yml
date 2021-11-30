@@ -85,3 +85,43 @@ delete-board-test:
         path: communicate/delete_board_test
         method: get
         cors: true
+
+room-debug:
+  handler: apis/communicate/handler.room_debug
+  events:
+    - http:
+        path: communicate/room-debug
+        method: get
+        cors: true
+
+get-room-test:
+  handler: apis/communicate/handler.get_room_test
+  events:
+    - http:
+        path: communicate/get-room-test
+        method: get
+        cors: true
+
+create-chat-room:
+  handler: apis/communicate/handler.create_chat_room
+  events:
+    - http:
+        path: communicate/create-chat-room
+        method: get
+        cors: true
+
+delete-chat-room:
+  handler: apis/communicate/handler.delete_chat_room
+  events:
+    - http:
+        path: communicate/delete-chat-room
+        method: get
+        cors: true
+
+join-chat-room:
+  handler: apis/communicate/handler.join_chat_room
+  events:
+    - http:
+        path: communicate/join-chat-room
+        method: get
+        cors: true

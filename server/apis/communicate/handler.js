@@ -5,6 +5,7 @@ const config = require("../../configuration/config");
 // Database library
 const User = require("../../models/User");
 const Board = require("../../models/Board");
+const Room = require("../../models/Room");
 
 const { default: axios } = require("axios");
 
@@ -68,12 +69,103 @@ delete_board = async (event) => {
   }
 };
 
-alarm = async (data) => {};
+/*
+ * @ Room Database Schema
+ */
+/*
+        room_id int generated always as identity primary key,
+        room_title text,
+        room_description text,
+        create_time timestamp,
+        joined_users text[]
+*/
 
-create_chat = async (event) => {};
-view_chats = async (data) => {};
-my_chats = async (data) => {};
-send = async (data) => {};
+create_chat_room = async (event) => {
+  const room_info = event.queryStringParameters;
+  const result = await Room.createNewRoom(room_info);
+
+  var message = undefined;
+  if (result === false) {
+    message = "Some errors in creating chat room";
+  } else {
+    message = "ok";
+  }
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: message }, null, 2),
+  };
+};
+delete_chat_room = async (event) => {
+  const { room_id, ...remains } = event.queryStringParameters;
+  const delete_status = await Room.deleteRoomById(room_id);
+
+  var message = undefined;
+  if (delete_status === false) {
+    message = "Some errors in deleting chat room";
+  } else message = "ok";
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: message }, null, 2),
+  };
+};
+join_chat_room = async (event) => {
+  // 지금은 username이라고 되어있지만, 이후에 토큰 기능 활성화 되면, 토큰 복호화 한 결과에서
+  // username 항목 추출해서 사용하도록 변경할 필요가 있음
+  const { userid, room_id } = event.queryStringParameters;
+  const status = await Room.appendUserToRoom(userid, room_id);
+
+  var message = undefined;
+  if (status === false) {
+    message = "Some errors in joining chat room";
+  } else message = "ok";
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: message }, null, 2),
+  };
+};
+leave_chat_room = async (event) => {
+  // 해당 함수는 특정 사용자가 룸을 떠나고 싶을 때 쓰는 함수
+};
+
+/*
+ * Room Database testing function is located below
+ */
+
+room_debug = async (event) => {
+  await Room.initializer();
+
+  const obj = {
+    room_title: "this is test room",
+    room_description: "this is test description",
+    joined_users: "{aaa}",
+  };
+
+  const result = await Room.createNewRoom(obj);
+  if (result === false) {
+    console.log("there is some errors in createNewRoom");
+  }
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: "ok" }, null, 2),
+  };
+};
+
+get_room_test = async (event) => {
+  const obj = event.queryStringParameters;
+  const result = await Room.findRoomByInfo(obj);
+  if (result !== false) {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: result }, null, 2),
+    };
+  }
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: "error" }, null, 2),
+  };
+};
 
 /*
  * Board Database testing function is located below
@@ -138,6 +230,14 @@ module.exports = {
   create_board: create_board,
   view_boards: view_boards,
   delete_board: delete_board,
+
+  room_debug: room_debug,
+  get_room_test: get_room_test,
+
+  create_chat_room: create_chat_room,
+  delete_chat_room: delete_chat_room,
+  join_chat_room: join_chat_room,
+
   board_debug: board_debug,
   get_board_test: get_board_test,
   delete_board_test: delete_board_test,
