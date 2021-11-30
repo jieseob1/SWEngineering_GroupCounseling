@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useReducer } from "react";
+import { Route, withRouter } from "react-router-dom";
 import queryString from "query-string";
 import io from "socket.io-client";
 import "./Chat.css";
 import styled from "styled-components";
-import send from "../assets/send.jpg";
-import { withRouter } from "react-router-dom";
 // 하위 컴포넌트
 import Messages from "../components/Chat/Messages/Messages";
 import RoomInfo from "../components/Chat/RoomInfo";
@@ -13,10 +12,8 @@ import Header from "../components/Common/Header";
 import StyledContainer from "../components/Style/styledContainer";
 import StyledBox from "../components/Style/styledBox";
 
-// Material-ui
-import Paper from "@material-ui/core/Paper";
-
 import { ROOT_SERVER, DEV_SERVER } from "../Config";
+
 const Chatbox = styled.div`
   color: #212121;
   width: 100%;
@@ -32,38 +29,14 @@ const HeadTextDiv = styled.div`
   text-align: center;
   font-size: 15px;
   font-weight: bold;
-  border-bottom: 1px solid #ddd;
   cursor: pointer;
 `;
-
-const FootTextDiv = styled.div`
-  height: 75px;
-  display: flex;
-  font-size: 5px;
-`;
-
-const ChatDiv = styled.div`
-  height: 350px;
-  border-bottom: 1px solid #ddd;
-`;
-
-const Send = styled.img`
-  margin-top: 10px;
-  margin-right: 10px;
-  width: 50px;
-  height: 50px;
-`;
-
-const style = {
-  width: "500px",
-  height: "50px",
-  marginLeft: "10px",
-};
 
 let socket;
 
 const Chat = ({ location }) => {
   // location:현재 페이지 정보,location.search로 현재 url의 쿼리 스트링을 가지고 올 수 있다.
+
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
   const [message, setMessage] = useState("");
@@ -101,7 +74,8 @@ const Chat = ({ location }) => {
       });
 
       return () => {
-        socket.emit("disconnect");
+        //disconnect가 reserved event name이므로 socket.emit('disconnect')가 아닌 socket.disconnect() 사용
+        socket.disconnect();
 
         socket.off();
       };
@@ -140,16 +114,15 @@ const Chat = ({ location }) => {
     <>
       <Header title="채팅방" link="/board"></Header>
       <Chatbox>
-        <HeadTextDiv>Room: undefined</HeadTextDiv>
-        <ChatDiv></ChatDiv>
-        <FootTextDiv>
-          <input
-            type="text"
-            placeholder="메세지를 입력하세요"
-            style={style}
-          ></input>
-          <Send src={send} />
-        </FootTextDiv>
+        <HeadTextDiv>
+          <RoomInfo room={room} />
+        </HeadTextDiv>
+        <Messages messages={messages} name={name} />
+        <Input
+          message={message}
+          setMessage={setMessage}
+          sendMessage={sendMessage}
+        />
       </Chatbox>
     </>
   );
