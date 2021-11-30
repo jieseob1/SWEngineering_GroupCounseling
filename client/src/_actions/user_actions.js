@@ -1,4 +1,5 @@
 import axios from "axios";
+import { DEV_SERVER, ROOT_SERVER } from "../Config";
 
 export const REGISTER_USER = "REGISTER_USER";
 export const LOGIN_USER = "LOGIN_USER";
@@ -7,7 +8,7 @@ export const AUTH_USER = "AUTH_USER";
 
 export function registerUser(dataToSubmit) {
   const request = axios
-    .post("/register", dataToSubmit)
+    .post(`${DEV_SERVER}/dev/user/register`, dataToSubmit)
     .then((response) => response.data);
   return {
     type: REGISTER_USER,
@@ -21,7 +22,7 @@ export function loginUser(dataToSubmit) {
   //     해당 사용자 데이터의 userid, usertype 등을 되돌려주고 세션에 token 정보를 등록함
 
   const request = axios
-    .post("/user/login", dataToSubmit)
+    .post(`{DEV_SERVER}/dev/user/login`, dataToSubmit)
     .then((response) => response.data);
   return {
     type: LOGIN_USER,
@@ -30,9 +31,7 @@ export function loginUser(dataToSubmit) {
 }
 
 export function logoutUser() {
-  const request = axios
-    .get("/logout")
-    .then((response) => response.data);
+  const request = axios.get("/logout").then((response) => response.data);
   return {
     type: LOGOUT_USER,
     payload: request,
@@ -40,9 +39,7 @@ export function logoutUser() {
 }
 
 export function auth() {
-  const request = axios
-    .get("/auth")
-    .then((response) => response.data);
+  const request = axios.get("/auth").then((response) => response.data);
   return {
     type: AUTH_USER,
     payload: request,

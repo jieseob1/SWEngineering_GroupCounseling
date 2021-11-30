@@ -4,6 +4,8 @@ import "./Input.css";
 import Button from "@material-ui/core/Button";
 
 const Input = ({ message, setMessage, sendMessage }) => (
+  // props로 message,setMessage,sendMessage 3개를 받아온다.
+
   //   return <div className="Input"></div>;
   // <form className="inputForm">
   <div className="inputContainer">

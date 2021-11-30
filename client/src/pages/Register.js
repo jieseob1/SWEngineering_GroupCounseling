@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { DEV_SERVER, ROOT_SERVER } from "../Config";
 import axios from "axios";
 import Header from "../components/Common/Header";
 import StyledBox from "../components/Style/styledBox";
@@ -40,7 +41,7 @@ function Register({ history }) {
       usableId: usableId,
     });
 
-    if (inputs.userId.length > 8) {
+    if (inputs.userId.length >= 8) {
       setOverIdLength(true);
     } else {
       setOverIdLength(false);
@@ -59,7 +60,8 @@ function Register({ history }) {
       return;
     }
     axios
-      .post(`/register/checkId/${userId}`, { id: userId })
+      .post(`${DEV_SERVER}/register/checkId/${userId}`, { id: userId })
+      // 이 부분 추가적으로 고치기
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
