@@ -21,12 +21,12 @@ async function createUserTable() {
   try {
     await QUERY`
       CREATE TABLE ${TABLE(TABLE_NAME)} (
-        username varchar(256),
+        userid varchar(256),
         password varchar(256)
       );
     `;
     console.log("[DB Info] createUserTable() Done");
-  } catch (err) { }
+  } catch (err) {}
 }
 
 async function deleteUserTable() {
@@ -35,7 +35,7 @@ async function deleteUserTable() {
       DROP TABLE ${TABLE(TABLE_NAME)}o
     `;
     console.log("[DB Info] deleteUserTable() Done");
-  } catch (err) { }
+  } catch (err) {}
 }
 
 /*
@@ -59,7 +59,7 @@ async function findOne(object) {
     var _fetched = await QUERY`
     SELECT username FROM ${TABLE(
       TABLE_NAME
-    )} WHERE username=${username} AND password=${password} LIMIT 1
+    )} WHERE userid=${username} AND password=${password} LIMIT 1
     `;
   } catch (err) {
     console.log(err);
