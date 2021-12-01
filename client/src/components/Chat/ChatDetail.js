@@ -31,7 +31,7 @@ const HeadTextDiv = styled.div`
 
 let socket;
 
-const ChatDetail = ({ location }) => {
+const ChatDetail = ({ location, match }) => {
   // location:현재 페이지 정보,location.search로 현재 url의 쿼리 스트링을 가지고 올 수 있다.
 
   const [name, setName] = useState("");
