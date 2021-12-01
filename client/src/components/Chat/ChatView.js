@@ -3,17 +3,18 @@ import { Link, withRouter } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import StyledBox from "../Style/styledBox";
-import AddBoard from "./Section/AddBoard";
-import BoardInput from "./Section/BoardInput";
-import CheckNickname from "./Section/CheckNickname";
-import BoardTextarea from "./Section/BoardTextarea";
-import UserProfile from "./Section/UserProfile";
+import AddBoard from "../Board/Section/AddBoard";
+import BoardInput from "../Board/Section/BoardInput";
+import CheckNickname from "../Board/Section/CheckNickname";
+import BoardTextarea from "../Board/Section/BoardTextarea";
+import UserProfile from "../Board/Section/UserProfile";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 import Pagination from "@material-ui/lab/Pagination";
-import BoardSubmit from "./Section/BoardSubmit";
-import WriteBoard from "./Section/WriteBoard";
-import BestPost from "./Section/BestPost";
+import BoardSubmit from "../Board/Section/BoardSubmit";
+import WriteBoard from "../Board/Section/WriteBoard";
+import BestPost from "../Board/Section/BestPost";
+import WriteChat from "./Section/WriteChat";
 
 const Profilebox = styled.div`
   width: 100%;
@@ -178,16 +179,16 @@ const ChatView = ({ history, match }) => {
   };
   return (
     <>
-      <Header title="자유게시판" link="/board" />
+      <Header title="채팅방" link="/chat" />
       <StyledBox backColor="#fafafa" padding="10px 0px" lineHeight="auto">
         {/*<Profilebox>*/}
         {/*<UserProfile boardPage={true} />*/}
         {/* userprofile 부분에 프로필과,아이디,학교등이 들어가게 된다. */}
         {/*</Profilebox>*/}
         {/* 글쓰기 부분 */}
-        <WriteBoard
-          link={`/chat/${match.params.view}/writeboard`}
-          title={"글쓰기"}
+        <WriteChat
+          link={`/chat/${match.params.view}/writechat`}
+          title={"채팅하기"}
         />
 
         {/* 게시판submit부분 컴포넌트화 */}
