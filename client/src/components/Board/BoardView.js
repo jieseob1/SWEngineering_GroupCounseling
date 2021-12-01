@@ -110,7 +110,6 @@ function BoardView({ history, match }) {
       });
   };
 
-
   //
   const onRemove = (id) => {
     //
@@ -165,16 +164,12 @@ function BoardView({ history, match }) {
           boardTitle: "",
           boardContent: "",
         });
-        FetchBoard();//게시글 보여주기 
+        FetchBoard(); //게시글 보여주기
       } else {
         alert("게시글 업로드에 실패하였습니다.");
       }
     });
   };
-
-
-
-
 
   const handlePageChange = (e) => {
     //페이지 바꾸면 벌어지는 이벤트
@@ -190,9 +185,10 @@ function BoardView({ history, match }) {
         {/* userprofile 부분에 프로필과,아이디,학교등이 들어가게 된다. */}
         {/*</Profilebox>*/}
         {/* 글쓰기 부분 */}
-        <WriteBoard link={`/board/${match.params.view}/writeboard`} title={"글쓰기"} />
-
-
+        <WriteBoard
+          link={`/board/${match.params.view}/writeboard`}
+          title={"글쓰기"}
+        />
 
         {/* 게시판submit부분 컴포넌트화 */}
 

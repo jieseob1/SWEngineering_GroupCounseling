@@ -112,7 +112,7 @@ const ChatDetail = ({ location, match }) => {
 
   return (
     <>
-      <Header title="채팅방" link="/board"></Header>
+      <Header title="채팅방" link="/chat"></Header>
       <Chatbox>
         <HeadTextDiv>
           <RoomInfo room={room} />
