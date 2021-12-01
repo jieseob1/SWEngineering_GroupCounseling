@@ -187,8 +187,8 @@ const ChatView = ({ history, match }) => {
         {/*</Profilebox>*/}
         {/* 글쓰기 부분 */}
         <WriteChat
-          link={`/chat/${match.params.view}/writechat`}
-          title={"채팅하기"}
+          link={`/chat/${match.params.view}`}
+          title={"채팅방 만들기"}
         />
 
         {/* 게시판submit부분 컴포넌트화 */}

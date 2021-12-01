@@ -75,7 +75,7 @@ const ChatBox = styled.div`
   margin: 0px auto;
 `;
 
-function ChatMain() {
+function ChatMain({ match }) {
   return (
     <>
       <Header title="채팅방" link="/chat"></Header>
