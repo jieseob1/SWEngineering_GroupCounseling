@@ -3,17 +3,18 @@ import { Link, withRouter } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import StyledBox from "../Style/styledBox";
-import AddBoard from "./Section/AddBoard";
-import BoardInput from "./Section/BoardInput";
-import CheckNickname from "./Section/CheckNickname";
-import BoardTextarea from "./Section/BoardTextarea";
-import UserProfile from "./Section/UserProfile";
+import AddBoard from "../Board/Section/AddBoard";
+import BoardInput from "../Board/Section/BoardInput";
+import CheckNickname from "../Board/Section/CheckNickname";
+import BoardTextarea from "../Board/Section/BoardTextarea";
+import UserProfile from "../Board/Section/UserProfile";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 import Pagination from "@material-ui/lab/Pagination";
-import BoardSubmit from "./Section/BoardSubmit";
-import WriteBoard from "./Section/WriteBoard";
-import BestPost from "./Section/BestPost";
+import BoardSubmit from "../Board/Section/BoardSubmit";
+import WriteBoard from "../Board/Section/WriteBoard";
+import BestPost from "../Board/Section/BestPost";
+import WriteChat from "./Section/WriteChat";
 
 const Profilebox = styled.div`
   width: 100%;
@@ -77,27 +78,27 @@ const PaginationBox = styled.div`
   justify-content: center;
 `;
 
-function BoardView({ history, match }) {
+// boardview와 똑같은 구조로 가지고 옴
+const ChatView = ({ history, match }) => {
   // 파라미터:history,match
   const userFrom = localStorage.getItem("userId");
   const writerFrom = localStorage.getItem("userNickname"); // writerFrom은 userNickname 관련
   const [totalPage, settotalPage] = useState(0); //전체 페이지 설정
   const [currentPage, setcurrentPage] = useState(1); //현재 페이지 설정
   const [WriterIcon, setWriterIcon] = useState(true);
-  const [BoardWriter, setBoardWriter] = useState("익명"); //게시판 적는 사람 이름
+  const [ChatWriter, setChatWriter] = useState("익명"); //게시판 적는 사람 이름
   const [Content, setContent] = useState([]); //컨텐츠
   const [inputs, setInput] = useState({
-    boardTitle: "",
-    boardContent: "",
+    chatTitle: "",
+    chatContent: "",
   });
-  const { boardTitle, boardContent } = inputs;
+  const { chatTitle, chatContent } = inputs;
 
   useEffect(() => {
-    FetchBoard();
-    console.log("fetch");
+    FetchChat();
   }, [currentPage]);
 
-  const FetchBoard = () => {
+  const FetchChat = () => {
     axios
       .post("/communicate/view-chats", { page: currentPage }) //현재 페이지에 관련된 게시판들을 가져 온다
       .then((response) => {
@@ -114,7 +115,7 @@ function BoardView({ history, match }) {
   const onRemove = (id) => {
     //
     setContent(Content.filter((Content) => Content._id !== id)); // 컨텐츠를 filter 함수를 통해 다시 재구성한다
-    FetchBoard(); //게시판을 가지고 온다
+    FetchChat(); //게시판을 가지고 온다
   };
 
   const onChange = (e) => {
@@ -130,23 +131,23 @@ function BoardView({ history, match }) {
     if (WriterIcon) {
       // writerIcon이 true이게 되면
       setWriterIcon(false); //writericon을 false로 설정하고
-      setBoardWriter(writerFrom); //닉네임을 설정하게 된다
+      setChatWriter(writerFrom); //닉네임을 설정하게 된다
     } else {
       setWriterIcon(true); //writericon이 true가 되면 글쓴이의 아이콘이 보이지 않는다.
-      setBoardWriter("익명");
+      setChatWriter("익명");
     }
   };
 
   const onSubmit = (e) => {
     //제출하는 부분
     e.preventDefault();
-    if (!boardTitle) {
+    if (!chatTitle) {
       alert(`제목을 작성해주세요`);
       return;
-    } else if (!boardContent) {
+    } else if (!chatContent) {
       alert(`내용을 작성해주세요`);
       return;
-    } else if (boardContent.length > 300) {
+    } else if (chatContent.length > 300) {
       alert(`내용을 300자 이내로 작성해주세요`);
       return;
     }
@@ -154,17 +155,17 @@ function BoardView({ history, match }) {
 
     let variables = {
       userFrom: userFrom,
-      boardTitle: boardTitle,
-      boardContent: boardContent,
-      boardWriter: BoardWriter,
+      boardTitle: chatTitle,
+      chatContent: chatContent,
+      chatWriter: ChatWriter,
     }; // variable에 필요한 변수들 넣고 post로 서버에 넘겨준다
     axios.post("/board/upload", variables).then((response) => {
       if (response.status === 200) {
         setInput({
-          boardTitle: "",
-          boardContent: "",
+          chatTitle: "",
+          chatContent: "",
         });
-        FetchBoard(); //게시글 보여주기
+        FetchChat(); //게시글 보여주기
       } else {
         alert("게시글 업로드에 실패하였습니다.");
       }
@@ -174,18 +175,21 @@ function BoardView({ history, match }) {
   const handlePageChange = (e) => {
     //페이지 바꾸면 벌어지는 이벤트
     const currentPage = parseInt(e.target.textContent);
-    setcurrentPage(currentPage); // ????
+    setcurrentPage(currentPage);
   };
   return (
     <>
-      <Header title="자유게시판" link="/board" />
+      <Header title="채팅방" link="/chat" />
       <StyledBox backColor="#fafafa" padding="10px 0px" lineHeight="auto">
         {/*<Profilebox>*/}
         {/*<UserProfile boardPage={true} />*/}
         {/* userprofile 부분에 프로필과,아이디,학교등이 들어가게 된다. */}
         {/*</Profilebox>*/}
         {/* 글쓰기 부분 */}
-        <WriteBoard link={`/board/${match.params.view}`} title={"글쓰기"} />
+        <WriteChat
+          link={`/chat/${match.params.view}`}
+          title={"채팅방 만들기"}
+        />
 
         {/* 게시판submit부분 컴포넌트화 */}
 
@@ -225,6 +229,6 @@ function BoardView({ history, match }) {
       </StyledBox>
     </>
   );
-}
+};
 
-export default withRouter(BoardView);
+export default withRouter(ChatView);

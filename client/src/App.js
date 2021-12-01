@@ -22,7 +22,7 @@ function App() {
           <Route exact path="/" component={Auth(Login, false)}></Route>
           <Route path="/register" component={Auth(Register, false)} />
           <Route path="/board" component={Auth(Board, true)} />
-          <Route path="/board/:boardId" component={Auth(BoardDetail, true)} />
+          {/* <Route path="/board/:boardId" component={Auth(BoardDetail, true)} /> */}
           <Route path="/chat" component={Auth(Chat, true)} />
           <Route path="/mypage" component={Auth(MyPage, true)} />
         </Switch>
