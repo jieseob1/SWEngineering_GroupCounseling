@@ -19,7 +19,7 @@ module.exports.register = async (event) => {
   } catch (err) {
     // Http Request Exception
     // return exception_handler()
-    console.log(err)
+    console.log(err);
   }
 
   if (_records_info.data.status === "success") {
@@ -39,7 +39,7 @@ module.exports.register = async (event) => {
 module.exports.login = async (event) => {
   const _queryParam = event.queryStringParameters;
 
-  if (!utils.hasKeys(_queryParam, ["username", "password"])) {
+  if (!utils.hasKeys(_queryParam, ["userid", "password"])) {
     return exception_handler(403);
   }
   try {
@@ -59,7 +59,7 @@ module.exports.login = async (event) => {
     }
     // Now, there is only one record matched user
     // JWT Token generation logic will be implement to below
-  } catch (err) { }
+  } catch (err) {}
   return {
     statusCode: 200,
     body: JSON.stringify(
@@ -72,7 +72,7 @@ module.exports.login = async (event) => {
 module.exports.check = async (event) => {
   const _queryParam = event.queryStringParameters;
 
-  if (!utils.hasKeys(_queryParam, ["username", "password"])) {
+  if (!utils.hasKeys(_queryParam, ["userid", "password"])) {
     // exception code 400 : missing arguments
     return exception_handler(403);
   }
@@ -88,7 +88,7 @@ module.exports.check = async (event) => {
 };
 module.exports.delete = async (event) => {
   const _queryParam = event.queryStringParameters;
-  if (!utils.hasKeys(_queryParam, ["username", "password"])) {
+  if (!utils.hasKeys(_queryParam, ["userid", "password"])) {
     return exception_handler(403);
   }
   // We need to check received user token information for user record accessibility
@@ -102,4 +102,4 @@ module.exports.delete = async (event) => {
     ),
   };
 };
-module.exports.token_check = async (data) => { };
+module.exports.token_check = async (data) => {};

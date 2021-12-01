@@ -140,3 +140,5 @@ module.exports.createStatistics = async (userid, option = 0) => {
       break;
   }
 };
+
+module.exports.saveToFile = async (userid, file_type = "csv") => {};
