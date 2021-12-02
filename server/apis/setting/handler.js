@@ -47,13 +47,16 @@ module.exports.alarm_setting = async (event) => {
 const User = require("../../models/User");
 
 const { default: axios } = require("axios");
+const querystring = require("querystring");
 
 module.exports.modify_info = async (event) => {
   console.log(event);
   const _queryParam = event.queryStringParameters;
+  // const _queryParam = querystring.stringify(event.body);
 };
 module.exports.alarm_setting = async (event) => {
   const { token, isChange } = event.queryStringParameters;
+  // const { token, isChange } = querystring.stringify(event.body);
 
   var _decrypted_token = await User.decryptUserToken(token);
 

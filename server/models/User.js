@@ -21,8 +21,13 @@ async function createUserTable() {
   try {
     await QUERY`
       CREATE TABLE ${TABLE(TABLE_NAME)} (
-        userid varchar(256),
-        password varchar(256)
+        id int NOT NULL primary key,
+        userId text NOT NULL,
+        userPw text NOT NULL,
+        email text NOT NULL,
+        nickname text,
+        entranceYear timestamptz not null default now(),
+        gubun int NOT NULL default 0,
       );
     `;
     console.log("[DB Info] createUserTable() Done");
@@ -51,6 +56,16 @@ async function insertOne(object) {
   } catch (err) {
     console.log(err);
   }
+}
+
+async function getRowCounts(object) {
+  try {
+    var _fetched = await QUERY`
+    SELECT count(*) FROM ${TABLE(TABLE_NAME)} WHERE ${EQ(object)}`;
+  } catch (err) {
+    console.log(err);
+  }
+  return _fetched || [];
 }
 
 async function findOne(object) {
@@ -112,6 +127,21 @@ module.exports.deleteUser = async (object) => {
     await deleteOne(object);
   } catch (err) {
     console.log(err);
+    return false;
+  }
+  return true;
+};
+
+module.exports.deleteById = async (id) => {
+  try {
+    const _fetched = await findOne({ id: id });
+    if (_fetched.length < 1) {
+      return false;
+    }
+    await deleteOne({ id: id });
+  } catch (err) {
+    console.log(err);
+    return false;
   }
   return true;
 };

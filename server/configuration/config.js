@@ -15,5 +15,6 @@ const server_info = {
 module.exports = {
   DEBUG_MODE: DEBUG_MODE,
   db_config: database_config,
-  server_info: `http://${server_info.host}`
+  server_info: `http://${server_info.host}`,
+  PARAM_MODE: "get",
 };

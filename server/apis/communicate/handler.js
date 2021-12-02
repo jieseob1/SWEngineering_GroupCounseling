@@ -8,12 +8,14 @@ const Board = require("../../models/Board");
 const Room = require("../../models/Room");
 
 const { default: axios } = require("axios");
+const querystring = require("querystring");
 
 create_board = async (event) => {
   if (!utils.hasKeys(event.queryStringParameters, ["board_title", "author_id"]))
     return false;
 
   const columnElements = event.queryStringParameters;
+  // const columnElements = querystring.stringify(event.body);
   const result = await Board.createNewBoard(columnElements);
 
   if (result === false) {
@@ -35,6 +37,7 @@ create_board = async (event) => {
 
 view_boards = async (event) => {
   const query = event.queryStringParameters;
+  // const query = querystring.stringify(event.body);
 
   var record = undefined;
   if (typeof query === "object" && "board_id" in query) {
@@ -51,9 +54,11 @@ view_boards = async (event) => {
 };
 
 delete_board = async (event) => {
-  if (!utils.hasKeys(event.queryStringParameters, ["board_id"])) return false;
+  const query = event.queryStringParameters;
+  // const query = querystring.stringify(event.body);
+  if (!utils.hasKeys(query, ["board_id"])) return false;
 
-  const { board_id, ...remainElements } = event.queryStringParameters;
+  const { board_id, ...remainElements } = query;
   const result = await Board.deleteBoardById(board_id);
 
   if (result === false) {
@@ -82,6 +87,7 @@ delete_board = async (event) => {
 
 create_chat_room = async (event) => {
   const room_info = event.queryStringParameters;
+  // const room_info = querystring.stringify(event.body);
   const result = await Room.createNewRoom(room_info);
 
   var message = undefined;
@@ -97,6 +103,7 @@ create_chat_room = async (event) => {
 };
 delete_chat_room = async (event) => {
   const { room_id, ...remains } = event.queryStringParameters;
+  // const { room_id, ...remains } = querystring.stringify(event.body);
   const delete_status = await Room.deleteRoomById(room_id);
 
   var message = undefined;
@@ -113,6 +120,8 @@ join_chat_room = async (event) => {
   // 지금은 username이라고 되어있지만, 이후에 토큰 기능 활성화 되면, 토큰 복호화 한 결과에서
   // username 항목 추출해서 사용하도록 변경할 필요가 있음
   const { userid, room_id } = event.queryStringParameters;
+  // const { userid, room_id } = querystring.stringify(event.body);
+
   const status = await Room.appendUserToRoom(userid, room_id);
 
   var message = undefined;
