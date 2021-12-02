@@ -122,7 +122,27 @@ async function removeUserFromRoom_internal(room_id, userid) {
   return true;
 }
 
-module.exports.createNewRoom = async function createNewRoom(newroom_info) {
+module.exports.isUserJoined = async ({ room_id, userid }) => {
+  try {
+    var fetched = await QUERY`
+    SELECT * FROM ${TABLE(TABLE_NAME)} WHERE room_id=${room_id}`;
+  } catch (err) {
+    console.log(err);
+    return undefined;
+  }
+  if (fetched.length <= 0) {
+    return undefined;
+  }
+  const user_list = fetched[0].joined_users;
+
+  if (user_list !== null && user_list.indexOf(userid) !== -1) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+module.exports.createNewRoom = async (newroom_info) => {
   try {
     return await insertOne(newroom_info);
   } catch (err) {
@@ -131,7 +151,7 @@ module.exports.createNewRoom = async function createNewRoom(newroom_info) {
   return false;
 };
 
-module.exports.deleteRoomById = async function deleteRoomById(room_id) {
+module.exports.deleteRoomById = async (room_id) => {
   try {
     if (await checkRoombyId(room_id)) {
       return await deleteOne({ room_id: room_id });
@@ -142,7 +162,7 @@ module.exports.deleteRoomById = async function deleteRoomById(room_id) {
   }
 };
 
-module.exports.appendUserToRoom = async (userid, room_id) => {
+module.exports.appendUserToRoom = async ({ room_id, userid }) => {
   try {
     if (await checkRoombyId(room_id)) {
       await updateRoomInfo(room_id, userid);
