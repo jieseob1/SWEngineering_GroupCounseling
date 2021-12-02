@@ -22,7 +22,7 @@ export function loginUser(dataToSubmit) {
   //     해당 사용자 데이터의 userid, usertype 등을 되돌려주고 세션에 token 정보를 등록함
 
   const request = axios
-    .post(`{DEV_SERVER}/dev/user/login`, dataToSubmit)
+    .get(`${DEV_SERVER}/dev/user/login`, dataToSubmit)
     .then((response) => response.data);
   return {
     type: LOGIN_USER,

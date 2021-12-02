@@ -187,7 +187,7 @@ const ChatView = ({ history, match }) => {
         {/*</Profilebox>*/}
         {/* 글쓰기 부분 */}
         <WriteChat
-          link={`/chat/${match.params.view}`}
+          link={`/chat/${match.params.view}/makechatroom`}
           title={"채팅방 만들기"}
         />
 

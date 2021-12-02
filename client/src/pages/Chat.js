@@ -9,10 +9,11 @@ const Chat = ({ match }) => {
   return (
     <>
       <Route exact path={match.path} component={ChatMain} />
-      <Route path={`${match.path}/:view`} component={ChatView} />
+      <Route exact path={`${match.path}/:view`} component={ChatView} />
       {/* 채팅방 보여주는 부분 */}
       <Route
-        path={`${match.path}/:view/writeboard`}
+        exact
+        path={`${match.path}/:view/makechatroom`}
         component={MakeChattingRoom}
       />
       <Route

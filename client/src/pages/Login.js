@@ -59,7 +59,7 @@ function Login({ history }) {
   const onSubmit = (e) => {
     e.preventDefault();
     let body = {
-      id: userId,
+      userid: userId,
       password: userPw,
     };
     if (!userId || !userPw) {

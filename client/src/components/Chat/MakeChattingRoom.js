@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-// import BoardSubmit from "../Section/BoardSubmit";
-// import axios from "axios";
-// import BoardInput from "../Section/BoardInput";
-// import BoardTextarea from "../Section/BoardTextarea";
-// import Header from "../../Common/Header";
+import BoardSubmit from "../Board/Section/BoardSubmit";
+import axios from "axios";
+import BoardInput from "../Board/Section/BoardInput";
+import BoardTextarea from "../Board/Section/BoardTextarea";
+import Header from "../Common/Header";
 
 // 채팅방 만들기-> 이부분은 내용 넣는게 아니라 제목만 넣는다
 const MakeChattingRoom = ({ match }) => {
@@ -77,7 +77,7 @@ const MakeChattingRoom = ({ match }) => {
 
   return (
     <>
-      <Header title="게시글 작성" link="/board" backbutton={false} />
+      <Header title="채티방 만들기" link="/chat" backbutton={false} />
       <BoardSubmit
         onSubmit={onSubmit}
         BoardInput={BoardInput}

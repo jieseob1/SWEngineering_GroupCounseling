@@ -20,7 +20,7 @@ userPositionArray.push("상담사");
 function Register({ history }) {
   const dispatch = useDispatch();
   const [inputs, setInput] = useState({
-    userId: "",
+    userid: "",
     userPw: "",
     userEmail: "",
     userNickname: "",
@@ -28,7 +28,14 @@ function Register({ history }) {
     usableId: false,
   });
 
-  const { userId, userPw, userEmail, userNickname, userAge, usableId } = inputs;
+  const {
+    userid: userId,
+    userPw,
+    userEmail,
+    userNickname,
+    userAge,
+    usableId,
+  } = inputs;
   const [option, setOption] = useState("일반 사용자");
   const [overIdLength, setOverIdLength] = useState(false);
   const [overPwLength, setOverPwLength] = useState(false);
@@ -41,7 +48,7 @@ function Register({ history }) {
       usableId: usableId,
     });
 
-    if (inputs.userId.length >= 8) {
+    if (inputs.userid.length >= 8) {
       setOverIdLength(true);
     } else {
       setOverIdLength(false);

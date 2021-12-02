@@ -2,7 +2,6 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../Common/Header";
-import profile from "../../assets/profile.png";
 
 const BoardListbox = styled.div`
   color: #212121;
@@ -76,6 +75,20 @@ const ChatBox = styled.div`
 `;
 
 function BoardMain() {
+  const data = [
+    {
+      id: "ruby",
+      label: "ruby",
+      value: 188,
+      color: "hsl(350, 70%, 50%)",
+    },
+    {
+      id: "c",
+      label: "c",
+      value: 469,
+      color: "hsl(320, 70%, 50%)",
+    },
+  ];
   return (
     <>
       <Header title="자유게시판" link="/board"></Header>
