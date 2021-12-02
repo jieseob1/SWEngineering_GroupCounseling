@@ -142,6 +142,47 @@ leave_chat_room = async (event) => {
  * Room Database testing function is located below
  */
 
+room_join_test = async (event) => {
+  await Room.initializer();
+  const obj = {
+    room_title: "This is test room",
+    room_description: "this is test description",
+    // joined_users: "{admin}"
+  };
+
+  const result = await Room.createNewRoom(obj);
+  if (result === false) {
+    console.log("there is some errors in createNewRoom");
+  }
+  const room_fetched = await Room.findRoomByInfo(obj);
+  const room_id = room_fetched[0].room_id;
+
+  const testObj = {
+    room_id: room_id,
+    userid: "admin",
+  };
+  var message = undefined;
+  switch (await Room.isUserJoined(testObj)) {
+    case true:
+      message = "Already joined";
+      break;
+    case false:
+      message = "You can join this room";
+      break;
+    case undefined:
+      message = "You cannot join this room";
+      break;
+    default:
+      message = "Something errors..";
+      break;
+  }
+  console.log("here");
+  return {
+    statusCode: 200,
+    message: JSON.stringify({ message: message }, null, 2),
+  };
+};
+
 room_debug = async (event) => {
   await Room.initializer();
 
@@ -242,6 +283,7 @@ module.exports = {
 
   room_debug: room_debug,
   get_room_test: get_room_test,
+  room_join_test: room_join_test,
 
   create_chat_room: create_chat_room,
   delete_chat_room: delete_chat_room,

@@ -25,7 +25,7 @@ async function createChatTable() {
         chat_room_id int NOT NULL,
         message_index int,
         send_userid text,
-        send_time timestamp primary key,
+        send_time timestamp primary key default now(),
         message_contents text
       );
     `;

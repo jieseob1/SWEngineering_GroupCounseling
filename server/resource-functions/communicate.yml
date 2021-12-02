@@ -102,6 +102,14 @@ get-room-test:
         method: get
         cors: true
 
+room-join-test:
+  handler: apis/communicate/handler.room_join_test
+  events:
+    - http:
+        path: communicate/room-join-test
+        method: get
+        cors: true
+
 create-chat-room:
   handler: apis/communicate/handler.create_chat_room
   events:
