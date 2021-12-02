@@ -7,3 +7,10 @@ module.exports.user_test = async (event) => {
   // await User.insertOne({ username: "test", password: "test" });
   console.log(await User.insertNewUser(testAccount));
 };
+
+module.exports.post_test = async (event) => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify(event, null, 2),
+  };
+};
