@@ -404,21 +404,10 @@ module.exports = {
   view_boards: view_boards,
   delete_board: delete_board,
 
-  room_debug: room_debug,
-  get_room_test: get_room_test,
-  room_join_test: room_join_test,
-
   create_chat_room: create_chat_room,
   delete_chat_room: delete_chat_room,
   join_chat_room: join_chat_room,
 
   save_chat_log: save_chat_log,
   get_chat_log: get_chat_log,
-
-  board_debug: board_debug,
-  get_board_test: get_board_test,
-  delete_board_test: delete_board_test,
-
-  sendmessage_test: sendmessage_test,
-  receivemessage_test: receivemessage_test,
 };

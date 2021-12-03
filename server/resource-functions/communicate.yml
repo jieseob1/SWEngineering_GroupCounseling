@@ -1,11 +1,3 @@
-create-chat:
-  handler: apis/communicate/handler.create_chat
-  events:
-    - http:
-        path: communicate/create-chat
-        method: get
-        cors: true
-
 create-board:
   handler: apis/communicate/handler.create_board
   events:
@@ -19,14 +11,6 @@ view-boards:
   events:
     - http:
         path: communicate/view-boards
-        method: get
-        cors: true
-
-view-chats:
-  handler: apis/communicate/handler.view_chats
-  events:
-    - http:
-        path: communicate/view-chats
         method: get
         cors: true
 
@@ -75,21 +59,5 @@ get-chat-log:
   events:
     - http:
         path: communicate/get-chat-log
-        method: get
-        cors: true
-
-sendmessage-test:
-  handler: apis/communicate/handler.sendmessage_test
-  events:
-    - http:
-        path: communicate/sendmessage-test
-        method: get
-        cors: true
-
-receivemessage-test:
-  handler: apis/communicate/handler.receivemessage_test
-  events:
-    - http:
-        path: communicate/receivemessage-test
         method: get
         cors: true
