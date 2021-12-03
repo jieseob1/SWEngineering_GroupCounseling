@@ -155,6 +155,7 @@ room_join_test = async (event) => {
     console.log("there is some errors in createNewRoom");
   }
   const room_fetched = await Room.findRoomByInfo(obj);
+  console.log(room_fetched);
   const room_id = room_fetched[0].room_id;
 
   const testObj = {
@@ -176,10 +177,22 @@ room_join_test = async (event) => {
       message = "Something errors..";
       break;
   }
-  console.log("here");
+  if ((await Room.isUserJoined(testObj)) === false) {
+    // Can join
+    console.log(room_id);
+    console.log(testObj);
+    const join_result = await Room.appendUserToRoom(testObj);
+    if (join_result === false) {
+      console.log("Something errors in appendUserToRoom");
+    } else {
+      console.log("Join test");
+      console.log(await Room.isUserJoined(testObj));
+      console.log(await Room.findRoomByInfo(obj));
+    }
+  }
   return {
     statusCode: 200,
-    message: JSON.stringify({ message: message }, null, 2),
+    body: JSON.stringify({ message: "ok" }, null, 2),
   };
 };
 
