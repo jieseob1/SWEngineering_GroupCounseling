@@ -4,7 +4,7 @@ save-user-emotion:
     - http:
         path: analysis/save-user-emotion
         method: get
-        cors: true
+        cors: false
 
 create-file:
   handler: apis/analysis/handler.create_file
@@ -12,4 +12,4 @@ create-file:
     - http:
         path: analysis/create-file
         method: get
-        cors: true
+        cors: false
