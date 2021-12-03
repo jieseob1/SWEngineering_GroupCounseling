@@ -29,10 +29,9 @@ async function createChatTable() {
     await QUERY`
       CREATE TABLE ${TABLE(TABLE_NAME)} (
         room_id int NOT NULL,
-        index SERIAL primary key,
-        userid text NOT NULL,
+	title text
+	contents text
         receive_time timestamp default now(),
-        contents text
       );
     `;
     console.log("[DB Info] createChatTable() Done");
