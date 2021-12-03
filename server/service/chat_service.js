@@ -1,6 +1,9 @@
 const AWS = require("aws-sdk");
 const { DynamoDB } = require("aws-sdk");
 
+const Chat = require("../models/Chat");
+const Utils = require("../utils/utils");
+
 AWS.config.update({
   region: "localhost",
   accessKeyId: "DEFAULT_ACCESS_KEY",
@@ -45,12 +48,23 @@ module.exports.broadcast = async (event) => {
   const api = new AWS.ApiGatewayManagementApi({
     endpoint: new AWS.Endpoint("http://localhost:3001"),
   });
+  const parsedObj = JSON.parse(event.body);
+  if (!Utils.hasKeys(parsedObj, ["userid", "room_id"])) {
+    return {
+      statusCode: 200,
+      body: "Unknown credential",
+    };
+  }
+
+  await Chat.sendMessage(parsedObj);
   const fetched = await dynamo.scan(params).promise();
   fetched.Items.forEach(async ({ connectionId }) => {
     api
-      .postToConnection({ ConnectionId: connectionId, Data: event.body })
+      .postToConnection({
+        ConnectionId: connectionId,
+        Data: parsedObj.contents,
+      })
       .promise();
-    console.log(connectionId);
   });
   return {
     statusCode: 200,
