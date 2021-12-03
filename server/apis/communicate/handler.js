@@ -6,6 +6,7 @@ const config = require("../../configuration/config");
 const User = require("../../models/User");
 const Board = require("../../models/Board");
 const Room = require("../../models/Room");
+const Chat = require("../../models/Chat");
 
 const { default: axios } = require("axios");
 const querystring = require("querystring");
@@ -122,7 +123,7 @@ join_chat_room = async (event) => {
   const { userid, room_id } = event.queryStringParameters;
   // const { userid, room_id } = querystring.stringify(event.body);
 
-  const status = await Room.appendUserToRoom(userid, room_id);
+  const status = await Room.appendUserToRoom(room_id, userid);
 
   var message = undefined;
   if (status === false) {
@@ -138,12 +139,67 @@ leave_chat_room = async (event) => {
   // 해당 함수는 특정 사용자가 룸을 떠나고 싶을 때 쓰는 함수
 };
 
+// Chat log functions
+
+save_chat_log = async (event) => {
+  const { userid, room_id, contents } = event.queryStringParameters;
+
+  var message = "You are not joined this room";
+  const joined = await Room.isUserJoined({
+    userid: userid,
+    room_id: parseInt(room_id),
+  });
+
+  if (joined) {
+    const save_info = {
+      userid: userid,
+      room_id: parseInt(room_id),
+      contents: contents,
+    };
+    const status = await Chat.sendMessage(save_info);
+
+    if (status) {
+      message = "sendMessage ok";
+    } else {
+      message = "Something errors from sendMessage function";
+    }
+  }
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: message }, null, 2),
+  };
+};
+
+get_chat_log = async (event) => {
+  const { userid, room_id, rows } = event.queryStringParameters;
+
+  var message = "You are not joined this room";
+  const joined = await Room.isUserJoined({
+    userid: userid,
+    room_id: parseInt(room_id),
+  });
+
+  if (joined) {
+    const fetched = await Chat.receiveMessage(
+      { room_id: room_id },
+      parseInt(rows)
+    );
+    message = fetched;
+  }
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: message }, null, 2),
+  };
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 /*
  * Room Database testing function is located below
  */
 
 room_join_test = async (event) => {
-  await Room.initializer();
+  // await Room.initializer();
   const obj = {
     room_title: "This is test room",
     room_description: "this is test description",
@@ -289,6 +345,60 @@ get_board_test = async (event) => {
   };
 };
 
+/*
+ * Chat Logging debug functions are below
+ */
+/*
+async function createChatTable() {
+  try {
+    await QUERY`
+      CREATE TABLE ${TABLE(TABLE_NAME)} (
+        room_id int NOT NULL,
+        index int NOT NULL primary key,
+        userid text NOT NULL,
+        receive_time timestamp default now(),
+        contents text
+      );
+    `;
+    console.log("[DB Info] createChatTable() Done");
+  } catch (err) {}
+}
+*/
+sendmessage_test = async (event) => {
+  await Chat.initialize();
+
+  const obj = {
+    room_id: 1,
+    userid: "admin",
+    contents: "hello?",
+  };
+
+  const result = await Chat.sendMessage(obj);
+  if (result === false) {
+    console.log("Something errors in sendMessage");
+  }
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: "ok" }, null, 2),
+  };
+};
+
+receivemessage_test = async (event) => {
+  const obj = {
+    room_id: 1,
+  };
+
+  const result = await Chat.receiveMessage(obj, 10);
+  if (result === undefined) {
+    console.log("Something errors in receiveMessage");
+  }
+  console.log(result);
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: "ok" }, null, 2),
+  };
+};
+
 module.exports = {
   create_board: create_board,
   view_boards: view_boards,
@@ -302,7 +412,13 @@ module.exports = {
   delete_chat_room: delete_chat_room,
   join_chat_room: join_chat_room,
 
+  save_chat_log: save_chat_log,
+  get_chat_log: get_chat_log,
+
   board_debug: board_debug,
   get_board_test: get_board_test,
   delete_board_test: delete_board_test,
+
+  sendmessage_test: sendmessage_test,
+  receivemessage_test: receivemessage_test,
 };

@@ -14,14 +14,6 @@ create-board:
         method: get
         cors: true
 
-alarm:
-  handler: apis/communicate/handler.alarm
-  events:
-    - http:
-        path: communicate/alarm
-        method: get
-        cors: true
-
 view-boards:
   handler: apis/communicate/handler.view_boards
   events:
@@ -46,70 +38,6 @@ delete-board:
         method: get
         cors: true
 
-my-chats:
-  handler: apis/communicate/handler.my_chat
-  events:
-    - http:
-        path: communicate/my-chat
-        method: get
-        cors: true
-
-send:
-  handler: apis/communicate/handler.send
-  events:
-    - http:
-        path: communicate/send
-        method: get
-        cors: true
-
-board-debug:
-  handler: apis/communicate/handler.board_debug
-  events:
-    - http:
-        path: communicate/board_debug
-        method: get
-        cors: true
-
-get-board-test:
-  handler: apis/communicate/handler.get_board_test
-  events:
-    - http:
-        path: communicate/get_board_test
-        method: get
-        cors: true
-
-delete-board-test:
-  handler: apis/communicate/handler.delete_board_test
-  events:
-    - http:
-        path: communicate/delete_board_test
-        method: get
-        cors: true
-
-room-debug:
-  handler: apis/communicate/handler.room_debug
-  events:
-    - http:
-        path: communicate/room-debug
-        method: get
-        cors: true
-
-get-room-test:
-  handler: apis/communicate/handler.get_room_test
-  events:
-    - http:
-        path: communicate/get-room-test
-        method: get
-        cors: true
-
-room-join-test:
-  handler: apis/communicate/handler.room_join_test
-  events:
-    - http:
-        path: communicate/room-join-test
-        method: get
-        cors: true
-
 create-chat-room:
   handler: apis/communicate/handler.create_chat_room
   events:
@@ -131,5 +59,37 @@ join-chat-room:
   events:
     - http:
         path: communicate/join-chat-room
+        method: get
+        cors: true
+
+save-chat-log:
+  handler: apis/communicate/handler.save_chat_log
+  events:
+    - http:
+        path: communicate/save-chat-log
+        method: get
+        cors: true
+
+get-chat-log:
+  handler: apis/communicate/handler.get_chat_log
+  events:
+    - http:
+        path: communicate/get-chat-log
+        method: get
+        cors: true
+
+sendmessage-test:
+  handler: apis/communicate/handler.sendmessage_test
+  events:
+    - http:
+        path: communicate/sendmessage-test
+        method: get
+        cors: true
+
+receivemessage-test:
+  handler: apis/communicate/handler.receivemessage_test
+  events:
+    - http:
+        path: communicate/receivemessage-test
         method: get
         cors: true

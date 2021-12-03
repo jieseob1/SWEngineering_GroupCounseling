@@ -18,15 +18,21 @@ const TABLE_NAME = "chat_logs";
  ** 만일 코드의 리팩토링을 하게 된다면 테이블이 존재하는지 확인한 뒤에
  ** 실행하도록 코드를 변경하는 것도 필요할 것
  */
+
+module.exports.initialize = async () => {
+  await deleteChatTable();
+  await createChatTable();
+};
+
 async function createChatTable() {
   try {
     await QUERY`
       CREATE TABLE ${TABLE(TABLE_NAME)} (
-        chat_room_id int NOT NULL,
-        message_index int,
-        send_userid text,
-        send_time timestamp primary key default now(),
-        message_contents text
+        room_id int NOT NULL,
+        index SERIAL primary key,
+        userid text NOT NULL,
+        receive_time timestamp default now(),
+        contents text
       );
     `;
     console.log("[DB Info] createChatTable() Done");
@@ -46,19 +52,24 @@ module.exports.receiveMessage = async function receiveMessage(
   object,
   rowCount = 10
 ) {
-  const { chat_room_id } = object;
+  if (!utils.hasKeys(object, ["room_id"])) {
+    return undefined;
+  }
+  const { room_id } = object;
   try {
     var _fetched = await QUERY`
     SELECT * FROM ${TABLE(
       TABLE_NAME
-    )} WHERE chat_room_id=${chat_room_id} LIMIT ${rowCount}`;
+    )} WHERE room_id=${room_id} LIMIT ${rowCount}`;
   } catch (err) {
     console.log(err);
+    return undefined;
   }
+  return _fetched || [];
 };
 
 module.exports.sendMessage = async function sendMessage(object) {
-  if (!utils.hasKeys(object, ["chat_room_id", "send_userid"])) {
+  if (!utils.hasKeys(object, ["room_id", "userid"])) {
     return false;
   }
   try {
@@ -66,6 +77,7 @@ module.exports.sendMessage = async function sendMessage(object) {
         INSERT INTO ${TABLE(TABLE_NAME)} ${VALUES(object)}`;
   } catch (err) {
     console.log(err);
+    return false;
   }
   return true;
 };
