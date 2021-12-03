@@ -85,12 +85,11 @@ async function findRoomByInfo_internal(informations) {
 async function checkRoombyId(room_id) {
   try {
     var fetched = await QUERY`
-        SELECT count(*) FROM ${TABLE(TABLE_NAME)} WHERE room_id=${room_id}`;
+    SELECT count(*) FROM ${TABLE(TABLE_NAME)} WHERE room_id=${room_id}`;
   } catch (err) {
     console.log(err);
     return false;
   }
-  console.log(fetched);
   if (fetched !== undefined && fetched !== null) {
     if (parseInt(fetched[0].count) === 0) return false;
     return true;
@@ -164,6 +163,7 @@ module.exports.deleteRoomById = async (room_id) => {
 
 module.exports.appendUserToRoom = async ({ room_id, userid }) => {
   try {
+    // console.log("room_id : " + room_id);
     if (await checkRoombyId(room_id)) {
       await updateRoomInfo(room_id, userid);
       return true;
@@ -183,7 +183,6 @@ module.exports.removeUserFromRoom = async (room_id, userid) => {
     }
   } catch (err) {
     console.log(err);
-    return false;
   }
   return false;
 };
