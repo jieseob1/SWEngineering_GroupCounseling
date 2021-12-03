@@ -3,6 +3,7 @@ import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../Common/Header";
 import profile from "../../assets/profile.png";
+import BarChart from "./BarChart";
 
 const ChatListbox = styled.div`
   color: #212121;
@@ -76,6 +77,81 @@ const ChatBox = styled.div`
 `;
 
 function ChatMain({ match }) {
+  // let new_data = [];
+
+  // let data = [
+  //   {
+  //     date: "10/11",
+  //     positive: "30",
+  //     negative: "50",
+  //   },
+  //   {
+  //     date: "10/12",
+  //     positive: "35",
+  //     negative: "40",
+  //   },
+  //   {
+  //     date: "10/13",
+  //     positive: "30",
+  //     negative: "28",
+  //   },
+  //   {
+  //     date: "10/14",
+  //     positive: "30",
+  //     negative: "50",
+  //   },
+  //   {
+  //     date: "10/15",
+  //     positive: "35",
+  //     negative: "40",
+  //   },
+  //   {
+  //     date: "10/16",
+  //     positive: "30",
+  //     negative: "28",
+  //   },
+  //   {
+  //     date: "10/17",
+  //     positive: "30",
+  //     negative: "50",
+  //   },
+  //   {
+  //     date: "10/18",
+  //     positive: "35",
+  //     negative: "40",
+  //   },
+  //   {
+  //     date: "10/19",
+  //     positive: "30",
+  //     negative: "28",
+  //   },
+  //   {
+  //     date: "10/20",
+  //     positive: "30",
+  //     negative: "50",
+  //   },
+  //   {
+  //     date: "10/21",
+  //     positive: "35",
+  //     negative: "40",
+  //   },
+  //   {
+  //     date: "10/22",
+  //     positive: "30",
+  //     negative: "28",
+  //   },
+  // ];
+
+  // let startdata = data.slice(0, 2);
+  // let enddata = data.slice(data.length - 4, data.length - 1);
+
+  // Object.values(startdata).forEach((item) => {
+  //   new_data.push(item);
+  // });
+  // Object.values(enddata).forEach((item) => {
+  //   new_data.push(item);
+  // });
+
   return (
     <>
       <Header title="채팅방" link="/chat"></Header>
@@ -102,6 +178,7 @@ function ChatMain({ match }) {
       <ChatBox>
         <ContextTextDiv to="/board">게시판으로 이동하기</ContextTextDiv>
       </ChatBox>
+      {/* <BarChart data={new_data} /> */}
     </>
   );
 }
