@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import axios from "axios";
 import chat from "../../../assets/chat.png";
 
 const StyledHeader = styled.div`
@@ -14,7 +14,6 @@ const StyledHeader = styled.div`
   justify-content: center;
 `;
 const Logo = styled.img`
-  margin-top: 10px;
   width: 20px;
   height: 20px;
   vertical-align: center;
@@ -28,13 +27,52 @@ const HeaderTitle = styled.span`
   line-height: 24px;
   margin-left: 4px;
 `;
+
+const Input = styled.input`
+  margin-left: 10px;
+  margin-right: 10px;
+  border-bottom: 1px solid #ddd;
+  box-sizing: border-box;
+`;
+<Input type="text" placeholder="채팅방 제목을 입력하세요" />;
+
 const WriteChat = (props) => {
+  const [title, setTitle] = React.useState("");
+
+  const addChatRoom = () => {
+    if (title.length <= 0) {
+      alert("채팅방 제목을 입력 하세요.");
+      return;
+    }
+
+    // 채팅방 더미 데이터 새로 추가
+    props.addChatRoom(title);
+
+    axios
+      .post("/communicate/create-chat-room", {
+        room_title: title,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+        alert("채팅방 생성에 실패하였습니다.");
+      });
+  };
+
   return (
     <StyledHeader>
-      <Link to={props.link}>
-        <Logo src={chat} alt="chat" />
-        <HeaderTitle>{props.title}</HeaderTitle>
-      </Link>
+      <Logo src={chat} alt="chat" />
+      <Input
+        type="text"
+        placeholder="채팅방 제목을 입력하세요"
+        value={title}
+        onChange={(e) => {
+          setTitle(e.target.value);
+        }}
+      />
+      <HeaderTitle onClick={addChatRoom}>{props.title}</HeaderTitle>
     </StyledHeader>
   );
 };

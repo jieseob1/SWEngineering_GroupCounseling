@@ -185,7 +185,10 @@ function BoardView({ history, match }) {
         {/* userprofile 부분에 프로필과,아이디,학교등이 들어가게 된다. */}
         {/*</Profilebox>*/}
         {/* 글쓰기 부분 */}
-        <WriteBoard link={`/board/${match.params.view}`} title={"글쓰기"} />
+        <WriteBoard
+          link={`/board/${match.params.view}/writeboard`}
+          title={"글쓰기"}
+        />
 
         {/* 게시판submit부분 컴포넌트화 */}
 
