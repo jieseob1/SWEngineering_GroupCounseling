@@ -1,5 +1,6 @@
 const utils = require("../../utils/utils");
 const { exception_handler } = require("../../utils/exception_handler");
+const { success, error } = require("../../utils/exception_handler");
 const config = require("../../configuration/config");
 
 // Database library
@@ -13,27 +14,17 @@ const querystring = require("querystring");
 const jwt = require("jsonwebtoken");
 
 create_board = async (event) => {
-  if (!utils.hasKeys(event.queryStringParameters, ["board_title", "author_id"]))
-    return false;
-
-  const columnElements = event.queryStringParameters;
-  // const columnElements = querystring.stringify(event.body);
-  const result = await Board.createNewBoard(columnElements);
+  const parameters = event.queryStringParameters;
+  if (!utils.hasKeys(parameters, ["board_title", "author_id"])) {
+    return error("access error");
+  }
+  // const parameters = querystring.stringify(event.body);
+  const result = await Board.createNewBoard(parameters);
 
   if (result === false) {
-    return {
-      statusCode: 200,
-      body: JSON.stringify(
-        { message: "Some errors in createNewBoard()" },
-        null,
-        2
-      ),
-    };
+    return error("Some errors in create_board handler");
   } else {
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: "ok" }, null, 2),
-    };
+    return success("ok");
   }
 };
 
@@ -49,30 +40,23 @@ view_boards = async (event) => {
   } else {
     record = await Board.getBoardRecords(query);
   }
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ message: record }, null, 2),
-  };
+  return success({ message: record });
 };
 
 delete_board = async (event) => {
   const query = event.queryStringParameters;
   // const query = querystring.stringify(event.body);
-  if (!utils.hasKeys(query, ["board_id"])) return false;
+  if (!utils.hasKeys(query, ["board_id"])) {
+    return error("access error");
+  }
 
   const { board_id, ...remainElements } = query;
   const result = await Board.deleteBoardById(board_id);
 
   if (result === false) {
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: "error" }, null, 2),
-    };
+    return error("error");
   } else {
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: "ok" }, null, 2),
-    };
+    return success("ok");
   }
 };
 
@@ -92,17 +76,12 @@ create_chat_room = async (event) => {
   // const room_info = querystring.stringify(event.body);
   const result = await Room.createNewRoom(room_info);
 
-  var message = undefined;
   if (result === false) {
-    message = "Some errors in creating chat room";
-  } else {
-    message = "ok";
+    return error("Some errors in create_chat_room handler");
   }
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ message: message }, null, 2),
-  };
+  return success("ok");
 };
+
 delete_chat_room = async (event) => {
   const { room_id, ...remains } = event.queryStringParameters;
   // const { room_id, ...remains } = querystring.stringify(event.body);
@@ -110,14 +89,11 @@ delete_chat_room = async (event) => {
 
   var message = undefined;
   if (delete_status === false) {
-    message = "Some errors in deleting chat room";
-  } else message = "ok";
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ message: message }, null, 2),
-  };
+    return error("Some errors in delete_chat_room handler");
+  }
+  return success("ok");
 };
+
 join_chat_room = async (event) => {
   // 지금은 username이라고 되어있지만, 이후에 토큰 기능 활성화 되면, 토큰 복호화 한 결과에서
   // username 항목 추출해서 사용하도록 변경할 필요가 있음
@@ -126,16 +102,12 @@ join_chat_room = async (event) => {
 
   const status = await Room.appendUserToRoom(room_id, userid);
 
-  var message = undefined;
   if (status === false) {
-    message = "Some errors in joining chat room";
-  } else message = "ok";
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ message: message }, null, 2),
-  };
+    return error("Some errors in join_chat_room handler");
+  }
+  return success("ok");
 };
+
 leave_chat_room = async (event) => {
   // 해당 함수는 특정 사용자가 룸을 떠나고 싶을 때 쓰는 함수
 };
@@ -144,8 +116,6 @@ leave_chat_room = async (event) => {
 
 save_chat_log = async (event) => {
   const { userid, room_id, contents } = event.queryStringParameters;
-
-  var message = "You are not joined this room";
   const joined = await Room.isUserJoined({
     userid: userid,
     room_id: parseInt(room_id),
@@ -159,22 +129,18 @@ save_chat_log = async (event) => {
     };
     const status = await Chat.sendMessage(save_info);
 
-    if (status) {
-      message = "sendMessage ok";
-    } else {
-      message = "Something errors from sendMessage function";
+    if (!status) {
+      return error("Some errors in save_chat_log handler");
     }
+  } else {
+    return error("You are not joined this room");
   }
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ message: message }, null, 2),
-  };
+  return success("ok");
 };
 
 get_chat_log = async (event) => {
   const { userid, room_id, rows } = event.queryStringParameters;
 
-  var message = "You are not joined this room";
   const joined = await Room.isUserJoined({
     userid: userid,
     room_id: parseInt(room_id),
@@ -185,12 +151,10 @@ get_chat_log = async (event) => {
       { room_id: room_id },
       parseInt(rows)
     );
-    message = fetched;
+    return success({ message: fetched });
+  } else {
+    return error("You are not joined this room");
   }
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ message: message }, null, 2),
-  };
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -209,10 +173,9 @@ room_join_test = async (event) => {
 
   const result = await Room.createNewRoom(obj);
   if (result === false) {
-    console.log("there is some errors in createNewRoom");
+    return error("You cannot join this room");
   }
   const room_fetched = await Room.findRoomByInfo(obj);
-  console.log(room_fetched);
   const room_id = room_fetched[0].room_id;
 
   const testObj = {
@@ -236,8 +199,6 @@ room_join_test = async (event) => {
   }
   if ((await Room.isUserJoined(testObj)) === false) {
     // Can join
-    console.log(room_id);
-    console.log(testObj);
     const join_result = await Room.appendUserToRoom(testObj);
     if (join_result === false) {
       console.log("Something errors in appendUserToRoom");
