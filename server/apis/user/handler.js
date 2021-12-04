@@ -1,5 +1,8 @@
 const utils = require("../../utils/utils");
-const { exception_handler } = require("../../utils/exception_handler");
+const {
+  exception_handler,
+  error_handler,
+} = require("../../utils/exception_handler");
 const config = require("../../configuration/config");
 
 // Database library
@@ -32,6 +35,10 @@ module.exports.register = async (event) => {
     await User.insertNewUser(_queryParam);
     return {
       statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify(
         { status: "success", message: "register successful" },
         null,
@@ -57,6 +64,10 @@ module.exports.login = async (event) => {
     } else if (_information.length < 1) {
       return {
         statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify(
           { status: "failed", message: "login failed" },
           null,
@@ -66,10 +77,16 @@ module.exports.login = async (event) => {
     }
     // Now, there is only one record matched user
     // JWT Token generation logic will be implement to below
-  } catch (err) {}
+  } catch (err) {
+    return error_handler(err);
+  }
   const token = await get_jwt_token(_information);
   return {
     statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+    },
     body: JSON.stringify(
       { status: "success", message: "login successful", token: token },
       null,
@@ -94,6 +111,10 @@ module.exports.check = async (event) => {
   }
   return {
     statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+    },
     body: JSON.stringify({ status: "success", message: "no record" }, null, 2),
   };
 };
@@ -110,36 +131,16 @@ module.exports.delete = async (event) => {
     console.log(decoded);
     console.log("here");
   } catch (error) {
-    console.log(error);
-    if (error.name === "TokenExpiredError") {
-      return {
-        statusCode: 419,
-        body: JSON.stringify(
-          {
-            message: "Token expired",
-          },
-          null,
-          2
-        ),
-      };
-    }
-    if (error.name === "JsonWebTokenError") {
-      return {
-        statusCode: 401,
-        body: JSON.stringify(
-          {
-            message: "Invalid token information",
-          },
-          null,
-          2
-        ),
-      };
-    }
+    return error_handler(error);
   }
   // We need to check received user token information for user record accessibility
   await User.deleteUser(_queryParam);
   return {
     statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+    },
     body: JSON.stringify(
       { status: "success", message: "delete complete" },
       null,
@@ -157,33 +158,14 @@ module.exports.token_test = async (event) => {
     const { token } = _queryParam;
     const decoded = await jwt.verify(token, config.secret);
   } catch (error) {
-    if (error.name === "TokenExpiredError") {
-      return {
-        statusCode: 419,
-        body: JSON.stringify(
-          {
-            message: "Token expired",
-          },
-          null,
-          2
-        ),
-      };
-    }
-    if (error.name === "JsonWebTokenError") {
-      return {
-        statusCode: 401,
-        body: JSON.stringify(
-          {
-            message: "Invalid token information",
-          },
-          null,
-          2
-        ),
-      };
-    }
+    return error_handler(error);
   }
   return {
     statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+    },
     body: JSON.stringify({ message: "Valid token" }, null, 2),
   };
 };
