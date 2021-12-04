@@ -10,6 +10,7 @@ const Chat = require("../../models/Chat");
 
 const { default: axios } = require("axios");
 const querystring = require("querystring");
+const jwt = require("jsonwebtoken");
 
 create_board = async (event) => {
   if (!utils.hasKeys(event.queryStringParameters, ["board_title", "author_id"]))
