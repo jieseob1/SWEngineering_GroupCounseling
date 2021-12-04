@@ -30,10 +30,10 @@ delete:
         method: get
         cors: false
 
-token-check:
-  handler: apis/user/handler.token_check
+token-test:
+  handler: apis/user/handler.token_test
   events:
     - http:
-        path: user/token-check
+        path: user/token-test
         method: get
         cors: false

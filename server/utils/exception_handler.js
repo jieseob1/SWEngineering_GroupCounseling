@@ -10,6 +10,6 @@ module.exports.exception_handler = async (errcode) => {
     case 300:
       return create_message("failed", "existing record");
     case 403:
-      return create_message("failed", "missig arguments");
+      return create_message("failed", "missing arguments");
   }
 };

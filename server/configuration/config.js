@@ -17,4 +17,5 @@ module.exports = {
   db_config: database_config,
   server_info: `http://${server_info.host}`,
   PARAM_MODE: "get",
+  secret: "this_is_admin_secret_key",
 };
