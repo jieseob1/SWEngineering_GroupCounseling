@@ -7,7 +7,6 @@ const User = require("../../models/User");
 const { get_jwt_token } = require("../../service/token.service");
 
 const { default: axios } = require("axios");
-const querystring = require("querystring");
 const jwt = require("jsonwebtoken");
 
 module.exports.register = async (event) => {

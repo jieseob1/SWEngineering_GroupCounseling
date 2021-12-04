@@ -27,13 +27,7 @@ module.exports.success = (message) => {
     },
   };
   if (typeof message !== "string") {
-    response.body = JSON.stringify(
-      {
-        message: "invalid handler",
-      },
-      null,
-      2
-    );
+    response.body = JSON.stringify(message, null, 2);
   } else {
     response.body = JSON.stringify(
       { status: "success", message: message },
