@@ -17,30 +17,40 @@ const TABLE_NAME = "user_info";
  ** 만일 코드의 리팩토링을 하게 된다면 테이블이 존재하는지 확인한 뒤에
  ** 실행하도록 코드를 변경하는 것도 필요할 것
  */
+
+module.exports.initialize = async () => {
+  await deleteUserTable();
+  await createUserTable();
+};
+
 async function createUserTable() {
   try {
     await QUERY`
       CREATE TABLE ${TABLE(TABLE_NAME)} (
-        id int NOT NULL primary key,
-        userId text NOT NULL,
-        userPw text NOT NULL,
+        id SERIAL primary key,
+        userid text NOT NULL,
+        userpw text NOT NULL,
         email text NOT NULL,
         nickname text,
-        entranceYear timestamptz not null default now(),
-        gubun int NOT NULL default 0,
+        entranceyear timestamptz not null default now(),
+        gubun int NOT NULL default 0
       );
     `;
     console.log("[DB Info] createUserTable() Done");
-  } catch (err) {}
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 async function deleteUserTable() {
   try {
     await QUERY`
-      DROP TABLE ${TABLE(TABLE_NAME)}o
+      DROP TABLE ${TABLE(TABLE_NAME)}
     `;
     console.log("[DB Info] deleteUserTable() Done");
-  } catch (err) {}
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 /*
@@ -69,13 +79,12 @@ async function getRowCounts(object) {
 }
 
 async function findOne(object) {
-  const { username, password } = object;
+  console.log(object);
   try {
     var _fetched = await QUERY`
-    SELECT username FROM ${TABLE(
-      TABLE_NAME
-    )} WHERE userid=${username} AND password=${password} LIMIT 1
+    SELECT * FROM ${TABLE(TABLE_NAME)} WHERE ${EQ(object)} LIMIT 1
     `;
+    console.log(_fetched);
   } catch (err) {
     console.log(err);
   }
@@ -84,10 +93,6 @@ async function findOne(object) {
 
 //
 async function deleteOne(object) {
-  const test = `
-  DELETE FROM ${TABLE(TABLE_NAME)} WHERE ${EQ(object)}
-  `;
-  console.log(test);
   try {
     await QUERY`
     DELETE FROM ${TABLE(TABLE_NAME)} WHERE ${EQ(object)}
@@ -108,6 +113,7 @@ if (config.DEBUG_MODE) {
 module.exports.insertNewUser = async (object) => {
   try {
     const _fetched = await findOne(object);
+    console.log(_fetched);
     if (_fetched.length >= 1) {
       return false;
     }

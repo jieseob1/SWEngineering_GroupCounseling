@@ -1,4 +1,4 @@
-const config = require("config.json");
+const config = require("../configuration/config");
 const jwt = require("jsonwebtoken");
 
 module.exports = {
@@ -6,14 +6,12 @@ module.exports = {
 };
 
 async function get_jwt_token(user_info) {
-  const { userid, password } = user_info;
-  const token = jwt.sign(
-    { userid: userid, password: password_hash },
-    config.secret,
-    { expiresIn: "7d" }
-  );
+  const { userId, userPw } = user_info;
+  const token = jwt.sign({ userId: userId, userPw: userPw }, config.secret, {
+    expiresIn: "7d",
+  });
 
-  return { ...withoutPassword(user_info), token };
+  return token;
 }
 
 function withoutPassword(userinfo) {
