@@ -18,45 +18,56 @@ module.exports.exception_handler = async (errcode) => {
   }
 };
 
-module.exports.error_handler = async (error) => {
-  if (error.name === "TokenExpiredError") {
-    return {
-      statusCode: 419,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: JSON.stringify(
-        {
-          message: "Token expired",
-        },
-        null,
-        2
-      ),
-    };
-  }
-  if (error.name === "JsonWebTokenError") {
-    return {
-      statusCode: 401,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: JSON.stringify(
-        {
-          message: "Invalid token information",
-        },
-        null,
-        2
-      ),
-    };
-  }
-  return {
-    statusCode: 404,
+module.exports.success = (message) => {
+  var response = {
+    statusCode: 200,
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Credentials": true,
     },
-    body: JSON.stringify({ message: "Unknown Error Code" }, null, 2),
   };
+  if (typeof message !== "string") {
+    response.body = JSON.stringify(
+      {
+        message: "invalid handler",
+      },
+      null,
+      2
+    );
+  } else {
+    response.body = JSON.stringify(
+      { status: "success", message: message },
+      null,
+      2
+    );
+  }
+  return response;
+};
+
+module.exports.error = (error) => {
+  var response = {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true,
+    },
+  };
+  if (typeof error !== "string" && "name" in error) {
+    if (error.name === "TokenExpiredError") {
+      response.statusCode = 419;
+      response.body = JSON.stringify({ message: "Token expired" }, null, 2);
+    } else if (error.name === "JsonWebTokenError") {
+      response.statusCode = 401;
+      response.body = JSON.stringify(
+        { message: "Invalid token information" },
+        null,
+        2
+      );
+    }
+  } else {
+    response.statusCode = 200;
+    if (typeof error === "string")
+      response.body = JSON.stringify({ message: error }, null, 2);
+    else response.body = JSON.stringify(error, null, 2);
+  }
+  return response;
 };
