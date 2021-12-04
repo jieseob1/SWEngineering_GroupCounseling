@@ -4,7 +4,16 @@ login:
     - http:
         path: user/login
         method: get
-        cors: true
+        headers:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Amz-User-Agent
+          - Access-Control-Allow-Headers
+          - Access-Control-Allow-Origin
+        allowCredentials: false
 
 register:
   handler: apis/user/handler.register
@@ -12,7 +21,16 @@ register:
     - http:
         path: user/register
         method: get
-        cors: true
+        headers:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Amz-User-Agent
+          - Access-Control-Allow-Headers
+          - Access-Control-Allow-Origin
+        allowCredentials: false
 
 check:
   handler: apis/user/handler.check
@@ -20,7 +38,16 @@ check:
     - http:
         path: user/check
         method: get
-        cors: true
+        headers:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Amz-User-Agent
+          - Access-Control-Allow-Headers
+          - Access-Control-Allow-Origin
+        allowCredentials: false
 
 delete:
   handler: apis/user/handler.delete
@@ -28,7 +55,16 @@ delete:
     - http:
         path: user/delete
         method: get
-        cors: true
+        headers:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Amz-User-Agent
+          - Access-Control-Allow-Headers
+          - Access-Control-Allow-Origin
+        allowCredentials: false
 
 token-test:
   handler: apis/user/handler.token_test
@@ -36,4 +72,13 @@ token-test:
     - http:
         path: user/token-test
         method: get
-        cors: true
+        headers:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Amz-User-Agent
+          - Access-Control-Allow-Headers
+          - Access-Control-Allow-Origin
+        allowCredentials: false
