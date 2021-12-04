@@ -4,7 +4,7 @@ user_test:
     - http:
         path: testcase/user
         method: get
-        cors: false
+        cors: true
 
 post-test:
   handler: testcase/user_test.post_test
@@ -12,4 +12,4 @@ post-test:
     - http:
         path: testcase/post-test
         method: post
-        cors: false
+        cors: true

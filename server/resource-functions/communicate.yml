@@ -4,7 +4,7 @@ create-board:
     - http:
         path: communicate/create-board
         method: get
-        cors: false
+        cors: true
 
 view-boards:
   handler: apis/communicate/handler.view_boards
@@ -12,7 +12,7 @@ view-boards:
     - http:
         path: communicate/view-boards
         method: get
-        cors: false
+        cors: true
 
 delete-board:
   handler: apis/communicate/handler.delete_board
@@ -20,7 +20,7 @@ delete-board:
     - http:
         path: communicate/delete-board
         method: get
-        cors: false
+        cors: true
 
 create-chat-room:
   handler: apis/communicate/handler.create_chat_room
@@ -28,7 +28,7 @@ create-chat-room:
     - http:
         path: communicate/create-chat-room
         method: get
-        cors: false
+        cors: true
 
 delete-chat-room:
   handler: apis/communicate/handler.delete_chat_room
@@ -36,7 +36,7 @@ delete-chat-room:
     - http:
         path: communicate/delete-chat-room
         method: get
-        cors: false
+        cors: true
 
 join-chat-room:
   handler: apis/communicate/handler.join_chat_room
@@ -44,7 +44,7 @@ join-chat-room:
     - http:
         path: communicate/join-chat-room
         method: get
-        cors: false
+        cors: true
 
 save-chat-log:
   handler: apis/communicate/handler.save_chat_log
@@ -52,7 +52,7 @@ save-chat-log:
     - http:
         path: communicate/save-chat-log
         method: get
-        cors: false
+        cors: true
 
 get-chat-log:
   handler: apis/communicate/handler.get_chat_log
@@ -60,4 +60,4 @@ get-chat-log:
     - http:
         path: communicate/get-chat-log
         method: get
-        cors: false
+        cors: true

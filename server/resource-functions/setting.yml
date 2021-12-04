@@ -4,7 +4,7 @@ modify-info:
     - http:
         path: setting/modify-info
         method: get
-        cors: false
+        cors: true
 
 alarm-setting:
   handler: apis/setting/handler.alarm_setting
@@ -12,4 +12,4 @@ alarm-setting:
     - http:
         path: setting/alarm-setting
         method: get
-        cors: false
+        cors: true

@@ -4,15 +4,15 @@ login:
     - http:
         path: user/login
         method: get
-        cors: false
+        cors: true
 
 register:
   handler: apis/user/handler.register
   events:
     - http:
         path: user/register
-        method: get
-        cors: false
+        method: post
+        cors: true
 
 check:
   handler: apis/user/handler.check
@@ -20,7 +20,7 @@ check:
     - http:
         path: user/check
         method: get
-        cors: false
+        cors: true
 
 delete:
   handler: apis/user/handler.delete
@@ -28,7 +28,7 @@ delete:
     - http:
         path: user/delete
         method: get
-        cors: false
+        cors: true
 
 token-check:
   handler: apis/user/handler.token_check
@@ -36,4 +36,4 @@ token-check:
     - http:
         path: user/token-check
         method: get
-        cors: false
+        cors: true
