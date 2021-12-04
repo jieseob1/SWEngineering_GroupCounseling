@@ -3,7 +3,7 @@ login:
   events:
     - http:
         path: user/login
-        method: get
+        method: post
         cors: true
 
 register:
