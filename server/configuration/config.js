@@ -9,7 +9,7 @@ const database_config = {
 };
 
 const server_info = {
-  host: "localhost:3000",
+  host: "localhost:5000",
 };
 
 module.exports = {
