@@ -4,7 +4,20 @@ login:
     - http:
         path: user/login
         method: get
+<<<<<<< HEAD
         cors: false
+=======
+        headers:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Amz-User-Agent
+          - Access-Control-Allow-Headers
+          - Access-Control-Allow-Origin
+        allowCredentials: false
+>>>>>>> jhlim_dev
 
 register:
   handler: apis/user/handler.register
@@ -12,7 +25,20 @@ register:
     - http:
         path: user/register
         method: get
+<<<<<<< HEAD
         cors: false
+=======
+        headers:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Amz-User-Agent
+          - Access-Control-Allow-Headers
+          - Access-Control-Allow-Origin
+        allowCredentials: false
+>>>>>>> jhlim_dev
 
 check:
   handler: apis/user/handler.check
@@ -20,7 +46,20 @@ check:
     - http:
         path: user/check
         method: get
+<<<<<<< HEAD
         cors: false
+=======
+        headers:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Amz-User-Agent
+          - Access-Control-Allow-Headers
+          - Access-Control-Allow-Origin
+        allowCredentials: false
+>>>>>>> jhlim_dev
 
 delete:
   handler: apis/user/handler.delete
@@ -28,7 +67,20 @@ delete:
     - http:
         path: user/delete
         method: get
+<<<<<<< HEAD
         cors: false
+=======
+        headers:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Amz-User-Agent
+          - Access-Control-Allow-Headers
+          - Access-Control-Allow-Origin
+        allowCredentials: false
+>>>>>>> jhlim_dev
 
 token-test:
   handler: apis/user/handler.token_test
@@ -36,4 +88,17 @@ token-test:
     - http:
         path: user/token-test
         method: get
+<<<<<<< HEAD
         cors: false
+=======
+        headers:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Amz-User-Agent
+          - Access-Control-Allow-Headers
+          - Access-Control-Allow-Origin
+        allowCredentials: false
+>>>>>>> jhlim_dev
