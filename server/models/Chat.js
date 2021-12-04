@@ -48,10 +48,7 @@ async function deleteChatTable() {
   } catch (err) {}
 }
 
-module.exports.receiveMessage = async function receiveMessage(
-  object,
-  rowCount = 10
-) {
+module.exports.receiveMessage = async (object, rowCount = 10) => {
   if (!utils.hasKeys(object, ["room_id"])) {
     return undefined;
   }
@@ -68,7 +65,7 @@ module.exports.receiveMessage = async function receiveMessage(
   return _fetched || [];
 };
 
-module.exports.sendMessage = async function sendMessage(object) {
+module.exports.sendMessage = async (object) => {
   if (!utils.hasKeys(object, ["room_id", "userid"])) {
     return false;
   }
