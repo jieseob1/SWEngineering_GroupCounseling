@@ -18,6 +18,13 @@ create_board = async (event) => {
   if (!utils.hasKeys(parameters, ["board_title", "author_id"])) {
     return error("access error");
   }
+
+  try {
+    jwt.verify(parameters.token);
+  } catch (err) {
+    return error(err);
+  }
+
   // const parameters = querystring.stringify(event.body);
   const result = await Board.createNewBoard(parameters);
 
@@ -32,6 +39,12 @@ view_boards = async (event) => {
   const query = event.queryStringParameters;
   // const query = querystring.stringify(event.body);
 
+  try {
+    jwt.verify(query.token);
+  } catch (err) {
+    return error(err);
+  }
+
   var record = undefined;
   if (typeof query === "object" && "board_id" in query) {
     // search board with id
@@ -45,6 +58,11 @@ view_boards = async (event) => {
 
 delete_board = async (event) => {
   const query = event.queryStringParameters;
+  try {
+    jwt.verify(query.token);
+  } catch (err) {
+    return error(err);
+  }
   // const query = querystring.stringify(event.body);
   if (!utils.hasKeys(query, ["board_id"])) {
     return error("access error");
@@ -73,6 +91,11 @@ delete_board = async (event) => {
 
 create_chat_room = async (event) => {
   const room_info = event.queryStringParameters;
+  try {
+    jwt.verify(room_info.token);
+  } catch (err) {
+    return error(err);
+  }
   // const room_info = querystring.stringify(event.body);
   const result = await Room.createNewRoom(room_info);
 
@@ -84,6 +107,11 @@ create_chat_room = async (event) => {
 
 delete_chat_room = async (event) => {
   const { room_id, ...remains } = event.queryStringParameters;
+  try {
+    jwt.verify(remains.token);
+  } catch (err) {
+    return error(err);
+  }
   // const { room_id, ...remains } = querystring.stringify(event.body);
   const delete_status = await Room.deleteRoomById(room_id);
 
@@ -98,6 +126,12 @@ join_chat_room = async (event) => {
   // 지금은 username이라고 되어있지만, 이후에 토큰 기능 활성화 되면, 토큰 복호화 한 결과에서
   // username 항목 추출해서 사용하도록 변경할 필요가 있음
   const { userid, room_id } = event.queryStringParameters;
+
+  try {
+    jwt.verify(event.queryStringParameters.token);
+  } catch (err) {
+    return error(err);
+  }
   // const { userid, room_id } = querystring.stringify(event.body);
 
   const status = await Room.appendUserToRoom(room_id, userid);
@@ -116,6 +150,12 @@ leave_chat_room = async (event) => {
 
 save_chat_log = async (event) => {
   const { userid, room_id, contents } = event.queryStringParameters;
+
+  try {
+    jwt.verify(event.queryStringParameters.token);
+  } catch (err) {
+    return error(err);
+  }
   const joined = await Room.isUserJoined({
     userid: userid,
     room_id: parseInt(room_id),
@@ -140,6 +180,12 @@ save_chat_log = async (event) => {
 
 get_chat_log = async (event) => {
   const { userid, room_id, rows } = event.queryStringParameters;
+
+  try {
+    jwt.verify(event.queryStringParameters.token);
+  } catch (err) {
+    return error(err);
+  }
 
   const joined = await Room.isUserJoined({
     userid: userid,
