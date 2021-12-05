@@ -61,3 +61,11 @@ get-chat-log:
         path: communicate/get-chat-log
         method: get
         cors: true
+
+token-test:
+  handler: apis/communicate/handler.token_test
+  events:
+    - http:
+        path: communicate/token-test
+        method: get
+        cors: true

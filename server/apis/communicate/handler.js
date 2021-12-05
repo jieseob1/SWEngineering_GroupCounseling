@@ -90,9 +90,9 @@ delete_board = async (event) => {
 */
 
 create_chat_room = async (event) => {
-  const room_info = event.queryStringParameters;
+  const { token, ...room_info } = event.queryStringParameters;
   try {
-    jwt.verify(room_info.token);
+    jwt.verify(token);
   } catch (err) {
     return error(err);
   }
@@ -106,9 +106,9 @@ create_chat_room = async (event) => {
 };
 
 delete_chat_room = async (event) => {
-  const { room_id, ...remains } = event.queryStringParameters;
+  const { token, room_id, ...remains } = event.queryStringParameters;
   try {
-    jwt.verify(remains.token);
+    jwt.verify(token);
   } catch (err) {
     return error(err);
   }
@@ -125,10 +125,15 @@ delete_chat_room = async (event) => {
 join_chat_room = async (event) => {
   // 지금은 username이라고 되어있지만, 이후에 토큰 기능 활성화 되면, 토큰 복호화 한 결과에서
   // username 항목 추출해서 사용하도록 변경할 필요가 있음
-  const { userid, room_id } = event.queryStringParameters;
+  if (
+    !utils.hasKeys(event.queryStringParameters, ["token", "userid", "room_id"])
+  ) {
+    return error("access error");
+  }
+  const { token, userid, room_id } = event.queryStringParameters;
 
   try {
-    jwt.verify(event.queryStringParameters.token);
+    jwt.verify(token);
   } catch (err) {
     return error(err);
   }
@@ -149,6 +154,15 @@ leave_chat_room = async (event) => {
 // Chat log functions
 
 save_chat_log = async (event) => {
+  if (
+    !utils.hasKeys(event.queryStringParameters, [
+      "userid",
+      "room_id",
+      "contents",
+    ])
+  ) {
+    return error("access error");
+  }
   const { userid, room_id, contents } = event.queryStringParameters;
 
   try {
@@ -179,6 +193,11 @@ save_chat_log = async (event) => {
 };
 
 get_chat_log = async (event) => {
+  if (
+    !utils.hasKeys(event.queryStringParameters, ["userid", "room_id", "rows"])
+  ) {
+    return error("access error");
+  }
   const { userid, room_id, rows } = event.queryStringParameters;
 
   try {
@@ -407,6 +426,16 @@ receivemessage_test = async (event) => {
   };
 };
 
+token_test = async (event) => {
+  const { token } = event.queryStringParameters;
+  try {
+    const verified = jwt.verify(token);
+    return success(verified);
+  } catch (err) {
+    return error(err);
+  }
+};
+
 module.exports = {
   create_board: create_board,
   view_boards: view_boards,
@@ -418,4 +447,6 @@ module.exports = {
 
   save_chat_log: save_chat_log,
   get_chat_log: get_chat_log,
+
+  token_test: token_test,
 };
