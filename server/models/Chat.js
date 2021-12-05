@@ -32,6 +32,13 @@ async function createChatTable() {
 	title text
 	contents text
         receive_time timestamp default now(),
+<<<<<<< HEAD
+=======
+        contents text,
+        is_positive boolean default false,
+        is_negative boolean default false,
+        is_checked boolean default false
+>>>>>>> jhlim_dev
       );
     `;
     console.log("[DB Info] createChatTable() Done");
