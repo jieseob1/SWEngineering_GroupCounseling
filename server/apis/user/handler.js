@@ -1,8 +1,5 @@
 const utils = require("../../utils/utils");
-const {
-  exception_handler,
-  error_handler,
-} = require("../../utils/exception_handler");
+const { success, error } = require("../../utils/exception_handler");
 const config = require("../../configuration/config");
 
 // Database library
@@ -10,11 +7,9 @@ const User = require("../../models/User");
 const { get_jwt_token } = require("../../service/token.service");
 
 const { default: axios } = require("axios");
-const querystring = require("querystring");
 const jwt = require("jsonwebtoken");
 
 module.exports.register = async (event) => {
-  await User.initialize();
   const _queryParam = event.queryStringParameters;
   // const _queryParam = querystring.stringify(event.body);
 
@@ -26,27 +21,13 @@ module.exports.register = async (event) => {
       }
     );
   } catch (err) {
-    // Http Request Exception
-    // return exception_handler()
-    console.log(err);
+    return error("some errors in register handler");
   }
-  console.log("here");
   if (_records_info.data.status === "success") {
     await User.insertNewUser(_queryParam);
-    return {
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: JSON.stringify(
-        { status: "success", message: "register successful" },
-        null,
-        2
-      ),
-    };
+    return success("register successful");
   } else {
-    return exception_handler(300);
+    return error("user already exists");
   }
 };
 module.exports.login = async (event) => {
@@ -54,31 +35,20 @@ module.exports.login = async (event) => {
   // const _queryParam = querystring.stringify(event.body);
 
   if (!utils.hasKeys(_queryParam, ["userid", "userpw"])) {
-    return exception_handler(403);
+    return error("access error");
   }
   try {
     var _information = await User.findUserRecords(_queryParam);
     if (_information.length > 1) {
       // there are no records more than 1 row (critical security exception)
-      return exception_handler(400);
+      return error("duplicated users (contact admin)");
     } else if (_information.length < 1) {
-      return {
-        statusCode: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": true,
-        },
-        body: JSON.stringify(
-          { status: "failed", message: "login failed" },
-          null,
-          2
-        ),
-      };
+      return error("login failed");
     }
     // Now, there is only one record matched user
     // JWT Token generation logic will be implement to below
   } catch (err) {
-    return error_handler(err);
+    return error("some errors in login handler");
   }
   const token = await get_jwt_token(_information);
   return {
@@ -100,72 +70,48 @@ module.exports.check = async (event) => {
 
   if (!utils.hasKeys(_queryParam, ["userid", "userpw"])) {
     // exception code 400 : missing arguments
-    return exception_handler(403);
+    return error("access error");
   }
   const _fetched = await User.findOne(_queryParam);
-  console.log("here");
-  console.log(_fetched);
+
   if (_fetched.length >= 1) {
     // exception code 300 : existing record
-    return exception_handler(300);
+    return error({ status: "failed", message: "existing record" });
   }
-  return {
-    statusCode: 200,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true,
-    },
-    body: JSON.stringify({ status: "success", message: "no record" }, null, 2),
-  };
+  return success("no record");
 };
 module.exports.delete = async (event) => {
   const _queryParam = event.queryStringParameters;
   // const _queryParam = querystring.stringify(event.body);
 
   if (!utils.hasKeys(_queryParam, ["userid", "userpw", "token"])) {
-    return exception_handler(403);
+    return error("access error");
   }
   try {
     const { token } = _queryParam;
     const decoded = await jwt.verify(token, config.secret);
-    console.log(decoded);
-    console.log("here");
-  } catch (error) {
-    return error_handler(error);
+  } catch (err) {
+    return error(err);
   }
   // We need to check received user token information for user record accessibility
-  await User.deleteUser(_queryParam);
-  return {
-    statusCode: 200,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true,
-    },
-    body: JSON.stringify(
-      { status: "success", message: "delete complete" },
-      null,
-      2
-    ),
-  };
+  const status = await User.deleteUser(_queryParam);
+  if (status) {
+    return success("delete complete");
+  } else {
+    return error("some errors in delete handler");
+  }
 };
 module.exports.token_test = async (event) => {
   const _queryParam = event.queryStringParameters;
 
   if (!utils.hasKeys(_queryParam, ["token"])) {
-    return exception_handler(403);
+    return error("access error");
   }
   try {
     const { token } = _queryParam;
     const decoded = await jwt.verify(token, config.secret);
-  } catch (error) {
-    return error_handler(error);
+  } catch (err) {
+    return error(err);
   }
-  return {
-    statusCode: 200,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true,
-    },
-    body: JSON.stringify({ message: "Valid token" }, null, 2),
-  };
+  return success("Valid token");
 };

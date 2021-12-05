@@ -1,7 +1,16 @@
 hello:
-    handler: apis/api-sample/handler.hello
-    events:
-      - http:
-          path: sample/hello_1
-          method: get
-          cors: true
+  handler: apis/api-sample/handler.hello
+  events:
+    - http:
+        path: sample/hello_1
+        method: get
+        headers:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Amz-User-Agent
+          - Access-Control-Allow-Headers
+          - Access-Control-Allow-Origin
+        allowCredentials: false
