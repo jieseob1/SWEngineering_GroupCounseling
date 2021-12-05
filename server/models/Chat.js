@@ -32,7 +32,10 @@ async function createChatTable() {
         index SERIAL primary key,
         userid text NOT NULL,
         receive_time timestamp default now(),
-        contents text
+        contents text,
+        is_positive boolean default false,
+        is_negative boolean default false,
+        is_checked boolean default false
       );
     `;
     console.log("[DB Info] createChatTable() Done");
