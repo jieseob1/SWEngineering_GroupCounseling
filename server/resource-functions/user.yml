@@ -3,7 +3,7 @@ login:
   events:
     - http:
         path: user/login
-        method: get
+        method: post
         headers:
           - Content-Type
           - X-Amz-Date
@@ -20,7 +20,7 @@ register:
   events:
     - http:
         path: user/register
-        method: get
+        method: post
         headers:
           - Content-Type
           - X-Amz-Date

@@ -88,11 +88,11 @@ function Register({ history }) {
   const onSignUpHandle = (e) => {
     e.preventDefault();
     let body = {
-      userId: userId,
-      userPw: userPw,
+      userid: userId,
+      userpw: userPw,
       email: userEmail,
       nickname: userNickname,
-      entranceYear: entranceYear,
+      entranceyear: entranceYear,
       gubun: option,
     };
     if (overIdLength || overPwLength) {

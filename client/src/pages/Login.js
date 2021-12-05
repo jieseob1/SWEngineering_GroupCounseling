@@ -59,8 +59,8 @@ function Login({ history }) {
   const onSubmit = (e) => {
     e.preventDefault();
     let body = {
-      id: userId,
-      password: userPw,
+      userid: userId,
+      userpw: userPw,
     };
     if (!userId || !userPw) {
       alert("필수 항목을 작성하세요!");
