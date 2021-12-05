@@ -29,10 +29,11 @@ async function createChatTable() {
     await QUERY`
       CREATE TABLE ${TABLE(TABLE_NAME)} (
         room_id int NOT NULL,
-        index SERIAL primary key,
-        userid text NOT NULL,
         receive_time timestamp default now(),
         contents text,
+        index SERIAL primary key,
+        userid text NOT NULL,
+        
         is_positive boolean default false,
         is_negative boolean default false,
         is_checked boolean default false
