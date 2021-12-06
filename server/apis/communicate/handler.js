@@ -90,7 +90,7 @@ view_boards = async (event) => {
   // const query = querystring.stringify(event.body);
 
   try {
-    const { userid } = jwt.verify(query.token);
+    const { userid } = jwt.verify(token);
     const records = await Board.getBoardRecords({ board_id: boardId });
     return success({ success: true, board: records });
   } catch (err) {
@@ -98,25 +98,20 @@ view_boards = async (event) => {
   }
 };
 
-delete_board = async (event) => {
-  const query = event.queryStringParameters;
+deleteBoard = async (event) => {
+  // const query = event.queryStringParameters;
+  const { boardFrom, token } = JSON.parse(event.body);
   try {
-    jwt.verify(query.token);
+    const { userid } = jwt.verify(token);
+    const result = await Board.deleteBoardById(boardFrom);
+
+    if (result === false) {
+      return error("error in deleteBoard");
+    } else {
+      return success({ success: true, result: { _id: boardFrom } });
+    }
   } catch (err) {
     return error(err);
-  }
-  // const query = querystring.stringify(event.body);
-  if (!utils.hasKeys(query, ["board_id"])) {
-    return error("access error");
-  }
-
-  const { board_id, ...remainElements } = query;
-  const result = await Board.deleteBoardById(board_id);
-
-  if (result === false) {
-    return error("error");
-  } else {
-    return success("ok");
   }
 };
 
@@ -493,7 +488,7 @@ token_test = async (event) => {
 module.exports = {
   create_board: create_board,
   view_boards: view_boards,
-  delete_board: delete_board,
+  deleteBoard: deleteBoard,
 
   uploadBoard: uploadBoard,
   getBoard: getBoard,
