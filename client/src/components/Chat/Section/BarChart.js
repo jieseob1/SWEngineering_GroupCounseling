@@ -1,4 +1,5 @@
 import { ResponsiveBar } from "@nivo/bar";
+import { withRouter } from "react-router";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -98,4 +99,4 @@ const BarChart = ({ data /* see data tab */ }) => (
   </div>
 );
 
-export default BarChart;
+export default withRouter(BarChart);
