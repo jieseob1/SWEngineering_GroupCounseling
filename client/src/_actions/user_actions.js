@@ -41,7 +41,7 @@ export function logoutUser() {
 
 export function auth() {
   const request = axios
-    .get(`${DEV_SERVER}/user/auth`)
+    .get(`${DEV_SERVER}/user/check`)
     .then((response) => response.data);
   return {
     type: AUTH_USER,

@@ -3,11 +3,8 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Board from "./pages/Board";
-import BoardDetail from "./components/Board/BoardDetail";
 import MyPage from "./pages/MyPage";
 import Chat from "./pages/Chat";
-import Auth from "./hoc/auth";
-import BoardMain from "./components/Board/BoardMain";
 
 const Container = styled.div`
   margin: 10px auto;
@@ -19,12 +16,12 @@ function App() {
     <Container>
       <Router>
         <Switch>
-          <Route exact path="/" component={Auth(Login, false)}></Route>
-          <Route path="/register" component={Auth(Register, false)} />
-          <Route path="/board" component={Auth(Board, true)} />
+          <Route exact path="/" component={Login}></Route>
+          <Route path="/register" component={Register} />
+          <Route authenticated path="/board" component={Board} />
           {/* <Route path="/board/:boardId" component={Auth(BoardDetail, true)} /> */}
-          <Route path="/chat" component={Auth(Chat, true)} />
-          <Route path="/mypage" component={Auth(MyPage, true)} />
+          <Route path="/chat" component={Chat} />
+          <Route path="/mypage" component={MyPage} />
         </Switch>
       </Router>
     </Container>

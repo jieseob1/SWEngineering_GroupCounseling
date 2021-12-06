@@ -12,7 +12,14 @@ export default function user(state = {}, action) {
       // eslint-disable-next-line
       break;
     case LOGIN_USER:
-      return { ...state, loginSuccess: action.payload };
+      return {
+        ...state,
+        loginSuccess: action.payload,
+        userData: {
+          userid: action.payload.userid,
+          token: action.payload.token,
+        },
+      };
       // eslint-disable-next-line
       break;
     case LOGOUT_USER:

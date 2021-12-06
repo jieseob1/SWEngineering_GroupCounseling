@@ -2,8 +2,7 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../Common/Header";
-import profile from "../../assets/profile.png";
-
+import { useSelector } from "react-redux";
 const BoardListbox = styled.div`
   color: #212121;
   width: 100%;
@@ -76,6 +75,8 @@ const ChatBox = styled.div`
 `;
 
 function BoardMain() {
+  let user = useSelector((state) => state.user.loginSuccess);
+  console.log(user);
   return (
     <>
       <Header title="자유게시판" link="/board"></Header>

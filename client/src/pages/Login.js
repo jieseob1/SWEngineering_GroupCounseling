@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../_actions/user_actions";
 import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
@@ -66,8 +66,9 @@ function Login({ history }) {
       alert("필수 항목을 작성하세요!");
     } else {
       dispatch(loginUser(body)).then((response) => {
-        if (response.payload.loginSuccess) {
-          window.localStorage.setItem("userId", response.payload.userId);
+        if (response.payload.status) {
+          window.localStorage.setItem("userId", response.payload.userid);
+          window.localStorage.setItem("token", response.payload.token);
           history.push("/board");
         } else {
           alert(response.payload.message);
