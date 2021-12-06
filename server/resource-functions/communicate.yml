@@ -16,12 +16,21 @@ view-boards:
         allowCredentials: false
 
 delete-board:
-  handler: apis/communicate/handler.delete_board
+  handler: apis/communicate/handler.deleteBoard
   events:
     - http:
-        path: communicate/delete-board
-        method: get
-        cors: true
+        path: board/deleteBoard
+        method: post
+        headers:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Amz-User-Agent
+          - Access-Control-Allow-Headers
+          - Access-Control-Allow-Origin
+        allowCredentials: false
 
 chat-room-initialize:
   handler: apis/communicate/handler.chat_room_initialize
