@@ -134,6 +134,11 @@ delete_board = async (event) => {
         joined_users text[]
 */
 
+chat_room_initialize = async (event) => {
+  await Room.initializer();
+  return success("ok");
+};
+
 create_chat_room = async (event) => {
   const { token, ...room_info } = event.queryStringParameters;
   try {
@@ -483,6 +488,7 @@ module.exports = {
   uploadBoard: uploadBoard,
   getBoard: getBoard,
 
+  chat_room_initialize: chat_room_initialize,
   create_chat_room: create_chat_room,
   delete_chat_room: delete_chat_room,
   join_chat_room: join_chat_room,

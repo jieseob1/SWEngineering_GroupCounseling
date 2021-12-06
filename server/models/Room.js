@@ -19,7 +19,7 @@ async function createRoomTable() {
   try {
     await QUERY`
       CREATE TABLE ${TABLE(TABLE_NAME)} (
-        room_id int generated always as identity primary key,
+        room_id SERIAL primary key,
         room_title text,
         room_description text,
         create_time timestamptz not null default now(),

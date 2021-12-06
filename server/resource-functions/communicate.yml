@@ -1,11 +1,3 @@
-create-board:
-  handler: apis/communicate/handler.create_board
-  events:
-    - http:
-        path: communicate/create-board
-        method: get
-        cors: true
-
 view-boards:
   handler: apis/communicate/handler.view_boards
   events:
@@ -21,6 +13,23 @@ delete-board:
         path: communicate/delete-board
         method: get
         cors: true
+
+chat-room-initialize:
+  handler: apis/communicate/handler.chat_room_initialize
+  events:
+    - http:
+        path: chat/initialize
+        method: post
+        headers:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Amz-User-Agent
+          - Access-Control-Allow-Headers
+          - Access-Control-Allow-Origin
+        allowCredentials: false
 
 create-chat-room:
   handler: apis/communicate/handler.create_chat_room

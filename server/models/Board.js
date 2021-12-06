@@ -93,7 +93,7 @@ async function getRows(object, rows = 10) {
   return fetched || [];
 }
 
-module.exports.getBoardCount = () => {
+module.exports.getBoardCount = async () => {
   try {
     var fetched = await QUERY`
     SELECT count(*) FROM ${TABLE(TABLE_NAME)}`;
