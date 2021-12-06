@@ -110,7 +110,6 @@ function BoardDetail(props, history) {
     });
   };
 
-  console.log(BoardDetail);
   return (
     <div>
       <Header title="자유게시판" link="/board" />
