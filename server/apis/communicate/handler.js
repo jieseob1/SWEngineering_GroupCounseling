@@ -244,12 +244,6 @@ get_chat_log = async (event) => {
   }
   const { userid, room_id, rows } = event.queryStringParameters;
 
-  try {
-    jwt.verify(event.queryStringParameters.token);
-  } catch (err) {
-    return error(err);
-  }
-
   const joined = await Room.isUserJoined({
     userid: userid,
     room_id: parseInt(room_id),
