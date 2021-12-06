@@ -61,7 +61,6 @@ class BERTClassifier(nn.Module):
         super(BERTClassifier, self).__init__()
         self.bert = bert
         self.dr_rate = dr_rate
-                 
         self.classifier = nn.Linear(hidden_size , num_classes)
         if dr_rate:
             self.dropout = nn.Dropout(p=dr_rate)
@@ -88,71 +87,71 @@ def calc_accuracy(X,Y):
 model = BERTClassifier(bertmodel,  dr_rate=0.5).to(device)
 
 if is_training == 0:
-  dataset_train = nlp.data.TSVDataset("ratings_train.txt", field_indices=[1,2], num_discard_samples=1)
-  dataset_test = nlp.data.TSVDataset("ratings_test.txt", field_indices=[1,2], num_discard_samples=1)
+    dataset_train = nlp.data.TSVDataset("ratings_train.txt", field_indices=[1,2], num_discard_samples=1)
+    dataset_test = nlp.data.TSVDataset("ratings_test.txt", field_indices=[1,2], num_discard_samples=1)
 
-  tokenizer = get_tokenizer()
-  tok = nlp.data.BERTSPTokenizer(tokenizer, vocab, lower=False)
+    tokenizer = get_tokenizer()
+    tok = nlp.data.BERTSPTokenizer(tokenizer, vocab, lower=False)
 
-  data_train = BERTDataset(dataset_train, 0, 1, tok, max_len, True, False)
-  data_test = BERTDataset(dataset_test, 0, 1, tok, max_len, True, False)
+    data_train = BERTDataset(dataset_train, 0, 1, tok, max_len, True, False)
+    data_test = BERTDataset(dataset_test, 0, 1, tok, max_len, True, False)
 
-  train_dataloader = torch.utils.data.DataLoader(data_train, batch_size=batch_size, num_workers=5)
-  test_dataloader = torch.utils.data.DataLoader(data_test, batch_size=batch_size, num_workers=5)
+    train_dataloader = torch.utils.data.DataLoader(data_train, batch_size=batch_size, num_workers=5)
+    test_dataloader = torch.utils.data.DataLoader(data_test, batch_size=batch_size, num_workers=5)
 
-  # Prepare optimizer and schedule (linear warmup and decay)
-  no_decay = ['bias', 'LayerNorm.weight']
-  optimizer_grouped_parameters = [
-      {'params': [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay)], 'weight_decay': 0.01},
-      {'params': [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)], 'weight_decay': 0.0}
-  ]
+    # Prepare optimizer and schedule (linear warmup and decay)
+    no_decay = ['bias', 'LayerNorm.weight']
+    optimizer_grouped_parameters = [
+        {'params': [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay)], 'weight_decay': 0.01},
+        {'params': [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)], 'weight_decay': 0.0}
+    ]
 
-  optimizer = AdamW(optimizer_grouped_parameters, lr=learning_rate)
-  loss_fn = nn.CrossEntropyLoss()
+    optimizer = AdamW(optimizer_grouped_parameters, lr=learning_rate)
+    loss_fn = nn.CrossEntropyLoss()
 
-  t_total = len(train_dataloader) * num_epochs
-  warmup_step = int(t_total * warmup_ratio)
+    t_total = len(train_dataloader) * num_epochs
+    warmup_step = int(t_total * warmup_ratio)
 
-  scheduler = get_cosine_schedule_with_warmup(optimizer, num_warmup_steps=warmup_step, num_training_steps=t_total)
+    scheduler = get_cosine_schedule_with_warmup(optimizer, num_warmup_steps=warmup_step, num_training_steps=t_total)
 
-  # trining and test model
-  for e in range(num_epochs):
-      train_acc = 0.0
-      test_acc = 0.0
-      model.train()
-      for batch_id, (token_ids, valid_length, segment_ids, label) in tqdm(enumerate(train_dataloader), total=len(train_dataloader)):
-          optimizer.zero_grad()
-          token_ids = token_ids.long().to(device)
-          segment_ids = segment_ids.long().to(device)
-          valid_length= valid_length
-          label = label.long().to(device)
-          out = model(token_ids, valid_length, segment_ids)
-          loss = loss_fn(out, label)
-          loss.backward()
-          torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm)
-          optimizer.step()
-          scheduler.step()  # Update learning rate schedule
-          train_acc += calc_accuracy(out, label)
-          if batch_id % log_interval == 0:
-              print("epoch {} batch id {} loss {} train acc {}".format(e+1, batch_id+1, loss.data.cpu().numpy(), train_acc / (batch_id+1)))
-      print("epoch {} train acc {}".format(e+1, train_acc / (batch_id+1)))
-      model.eval()
-      for batch_id, (token_ids, valid_length, segment_ids, label) in tqdm(enumerate(test_dataloader), total=len(test_dataloader)):
-          token_ids = token_ids.long().to(device)
-          segment_ids = segment_ids.long().to(device)
-          valid_length= valid_length
-          label = label.long().to(device)
-          out = model(token_ids, valid_length, segment_ids)
-          test_acc += calc_accuracy(out, label)
-      print("epoch {} test acc {}".format(e+1, test_acc / (batch_id+1)))
+    # trining and test model
+    for e in range(num_epochs):
+        train_acc = 0.0
+        test_acc = 0.0
+        model.train()
+        for batch_id, (token_ids, valid_length, segment_ids, label) in tqdm(enumerate(train_dataloader), total=len(train_dataloader)):
+            optimizer.zero_grad()
+            token_ids = token_ids.long().to(device)
+            segment_ids = segment_ids.long().to(device)
+            valid_length= valid_length
+            label = label.long().to(device)
+            out = model(token_ids, valid_length, segment_ids)
+            loss = loss_fn(out, label)
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm)
+            optimizer.step()
+            scheduler.step()  # Update learning rate schedule
+            train_acc += calc_accuracy(out, label)
+            if batch_id % log_interval == 0:
+                print("epoch {} batch id {} loss {} train acc {}".format(e+1, batch_id+1, loss.data.cpu().numpy(), train_acc / (batch_id+1)))
+        print("epoch {} train acc {}".format(e+1, train_acc / (batch_id+1)))
+        model.eval()
+        for batch_id, (token_ids, valid_length, segment_ids, label) in tqdm(enumerate(test_dataloader), total=len(test_dataloader)):
+            token_ids = token_ids.long().to(device)
+            segment_ids = segment_ids.long().to(device)
+            valid_length= valid_length
+            label = label.long().to(device)
+            out = model(token_ids, valid_length, segment_ids)
+            test_acc += calc_accuracy(out, label)
+        print("epoch {} test acc {}".format(e+1, test_acc / (batch_id+1)))
 
-  # save the model
-  model.eval()
-  torch.save(model, "/data/saved_model.pt")
+    # save the model
+    model.eval()
+    torch.save(model, "/data/saved_model.pt")
 
 else:
-  # load the model
-  model = torch.load("/data/saved_model.pt")
+    # load the model
+    model = torch.load("/data/saved_model.pt")
 
 # Scheduling code
 model.eval()
@@ -163,33 +162,44 @@ db = psycopg2.connect(host='groupcounseling-db.cun0dhxklfbi.us-east-1.rds.amazon
 cursor=db.cursor()
 
 # emotion analysis function
-def emotion_analysis():
-  cursor.execute("SELECT board_id, board_title, board_contents FROM board_list WHERE is_analysis is false")
-  result_list = cursor.fetchall()
-  print(result_list)
-
-  if len(result_list) == 0:
-    return 0
-  
-  for id, title, content in result_list:
+def get_emotion_val(content):
     text_set = [[content, '0']]
     text_data = BERTDataset(text_set, 0, 1, tok, max_len, True, False)
     text_dataloader = torch.utils.data.DataLoader(text_data, batch_size=batch_size, num_workers=0)
-    test_result = []
+    evaluate_result = []
     for (token_ids, valid_length, segment_ids, label) in text_dataloader:
-      token_ids = token_ids.long().to(device)
-      segment_ids = segment_ids.long().to(device)
-      valid_length= valid_length
-      label = label.long().to(device)
-      out = model(token_ids, valid_length, segment_ids)
-      test_result = out.tolist()[0]
-    print(test_result)
-    cursor.execute("UPDATE board_list SET is_analysis = True, positive_val = {positive}, negative_val = {negative} WHERE board_id = {id}".format(id = id, negative = test_result[0], positive = test_result[1]))
+        token_ids = token_ids.long().to(device)
+        segment_ids = segment_ids.long().to(device)
+        valid_length= valid_length
+        label = label.long().to(device)
+        out = model(token_ids, valid_length, segment_ids)
+        evaluate_result = out.tolist()[0]
+    return evaluate_result
+
+def emotion_analysis():
+    cursor.execute("SELECT board_id, board_title, board_contents FROM board_list WHERE is_analysis is false")
+    board_to_analysis_list = cursor.fetchall()
+
+    cursor.execute("SELECT index, contents FROM chat_logs WHERE is_analysis is false")
+    chat_to_analysis_list = cursor.fetchall()
+
+    if len(board_to_analysis_list) == 0 and len(chat_to_analysis_list) == 0:
+        return 0
+    
+    for id, title, content in board_to_analysis_list:
+        [negative, positive] = get_emotion_val(content)
+        cursor.execute("UPDATE board_list SET is_analysis = True, positive_val = {positive}, negative_val = {negative} WHERE board_id = {id}".format(id = id, negative = negative, positive = positive))
+
+    for id, content in chat_to_analysis_list:
+        [negative, positive] = get_emotion_val(content)
+        cursor.execute("UPDATE chat_logs SET is_analysis = True, positive_val = {positive}, negative_val = {negative} WHERE index = {id}".format(id = id, negative = negative, positive = positive))
+    
+    # commit the updates
     db.commit()
 
 # analysis every hours
 schedule.every().hours.do(emotion_analysis)
 
 while True:
-  schedule.run_pending()
-  time.sleep(1)
+    schedule.run_pending()
+    time.sleep(1)
