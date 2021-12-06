@@ -30,9 +30,11 @@ function Email({ history }) {
     currentEmail: "",
     currentPassword: "",
   });
+  // 현재 이메일과 패스워드를 가지고 온다
   const { currentEmail, currentPassword } = inputs;
+  // 비구조화 할당
   const userFrom = localStorage.getItem("userId");
-
+  // local 저장소에 저장해둔 ueser의 id를 가지고 온다
   useEffect(() => {
     axios.get("/user", { _id: userFrom }).then((response) => {
       setInput({

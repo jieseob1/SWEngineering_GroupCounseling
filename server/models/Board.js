@@ -22,7 +22,6 @@ async function createBoardTable() {
         board_title text,
         board_contents text,
         author text,
-        author_id text,
         board_time timestamptz not null default now()
       );
     `;

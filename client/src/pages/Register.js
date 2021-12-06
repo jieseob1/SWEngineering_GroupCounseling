@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { DEV_SERVER, ROOT_SERVER } from "../Config";
 import axios from "axios";
 import Header from "../components/Common/Header";
 import StyledBox from "../components/Style/styledBox";
@@ -23,11 +24,12 @@ function Register({ history }) {
     userPw: "",
     userEmail: "",
     userNickname: "",
-    userAge: "",
+    entranceYear: "",
     usableId: false,
   });
 
-  const { userId, userPw, userEmail, userNickname, userAge, usableId } = inputs;
+  const { userId, userPw, userEmail, userNickname, entranceYear, usableId } =
+    inputs;
   const [option, setOption] = useState("일반 사용자");
   const [overIdLength, setOverIdLength] = useState(false);
   const [overPwLength, setOverPwLength] = useState(false);
@@ -38,15 +40,16 @@ function Register({ history }) {
       ...inputs,
       [name]: value,
       usableId: usableId,
+      // 사용가능한 아이디에 대한 것이므로 bool타입으로 따로 들어가게 된다.
     });
 
-    if (inputs.userId.length > 8) {
+    if (inputs.userId.length >= 8) {
       setOverIdLength(true);
     } else {
       setOverIdLength(false);
     }
 
-    if (inputs.userPw.length > 12) {
+    if (inputs.userPw.length >= 11) {
       setOverPwLength(true);
     } else {
       setOverPwLength(false);
@@ -58,52 +61,62 @@ function Register({ history }) {
     if (overIdLength) {
       return;
     }
-    axios
-      .post(`/register/checkId/${userId}`, { id: userId })
-      .then((response) => {
-        console.log(response);
-        if (response.status === 200) {
-          setInput({
-            ...inputs,
-            usableId: true,
-          });
-          alert("사용가능한 아이디입니다.");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("다른 아이디를 입력해주세요");
-      });
+    //   axios
+    //     .post(`${DEV_SERVER}/register/checkId/${userId}`, { id: userId })
+    //     // 이 부분 추가적으로 고치기
+    //     .then((response) => {
+    //       console.log(response);
+    //       if (response.status === 200) {
+    //         setInput({
+    //           ...inputs,
+    //           usableId: true,
+    //         });
+    //         alert("사용가능한 아이디입니다.");
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //       alert("다른 아이디를 입력해주세요");
+    //     });
+    // };
+    // 중복아이디 체크
   };
 
   const handleOption = (e) => {
     setOption(e.target.value);
   };
-
-  const SignUp = (e) => {
+  //이벤트가 전달한 객체의 값을 option으로 정해준다
+  const onSignUpHandle = (e) => {
     e.preventDefault();
     let body = {
-      id: userId,
-      password: userPw,
+      userid: userId,
+      userpw: userPw,
       email: userEmail,
       nickname: userNickname,
-      age: userAge,
-      userPoistion: option,
+      entranceyear: entranceYear,
+      gubun: option,
     };
     if (overIdLength || overPwLength) {
       return;
-    } else if (!userId || !userPw || !userEmail || !userNickname || !userAge) {
+    } else if (
+      !userId ||
+      !userPw ||
+      !userEmail ||
+      !userNickname ||
+      !entranceYear
+    ) {
       alert("필수 항목을 작성해주세요");
       return;
-    } else if (usableId === false) {
-      alert("아이디 중복확인을 해주세요");
-      return;
+
+      // else if (usableId === false) {
+      //   alert("아이디 중복확인을 해주세요");
+      //   return;
     } else {
       dispatch(registerUser(body))
         .then((response) => {
-          if (response.payload.success) {
+          if (response.payload.status) {
             alert("회원가입을 완료했습니다.");
-            history.push("./");
+            history.push("/");
           } else {
             alert("회원가입에 실패했습니다.");
           }
@@ -130,7 +143,7 @@ function Register({ history }) {
             )}
             <CheckIdButton onClick={checkId}>중복체크</CheckIdButton>
           </form>
-          <form onSubmit={SignUp}>
+          <form onSubmit={onSignUpHandle}>
             <RegisterInput
               labelName="비밀번호"
               name="userPw"
@@ -159,12 +172,12 @@ function Register({ history }) {
               value={userNickname}
             />
             <RegisterInput
-              labelName="나이"
-              name="userAge"
+              labelName="가입날짜"
+              name="entranceYear"
               type="text"
-              placeholder="나이"
+              placeholder="가입날짜"
               onChange={onChange}
-              value={userAge}
+              value={entranceYear}
             />
             <RegisterSelect
               labelName="역할"

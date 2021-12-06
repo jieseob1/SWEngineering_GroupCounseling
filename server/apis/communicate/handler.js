@@ -10,7 +10,6 @@ const Room = require("../../models/Room");
 const Chat = require("../../models/Chat");
 
 const { default: axios } = require("axios");
-const querystring = require("querystring");
 const jwt = require("jsonwebtoken");
 
 create_board = async (event) => {

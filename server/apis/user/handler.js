@@ -85,8 +85,8 @@ module.exports.check = async (event) => {
   return success("no record");
 };
 module.exports.delete = async (event) => {
-  const _queryParam = event.queryStringParameters;
-  // const _queryParam = querystring.stringify(event.body);
+  //const _queryParam = event.queryStringParameters;
+  const _queryParam = querystring.stringify(event.body);
 
   if (!utils.hasKeys(_queryParam, ["userid", "userpw", "token"])) {
     return error("access error");
