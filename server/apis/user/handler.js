@@ -73,6 +73,22 @@ module.exports.login = async (event) => {
   };
 };
 
+module.exports.nickname = async (event) => {
+  const { nickname, token } = JSON.parse(event.body);
+  try {
+    const { userid } = jwt.verify(token, config.secret);
+    const result = await User.changeNickname(userid, nickname);
+
+    if (result === false) {
+      throw "Nickname setting error";
+    }
+    return success({ success: true });
+  } catch (err) {
+    console.log(err);
+    return error(err);
+  }
+};
+
 module.exports.profile = async (event) => {
   const param = JSON.parse(event.body);
 

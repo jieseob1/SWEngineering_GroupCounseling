@@ -21,12 +21,14 @@ const Warning = styled.strong`
   font-weight: normal;
 `;
 
+const DEV_SERVER = "http://localhost:5000/dev";
+
 function Nickname({ history }) {
   const userFrom = localStorage.getItem("userId");
   const [CurrentNickname, setCurrentNickname] = useState("");
 
   useEffect(() => {
-    axios.get("/user", { _id: userFrom }).then((response) => {
+    axios.get(DEV_SERVER + "/user", { _id: userFrom }).then((response) => {
       setCurrentNickname(response.data.nickname);
     });
   }, [userFrom]);
@@ -36,12 +38,14 @@ function Nickname({ history }) {
   };
 
   const onSubmitHandler = (e) => {
+    const userToken = window.localStorage.getItem("token");
     e.preventDefault();
+
     let body = {
-      _id: userFrom,
+      token: userToken,
       nickname: CurrentNickname,
     };
-    axios.post("/user/update/nickname", body).then((response) => {
+    axios.post(DEV_SERVER + "/user/update/nickname", body).then((response) => {
       if (response.status === 200) {
         alert("닉네임이 변경되었습니다.");
         history.push("/mypage");
