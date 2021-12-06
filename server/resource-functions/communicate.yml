@@ -2,9 +2,18 @@ view-boards:
   handler: apis/communicate/handler.view_boards
   events:
     - http:
-        path: communicate/view-boards
-        method: get
-        cors: true
+        path: board/view-boards
+        method: post
+        headers:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Amz-User-Agent
+          - Access-Control-Allow-Headers
+          - Access-Control-Allow-Origin
+        allowCredentials: false
 
 delete-board:
   handler: apis/communicate/handler.delete_board

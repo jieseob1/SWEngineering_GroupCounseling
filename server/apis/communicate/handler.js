@@ -86,24 +86,16 @@ boardCountTest = async (event) => {
 };
 
 view_boards = async (event) => {
-  const query = event.queryStringParameters;
+  const { boardId, token } = JSON.parse(event.body);
   // const query = querystring.stringify(event.body);
 
   try {
-    jwt.verify(query.token);
+    const { userid } = jwt.verify(query.token);
+    const records = await Board.getBoardRecords({ board_id: boardId });
+    return success({ success: true, board: records });
   } catch (err) {
     return error(err);
   }
-
-  var record = undefined;
-  if (typeof query === "object" && "board_id" in query) {
-    // search board with id
-    const { board_id, ...remainElements } = query;
-    record = await Board.getBoardRecords({ board_id: board_id });
-  } else {
-    record = await Board.getBoardRecords(query);
-  }
-  return success({ message: record });
 };
 
 delete_board = async (event) => {
