@@ -71,8 +71,17 @@ create-chat-room:
   events:
     - http:
         path: communicate/create-chat-room
-        method: get
-        cors: true
+        method: post
+        headers:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Amz-User-Agent
+          - Access-Control-Allow-Headers
+          - Access-Control-Allow-Origin
+        allowCredentials: false
 
 delete-chat-room:
   handler: apis/communicate/handler.delete_chat_room
