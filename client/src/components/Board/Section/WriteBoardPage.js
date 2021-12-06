@@ -4,8 +4,9 @@ import axios from "axios";
 import BoardInput from "../Section/BoardInput";
 import BoardTextarea from "../Section/BoardTextarea";
 import Header from "../../Common/Header";
+import { DEV_SERVER } from "../../../Config";
 
-const WriteBoardPage = ({ match }) => {
+const WriteBoardPage = ({ match, history }) => {
   const myToken = localStorage.getItem("token");
   const userFrom = localStorage.getItem("userId");
   const writerFrom = localStorage.getItem("userNickname"); // writerFrom은 userNickname 관련
@@ -39,12 +40,13 @@ const WriteBoardPage = ({ match }) => {
       boardContent: boardContent,
       boardWriter: BoardWriter,
     }; // variable에 필요한 변수들 넣고 post로 서버에 넘겨준다
-    axios.post("/board/upload", variables).then((response) => {
+    axios.post(`${DEV_SERVER}/board/upload`, variables).then((response) => {
       if (response.status === 200) {
         setInput({
           boardTitle: "",
           boardContent: "",
         });
+        history.goBack();
         // 여기서 다시 board/view로 돌아가는 부분
       } else {
         alert("게시글 업로드에 실패하였습니다.");
