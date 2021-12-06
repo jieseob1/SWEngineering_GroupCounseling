@@ -71,7 +71,7 @@ token-test:
   events:
     - http:
         path: user/token-test
-        method: get
+        method: post
         headers:
           - Content-Type
           - X-Amz-Date

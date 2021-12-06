@@ -10,9 +10,15 @@ const { default: axios } = require("axios");
 const jwt = require("jsonwebtoken");
 
 module.exports.register = async (event) => {
+<<<<<<< HEAD
   //const _queryParam = event.queryStringParameters;
   const _queryParam = querystring.stringify(event.body); //post
 
+=======
+  // const _queryParam = event.queryStringParameters;
+  const _queryParam = JSON.parse(event.body);
+  // console.log(_queryParam);
+>>>>>>> jhlim_dev
   try {
     var _records_info = await axios.get(
       config.server_info.concat("/dev/user/check"),
@@ -31,8 +37,13 @@ module.exports.register = async (event) => {
   }
 };
 module.exports.login = async (event) => {
+<<<<<<< HEAD
   //const _queryParam = event.queryStringParameters;  //get
   const _queryParam = querystring.stringify(event.body); //post
+=======
+  // const _queryParam = event.queryStringParameters;
+  const _queryParam = JSON.parse(event.body);
+>>>>>>> jhlim_dev
 
   if (!utils.hasKeys(_queryParam, ["userid", "userpw"])) {
     return error("access error");
@@ -103,6 +114,8 @@ module.exports.delete = async (event) => {
 };
 module.exports.token_test = async (event) => {
   const _queryParam = event.queryStringParameters;
+  console.log(JSON.parse(event.body));
+  return success(event);
 
   if (!utils.hasKeys(_queryParam, ["token"])) {
     return error("access error");
