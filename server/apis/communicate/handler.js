@@ -130,20 +130,38 @@ chat_room_initialize = async (event) => {
   return success("ok");
 };
 
+/*
+        room_id SERIAL primary key,
+        room_title text,
+        room_description text,
+        create_time timestamptz not null default now(),
+        joined_users text[]
+*/
+
 create_chat_room = async (event) => {
-  const { token, ...room_info } = event.queryStringParameters;
+  // const { token, ...room_info } = event.queryStringParameters;
+  const { token, room_title } = JSON.parse(event.body);
   try {
-    jwt.verify(token);
+    var { userid } = jwt.verify(token);
+    const result = await Room.createNewRoom({ room_title: room_title });
+    if (result === false) {
+      return error("Some errors in create_chat_room handler");
+    }
+    const fetched = await Room.findRoomByInfo({ room_title: room_title });
+    if (fetched === false) {
+      return error("findRoomByInfo error");
+    }
+    const append_res = await Room.appendUserToRoom({
+      room_id: fetched[0].room_id,
+      userid: userid,
+    });
+    if (append_res === false) {
+      return error("appendUserToRoom error");
+    }
+    return success("ok");
   } catch (err) {
     return error(err);
   }
-  // const room_info = querystring.stringify(event.body);
-  const result = await Room.createNewRoom(room_info);
-
-  if (result === false) {
-    return error("Some errors in create_chat_room handler");
-  }
-  return success("ok");
 };
 
 delete_chat_room = async (event) => {
