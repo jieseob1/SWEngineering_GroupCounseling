@@ -3,6 +3,7 @@ import styled from "styled-components";
 import profile from "../../../assets/profile.png";
 import { Link, withRouter } from "react-router-dom";
 import axios from "axios";
+import { DEV_SERVER } from "../../../Config";
 
 const ProfileImage = styled.img`
   width: 76px;
@@ -26,21 +27,21 @@ const UserProfile = function (props) {
   const [User, setUser] = useState({
     userId: "",
     userNickname: "",
-    userSchool: "",
+    role: "",
   });
-  const { userId, userNickname, userSchool } = User;
+  const { userId, userNickname, role } = User;
+  const myToken = localStorage.getItem("token");
 
   useEffect(() => {
     // useEffect를 통해서 값을 갱신해 나간다.
-    const userFrom = localStorage.getItem("userId");
     axios
-      .get("/user/profile", { _id: userFrom }) //profile에 관한 api를 사용하여 _id가 userFrom인 것을 가지고 온다
+      .post(`${DEV_SERVER}/user/profile`, { token: myToken }) //profile에 관한 api를 사용하여 _id가 userFrom인 것을 가지고 온다
       .then((response) => {
         setUser({
           //만약 성공했으면, 데이터를 가지고 오게 되고, 성공한 데이터에 있는 id,nickname,school을 가지고 오게 된다
-          userId: response.data.id,
+          userId: response.data.userid,
           userNickname: response.data.nickname,
-          userSchool: response.data.school,
+          role: response.data.gubun,
         });
         window.localStorage.setItem("userNickname", response.data.nickname);
       });
@@ -58,7 +59,7 @@ const UserProfile = function (props) {
         <Nickname>{userNickname}</Nickname>
         {/* 닉네임 표시해주는 곳 */}
         <ProfileID>{userId}</ProfileID>
-        <ProfileID>{userSchool}</ProfileID>
+        <ProfileID>{role === 0 ? "일반 사용자" : "상담사"}</ProfileID>
       </div>
     );
   }

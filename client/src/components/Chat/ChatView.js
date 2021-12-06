@@ -8,6 +8,7 @@ import Footer from "../Common/Footer";
 import HeaderWithStatistic from "../Common/HeaderWithStatistic";
 import StyledBox from "../Style/styledBox";
 import WriteChat from "./Section/WriteChat";
+import { DEV_SERVER } from "../../Config";
 
 const FlexBox = styled.div`
   display: flex;
@@ -50,7 +51,7 @@ const ChatView = ({ history, match }) => {
 
   const getChatRoom = () => {
     axios
-      .get("/communicate/view-chats", { page: currentPage }) //현재 페이지에 관련된 채팅룸을 가져 온다
+      .get(`${DEV_SERVER}/communicate/view-chats`, { page: currentPage }) //현재 페이지에 관련된 채팅룸을 가져 온다
       .then((response) => {
         if (response.data.success) {
           setContent(response.data.chat); // 성공한경우 서버에서 준 데이터 안에 있는 채팅을 가지고 와서 세팅해줌
