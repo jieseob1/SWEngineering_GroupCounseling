@@ -76,7 +76,8 @@ getBoard = async (event) => {
     return error("access error");
   }
   const boards = await Board.getBoardsByPage(parseInt(page));
-  return success({ success: true, boards: boards });
+  const boardCount = await Board.getBoardCount();
+  return success({ success: true, boards: boards, count: boardCount });
 };
 
 view_boards = async (event) => {

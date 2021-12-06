@@ -93,7 +93,7 @@ async function getRows(object, rows = 10) {
   return fetched || [];
 }
 
-async function getBoardCount() {
+module.exports.getBoardCount = () => {
   try {
     var fetched = await QUERY`
     SELECT count(*) FROM ${TABLE(TABLE_NAME)}`;
@@ -101,7 +101,7 @@ async function getBoardCount() {
   } catch (err) {
     return undefined;
   }
-}
+};
 
 async function getBoardList(page = 0) {
   try {
