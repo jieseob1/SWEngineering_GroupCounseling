@@ -53,7 +53,7 @@ module.exports.login = async (event) => {
   } catch (err) {
     return error("some errors in login handler");
   }
-  const token = await get_jwt_token(_information);
+  const token = await get_jwt_token(_information[0]);
   return {
     statusCode: 200,
     headers: {
