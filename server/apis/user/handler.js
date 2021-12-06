@@ -65,8 +65,8 @@ module.exports.login = async (event) => {
   };
 };
 module.exports.check = async (event) => {
-  //const _queryParam = event.queryStringParameters;
-  const _queryParam = querystring.stringify(event.body);
+  const _queryParam = event.queryStringParameters;
+  // const _queryParam = .stringify(event.body);
 
   if (!utils.hasKeys(_queryParam, ["userid", "userpw"])) {
     // exception code 400 : missing arguments

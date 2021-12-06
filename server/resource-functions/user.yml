@@ -37,7 +37,7 @@ check:
   events:
     - http:
         path: user/check
-        method: post
+        method: get
         headers:
           - Content-Type
           - X-Amz-Date
