@@ -22,6 +22,7 @@
     "querystring": "^0.2.1",
     "serverless": "^2.66.1",
     "serverless-dynamodb-local": "^0.2.40",
-    "serverless-offline": "^8.3.1"
+    "serverless-offline": "^8.3.1",
+    "sls": "^0.1.0"
   }
 }

@@ -10,8 +10,8 @@ const { default: axios } = require("axios");
 const jwt = require("jsonwebtoken");
 
 module.exports.register = async (event) => {
-  const _queryParam = event.queryStringParameters;
-  // const _queryParam = querystring.stringify(event.body);
+  //const _queryParam = event.queryStringParameters;
+  const _queryParam = querystring.stringify(event.body); //post
 
   try {
     var _records_info = await axios.get(
@@ -31,8 +31,8 @@ module.exports.register = async (event) => {
   }
 };
 module.exports.login = async (event) => {
-  const _queryParam = event.queryStringParameters;
-  // const _queryParam = querystring.stringify(event.body);
+  //const _queryParam = event.queryStringParameters;  //get
+  const _queryParam = querystring.stringify(event.body); //post
 
   if (!utils.hasKeys(_queryParam, ["userid", "userpw"])) {
     return error("access error");
@@ -65,8 +65,8 @@ module.exports.login = async (event) => {
   };
 };
 module.exports.check = async (event) => {
-  const _queryParam = event.queryStringParameters;
-  // const _queryParam = querystring.stringify(event.body);
+  //const _queryParam = event.queryStringParameters;
+  const _queryParam = querystring.stringify(event.body);
 
   if (!utils.hasKeys(_queryParam, ["userid", "userpw"])) {
     // exception code 400 : missing arguments
@@ -81,8 +81,8 @@ module.exports.check = async (event) => {
   return success("no record");
 };
 module.exports.delete = async (event) => {
-  const _queryParam = event.queryStringParameters;
-  // const _queryParam = querystring.stringify(event.body);
+  //const _queryParam = event.queryStringParameters;
+  const _queryParam = querystring.stringify(event.body);
 
   if (!utils.hasKeys(_queryParam, ["userid", "userpw", "token"])) {
     return error("access error");

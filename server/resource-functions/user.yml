@@ -37,7 +37,7 @@ check:
   events:
     - http:
         path: user/check
-        method: get
+        method: post
         headers:
           - Content-Type
           - X-Amz-Date
@@ -54,7 +54,7 @@ delete:
   events:
     - http:
         path: user/delete
-        method: get
+        method: post
         headers:
           - Content-Type
           - X-Amz-Date
