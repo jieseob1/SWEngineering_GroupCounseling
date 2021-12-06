@@ -14,6 +14,8 @@ import Pagination from "@material-ui/lab/Pagination";
 import BoardSubmit from "./Section/BoardSubmit";
 import WriteBoard from "./Section/WriteBoard";
 import BestPost from "./Section/BestPost";
+import { useSelector } from "react-redux";
+import { DEV_SERVER } from "../../Config";
 
 const Profilebox = styled.div`
   width: 100%;
@@ -79,6 +81,7 @@ const PaginationBox = styled.div`
 
 function BoardView({ history, match }) {
   // 파라미터:history,match
+  const myToken = localStorage.getItem("token");
   const userFrom = localStorage.getItem("userId");
   const writerFrom = localStorage.getItem("userNickname"); // writerFrom은 userNickname 관련
   const [totalPage, settotalPage] = useState(0); //전체 페이지 설정
@@ -92,6 +95,7 @@ function BoardView({ history, match }) {
   });
   const { boardTitle, boardContent } = inputs;
 
+  console.log(myToken);
   useEffect(() => {
     FetchBoard();
     console.log("fetch");
@@ -99,7 +103,10 @@ function BoardView({ history, match }) {
 
   const FetchBoard = () => {
     axios
-      .post("/communicate/view-chats", { page: currentPage }) //현재 페이지에 관련된 게시판들을 가져 온다
+      .post(`${DEV_SERVER}/board/getBoard`, {
+        token: myToken,
+        page: currentPage,
+      }) //현재 페이지에 관련된 게시판들을 가져 온다
       .then((response) => {
         if (response.data.success) {
           setContent(response.data.boards); // 성공한경우 서버에서 준 데이터 안에 있는 게시판을 가지고 와서 세팅해줌
@@ -199,12 +206,12 @@ function BoardView({ history, match }) {
             return (
               <React.Fragment key={index}>
                 <AddBoard // content 배열안에 id,user,time등 여러가지가 존재하고 그 관련된 부분들을 Addboard 컴포넌트안에 넣어준다
-                  id={board._id}
-                  user={board.userFrom._id}
-                  time={board.createdAt}
-                  writer={board.boardWriter}
-                  title={board.boardTitle}
-                  content={board.boardContent}
+                  id={board.board_id}
+                  user={board.author_id}
+                  time={board.board_time}
+                  writer={board.author}
+                  title={board.board_title}
+                  content={board.board_contents}
                   history={`${history}`}
                   onRemove={onRemove}
                 />

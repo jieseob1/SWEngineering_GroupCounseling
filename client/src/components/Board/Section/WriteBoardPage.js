@@ -1,13 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import BoardSubmit from "../Section/BoardSubmit";
-import axios from 'axios';
+import axios from "axios";
 import BoardInput from "../Section/BoardInput";
 import BoardTextarea from "../Section/BoardTextarea";
-import Header from "../../Common/Header"
-
-
+import Header from "../../Common/Header";
 
 const WriteBoardPage = ({ match }) => {
+  const myToken = localStorage.getItem("token");
   const userFrom = localStorage.getItem("userId");
   const writerFrom = localStorage.getItem("userNickname"); // writerFrom은 userNickname 관련
   const [WriterIcon, setWriterIcon] = useState(true);
@@ -18,9 +17,8 @@ const WriteBoardPage = ({ match }) => {
   });
   const { boardTitle, boardContent } = inputs;
 
-
-
-  const onSubmit = (e) => { //제출하는 부분
+  const onSubmit = (e) => {
+    //제출하는 부분
     e.preventDefault();
     if (!boardTitle) {
       alert(`제목을 작성해주세요`);
@@ -35,6 +33,7 @@ const WriteBoardPage = ({ match }) => {
     // 유효성 검증
 
     let variables = {
+      token: myToken,
       userFrom: userFrom,
       boardTitle: boardTitle,
       boardContent: boardContent,
@@ -53,10 +52,9 @@ const WriteBoardPage = ({ match }) => {
     });
   };
 
-  // 
+  //
 
-
-  console.log()
+  console.log();
   const onChange = (e) => {
     const { value, name } = e.target;
     setInput({
@@ -78,17 +76,21 @@ const WriteBoardPage = ({ match }) => {
     }
   };
 
-
   return (
-
     <>
       <Header title="게시글 작성" link="/board" backbutton={false} />
-      <BoardSubmit onSubmit={onSubmit} BoardInput={BoardInput}
-        boardTitle={boardTitle} onChange={onChange} BoardTextarea={BoardTextarea} boardContent={boardContent}
-        WriterIcon={WriterIcon} onIconClick={onIconClick} />
+      <BoardSubmit
+        onSubmit={onSubmit}
+        BoardInput={BoardInput}
+        boardTitle={boardTitle}
+        onChange={onChange}
+        BoardTextarea={BoardTextarea}
+        boardContent={boardContent}
+        WriterIcon={WriterIcon}
+        onIconClick={onIconClick}
+      />
     </>
+  );
+};
 
-  )
-}
-
-export default WriteBoardPage
+export default WriteBoardPage;
