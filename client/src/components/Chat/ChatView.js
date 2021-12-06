@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import AddChat from "./Section/AddChat";
 import Footer from "../Common/Footer";
-import Header from "../Common/Header";
+import HeaderWithStatistic from "../Common/HeaderWithStatistic";
 import StyledBox from "../Style/styledBox";
 import WriteChat from "./Section/WriteChat";
 
@@ -72,7 +72,7 @@ const ChatView = ({ history, match }) => {
 
   return (
     <>
-      <Header title="채팅방" link="/chat" />
+      <HeaderWithStatistic title="채팅방" link="/chat" />
       <StyledBox backColor="#fafafa" padding="10px 0px" lineHeight="auto">
         <FlexBox>
           <WriteChat

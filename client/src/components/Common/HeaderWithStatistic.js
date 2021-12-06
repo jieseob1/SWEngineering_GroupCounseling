@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import back from "../../assets/cancel.png";
-import LogoutButton from "../Common/LogoutButton";
+import LogoutButton from "./LogoutButton";
 
 const StyledHeader = styled.div`
   display: flex;
@@ -94,7 +94,9 @@ function Header(props) {
         <Link to="/mypage">
           <Profilebtn>내정보</Profilebtn>
         </Link>
-
+        <Link to="/statistic">
+          <Statisticbtn>통계 페이지</Statisticbtn>
+        </Link>
         <Profilebtn>
           <LogoutButton />
         </Profilebtn>
