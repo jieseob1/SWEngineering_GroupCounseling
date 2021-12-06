@@ -39,7 +39,7 @@ const MenuIcon = styled.img`
 `;
 // 게시판 디테일을 보여준다
 
-function BoardDetail(props) {
+function BoardDetail(props, history) {
   const BoardId = props.match.params.id; //Board에 {match.path}/:id가 되어 있고, 여기서 match.params.id라는 것은 params안에 있는 변수중 id 값을 가지고 온다고 하는 것이다
   //addboard 부분 확인 하면 된다
   const userFrom = localStorage.getItem("userId");
@@ -61,7 +61,7 @@ function BoardDetail(props) {
     const variable = { boardId: BoardId, token: myToken };
     axios.post(`${DEV_SERVER}/board/view-boards`, variable).then((response) => {
       if (response.data.success) {
-        setBoardDetail([response.data.board]);
+        setBoardDetail(response.data.board);
       } else {
         alert("게시글 가져오기에 실패했습니다.");
       }
@@ -70,13 +70,15 @@ function BoardDetail(props) {
   }, []);
 
   const FetchComment = () => {
-    axios.post("/comment/getComment", variables).then((response) => {
-      if (response.data.success) {
-        setComments(response.data.comments);
-      } else {
-        alert("댓글을 보여줄 수 없습니다.");
-      }
-    });
+    axios
+      .post(`${DEV_SERVER}/comment/getComment`, variables)
+      .then((response) => {
+        if (response.data.success) {
+          setComments(response.data.comments);
+        } else {
+          alert("댓글을 보여줄 수 없습니다.");
+        }
+      });
   };
 
   const onIconClick = () => {
@@ -116,13 +118,13 @@ function BoardDetail(props) {
           return (
             <React.Fragment key={index}>
               <AddBoard
-                id={board._id}
-                user={board.userFrom}
-                time={board.createdAt}
-                writer={board.boardWriter}
-                title={board.boardTitle}
-                content={board.boardContent}
-                history={`${props.history}`}
+                id={board.board_id}
+                user={board.author_id}
+                time={board.board_time}
+                writer={board.author}
+                title={board.board_title}
+                content={board.board_contents}
+                history={`${history}`}
                 onRemove={onRemoveBoard}
               />
             </React.Fragment>

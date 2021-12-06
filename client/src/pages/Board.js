@@ -18,11 +18,7 @@ function Board({ match }) {
         path={`${match.path}/:view/writeboard`}
         component={WriteBoardPage}
       />
-      <Route
-        exact
-        path={`${match.path}/:view/detailboard/:id`}
-        component={BoardDetail}
-      />
+      <Route exact path={`${match.path}/:view/:id`} component={BoardDetail} />
       {/* board/:id가 되며 boarddetail 부분으로 빠지게 된다 
       :id 부분이 params가 된다*/}
     </>

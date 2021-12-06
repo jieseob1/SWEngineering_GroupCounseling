@@ -32,10 +32,8 @@ function BoardView({ history, match }) {
   const [currentPage, setcurrentPage] = useState(1); //현재 페이지 설정
   const [Content, setContent] = useState([]); //컨텐츠
 
-  console.log(myToken);
   useEffect(() => {
     FetchBoard();
-    console.log("fetch");
   }, [currentPage]);
 
   const FetchBoard = () => {
