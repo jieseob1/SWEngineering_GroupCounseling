@@ -52,7 +52,18 @@ const BoardContent = styled.div`
   overflow-wrap: break-word;
 `;
 // 삭제는 없고 게시판 생성 하는 기능만 제공해줌
-function AddBoard({ props, match, id, user, time, writer, title, content }) {
+function AddBoard({
+  props,
+  match,
+  id,
+  user,
+  time,
+  writer,
+  title,
+  content,
+  history,
+  onRemove,
+}) {
   const currentUser = window.localStorage.getItem("userId"); //localstorage를 통해 userId를 가지고 오고 userid를 currentUser에다가 넣어준다
   return (
     <>
@@ -70,8 +81,8 @@ function AddBoard({ props, match, id, user, time, writer, title, content }) {
             <DeleteBoard
               board={id}
               user={user}
-              history={props.history}
-              onRemove={props.onRemove}
+              history={history}
+              onRemove={onRemove}
             />
           ) : null}
         </BoardUser>

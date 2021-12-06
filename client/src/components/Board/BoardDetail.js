@@ -8,6 +8,7 @@ import AddComment from "./Section/AddComment";
 import CommentInput from "./Section/CommentInput";
 import CheckNickname from "./Section/CheckNickname";
 import menu from "../../assets/menu.png";
+import { DEV_SERVER } from "../../Config";
 
 const CommentForm = styled.form`
   position: relative;
@@ -35,9 +36,8 @@ const MenuIcon = styled.img`
   height: 12px;
   padding: 12px 0px;
   margin-right: 4px;
-`
+`;
 // 게시판 디테일을 보여준다
-
 
 function BoardDetail(props) {
   const BoardId = props.match.params.id; //Board에 {match.path}/:id가 되어 있고, 여기서 match.params.id라는 것은 params안에 있는 변수중 id 값을 가지고 온다고 하는 것이다
@@ -56,9 +56,10 @@ function BoardDetail(props) {
     commentWriter: BoardWriter,
   };
 
+  const myToken = localStorage.getItem("token");
   useEffect(() => {
-    const variable = { boardId: BoardId };
-    axios.post(`${props.match.path}`, variable).then((response) => {
+    const variable = { boardId: BoardId, token: myToken };
+    axios.post(`${DEV_SERVER}/board/view-boards`, variable).then((response) => {
       if (response.data.success) {
         setBoardDetail([response.data.board]);
       } else {
