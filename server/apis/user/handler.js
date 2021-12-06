@@ -61,7 +61,12 @@ module.exports.login = async (event) => {
       "Access-Control-Allow-Credentials": true,
     },
     body: JSON.stringify(
-      { status: "success", message: "login successful", token: token },
+      {
+        status: "success",
+        message: "login successful",
+        token: token,
+        userid: _information[0].userid,
+      },
       null,
       2
     ),

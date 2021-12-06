@@ -450,6 +450,8 @@ module.exports = {
   view_boards: view_boards,
   delete_board: delete_board,
 
+  getBoard: getBoard,
+
   create_chat_room: create_chat_room,
   delete_chat_room: delete_chat_room,
   join_chat_room: join_chat_room,

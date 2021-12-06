@@ -63,7 +63,7 @@ get-chat-log:
         cors: true
 
 getBoard:
-  handler: apis/communicate/handler.getBoardsByPage
+  handler: apis/communicate/handler.getBoard
   events:
     - http:
         path: board/getBoard

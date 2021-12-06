@@ -5,7 +5,6 @@ service: GroupCounseling-app
 plugins:
   - serverless-offline
   - serverless-dynamodb-local
-
 custom:
   stage: dev
   serverless-offline:
