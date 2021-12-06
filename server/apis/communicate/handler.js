@@ -88,9 +88,8 @@ boardCountTest = async (event) => {
 view_boards = async (event) => {
   const { boardId, token } = JSON.parse(event.body);
   // const query = querystring.stringify(event.body);
-
   try {
-    const { userid } = jwt.verify(token);
+    const { userid } = jwt.verify(token, config.secret);
     const records = await Board.getBoardRecords({ board_id: boardId });
     return success({ success: true, board: records });
   } catch (err) {
@@ -102,7 +101,7 @@ deleteBoard = async (event) => {
   // const query = event.queryStringParameters;
   const { boardFrom, token } = JSON.parse(event.body);
   try {
-    const { userid } = jwt.verify(token);
+    const { userid } = jwt.verify(token, config.secret);
     const result = await Board.deleteBoardById(boardFrom);
 
     if (result === false) {
