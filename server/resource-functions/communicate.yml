@@ -104,3 +104,20 @@ uploadBoard:
           - Access-Control-Allow-Headers
           - Access-Control-Allow-Origin
         allowCredentials: false
+
+boardCountTest:
+  handler: apis/communicate/handler.boardCountTest
+  events:
+    - http:
+        path: board/boardCountTest
+        method: get
+        headers:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Amz-User-Agent
+          - Access-Control-Allow-Headers
+          - Access-Control-Allow-Origin
+        allowCredentials: false

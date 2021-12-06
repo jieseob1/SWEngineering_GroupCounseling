@@ -97,7 +97,7 @@ module.exports.getBoardCount = async () => {
   try {
     var fetched = await QUERY`
     SELECT count(*) FROM ${TABLE(TABLE_NAME)}`;
-    return parseInt(fetched[0]);
+    return parseInt(fetched[0].count);
   } catch (err) {
     return undefined;
   }

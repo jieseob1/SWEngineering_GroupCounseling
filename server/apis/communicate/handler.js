@@ -80,6 +80,11 @@ getBoard = async (event) => {
   return success({ success: true, boards: boards, count: boardCount });
 };
 
+boardCountTest = async (event) => {
+  const boardCount = await Board.getBoardCount();
+  return success({ success: true, count: boardCount });
+};
+
 view_boards = async (event) => {
   const query = event.queryStringParameters;
   // const query = querystring.stringify(event.body);
@@ -487,6 +492,7 @@ module.exports = {
 
   uploadBoard: uploadBoard,
   getBoard: getBoard,
+  boardCountTest: boardCountTest,
 
   chat_room_initialize: chat_room_initialize,
   create_chat_room: create_chat_room,
