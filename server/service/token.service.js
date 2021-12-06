@@ -6,8 +6,8 @@ module.exports = {
 };
 
 async function get_jwt_token(user_info) {
-  const { userId, userPw } = user_info;
-  const token = jwt.sign({ userId: userId, userPw: userPw }, config.secret, {
+  const { userid, userpw } = user_info;
+  const token = jwt.sign({ userid: userid, userpw: userpw }, config.secret, {
     expiresIn: "7d",
   });
 

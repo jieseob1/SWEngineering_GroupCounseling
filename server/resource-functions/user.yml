@@ -37,7 +37,7 @@ check:
   events:
     - http:
         path: user/check
-        method: get
+        method: post
         headers:
           - Content-Type
           - X-Amz-Date
@@ -71,7 +71,7 @@ token-test:
   events:
     - http:
         path: user/token-test
-        method: post
+        method: get
         headers:
           - Content-Type
           - X-Amz-Date
