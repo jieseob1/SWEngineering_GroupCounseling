@@ -89,6 +89,27 @@ async function getRows(object, rows = 10) {
   return fetched || [];
 }
 
+async function getBoardCount() {
+  try {
+    var fetched = await QUERY`
+    SELECT count(*) FROM ${TABLE(TABLE_NAME)}`;
+    return parseInt(fetched[0]);
+  } catch (err) {
+    return undefined;
+  }
+}
+
+async function getBoardList(page = 0) {
+  try {
+    const pageIndex = (page - 1) * 10;
+    var fetched = await QUERY`
+    SELECT * FROM ${TABLE(TABLE_NAME)} LIMIT 5 OFFSET ${pageIndex}`;
+  } catch (err) {
+    return undefined;
+  }
+  return fetched || [];
+}
+
 async function checkBoardbyId(board_id) {
   try {
     var fetched = await QUERY`
@@ -127,6 +148,11 @@ module.exports.deleteBoardById = async function deleteBoardById(board_id) {
     console.log(err);
   }
   return false;
+};
+
+module.exports.getBoardsByPage = async (page) => {
+  const boards = await getBoardList(page);
+  return boards;
 };
 
 module.exports.modifyBoardById = async function modifyBoardById(

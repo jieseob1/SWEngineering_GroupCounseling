@@ -61,3 +61,20 @@ get-chat-log:
         path: communicate/get-chat-log
         method: get
         cors: true
+
+getBoard:
+  handler: apis/communicate/handler.getBoardsByPage
+  events:
+    - http:
+        path: board/getBoard
+        method: post
+        headers:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Amz-User-Agent
+          - Access-Control-Allow-Headers
+          - Access-Control-Allow-Origin
+        allowCredentials: false

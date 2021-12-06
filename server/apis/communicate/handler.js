@@ -13,25 +13,35 @@ const { default: axios } = require("axios");
 const jwt = require("jsonwebtoken");
 
 create_board = async (event) => {
-  const parameters = event.queryStringParameters;
-  if (!utils.hasKeys(parameters, ["board_title", "author_id"])) {
+  var parameters = event.queryStringParameters;
+  if (!utils.hasKeys(parameters, ["board_title", "token"])) {
     return error("access error");
   }
 
   try {
-    jwt.verify(parameters.token);
+    var decrypted = jwt.verify(parameters.token);
+
+    parameters["author_id"] = decrypted.userid;
+    const result = await Board.createNewBoard(parameters);
+
+    if (result === false) {
+      return error("Some errors in create_board handler");
+    } else {
+      return success("ok");
+    }
   } catch (err) {
     return error(err);
   }
+};
 
-  // const parameters = querystring.stringify(event.body);
-  const result = await Board.createNewBoard(parameters);
+getBoard = async (event) => {
+  const { page, token } = JSON.parse(event.body);
 
-  if (result === false) {
-    return error("Some errors in create_board handler");
-  } else {
-    return success("ok");
+  if (page === undefined || token === undefined) {
+    return error("access error");
   }
+  const boards = await Board.getBoardsByPage(parseInt(page));
+  return success(boards);
 };
 
 view_boards = async (event) => {
