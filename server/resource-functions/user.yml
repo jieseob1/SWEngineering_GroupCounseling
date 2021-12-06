@@ -49,6 +49,23 @@ check:
           - Access-Control-Allow-Origin
         allowCredentials: false
 
+nickname:
+  handler: apis/user/handler.nickname
+  events:
+    - http:
+        path: user/update/nickname
+        method: post
+        headers:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Amz-User-Agent
+          - Access-Control-Allow-Headers
+          - Access-Control-Allow-Origin
+        allowCredentials: false
+
 profile:
   handler: apis/user/handler.profile
   events:

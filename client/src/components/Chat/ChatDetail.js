@@ -41,7 +41,9 @@ const ChatDetail = ({ location, match }) => {
   // 메세지들을 담는 배열
   const [users, setUsers] = useState("");
 
-  const ENDPOINT = DEV_SERVER;
+  const CHATSERVER = "http://localhost:3001";
+  // const ENDPOINT = DEV_SERVER;
+  const ENDPOINT = CHATSERVER;
 
   useEffect(
     () => {
@@ -53,15 +55,12 @@ const ChatDetail = ({ location, match }) => {
 
       const { name, room } = queryString.parse(location.search);
       // queryString:url뒤에 ?부분 부터로 파라미터들로 구성된 부분-> location객체가 가진 search 속성을 사용할 수 있다.
-      socket = io(ENDPOINT); // 소켓 연결
-
+      socket = io(ENDPOINT, { transports: ["websocket"] });
       setName(name);
       setRoom(room);
 
-      console.log(name, room); // lama peru
-
       // console.log(socket);
-      socket.emit("join", { name, room }, (error) => {
+      socket.emit("broadcast", { name, room }, (error) => {
         // join은 이벤트 부분
         // console.log("error");
         // 에러 처리
@@ -101,9 +100,6 @@ const ChatDetail = ({ location, match }) => {
       socket.emit("sendMessage", message, setMessage(""));
     }
   };
-
-  console.log(message, messages);
-  console.log(users, "users");
 
   // return <h1>Chat</h1>;
   // 1.roominfo

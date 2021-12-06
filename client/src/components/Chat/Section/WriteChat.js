@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import chat from "../../../assets/chat.png";
-
+import { DEV_SERVER } from "../../../Config";
+import { Input } from "@material-ui/core";
 const StyledHeader = styled.div`
   display: flex;
   color: #353535;
@@ -28,17 +29,12 @@ const HeaderTitle = styled.span`
   margin-left: 4px;
 `;
 
-const Input = styled.input`
-  margin-left: 10px;
-  margin-right: 10px;
-  border-bottom: 1px solid #ddd;
-  box-sizing: border-box;
-`;
 <Input type="text" placeholder="채팅방 제목을 입력하세요" />;
 
 const WriteChat = (props) => {
-  const [title, setTitle] = React.useState("");
+  const [title, setTitle] = useState("");
 
+  const myToken = localStorage.getItem("token");
   const addChatRoom = () => {
     if (title.length <= 0) {
       alert("채팅방 제목을 입력 하세요.");
@@ -49,7 +45,8 @@ const WriteChat = (props) => {
     props.addChatRoom(title);
 
     axios
-      .post("/communicate/create-chat-room", {
+      .post(`${DEV_SERVER}/communicate/create-chat-room`, {
+        token: myToken,
         room_title: title,
       })
       .then((response) => {

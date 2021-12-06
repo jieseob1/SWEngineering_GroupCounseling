@@ -142,7 +142,7 @@ create_chat_room = async (event) => {
   // const { token, ...room_info } = event.queryStringParameters;
   const { token, room_title } = JSON.parse(event.body);
   try {
-    var { userid } = jwt.verify(token);
+    var { userid } = jwt.verify(token, config.secret);
     const result = await Room.createNewRoom({ room_title: room_title });
     if (result === false) {
       return error("Some errors in create_chat_room handler");
@@ -160,6 +160,7 @@ create_chat_room = async (event) => {
     }
     return success("ok");
   } catch (err) {
+    console.log(err);
     return error(err);
   }
 };
@@ -213,6 +214,7 @@ view_chats = async (event) => {
     return error("access error");
   }
   const chat_rooms = await Room.getChatRoomsByPage(params.page);
+  console.log(chat_rooms);
   if (chat_rooms === undefined) {
     return error("Some errors in view_chats");
   }
