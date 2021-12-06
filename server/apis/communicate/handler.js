@@ -34,6 +34,41 @@ create_board = async (event) => {
   }
 };
 
+uploadBoard = async (event) => {
+  const params = JSON.parse(event.body);
+
+  if (
+    !utils.hasKeys(params, [
+      "boardTitle",
+      "boardContent",
+      "boardWriter",
+      "token",
+    ])
+  ) {
+    return error("access error");
+  }
+
+  try {
+    // "board_title", "board_contents", "author_id"
+    const { userid } = jwt.verify(params.token, config.secret);
+    const boardObject = {
+      board_title: params.boardTitle,
+      board_contents: params.boardContent,
+      author_id: userid,
+      author: params.boardWriter,
+    };
+    const result = await Board.createNewBoard(boardObject);
+
+    if (result === false) {
+      return error("Some errors in uploadBoard handler");
+    } else {
+      return success("ok");
+    }
+  } catch (err) {
+    return error(err);
+  }
+};
+
 getBoard = async (event) => {
   const { page, token } = JSON.parse(event.body);
 
@@ -450,6 +485,7 @@ module.exports = {
   view_boards: view_boards,
   delete_board: delete_board,
 
+  uploadBoard: uploadBoard,
   getBoard: getBoard,
 
   create_chat_room: create_chat_room,

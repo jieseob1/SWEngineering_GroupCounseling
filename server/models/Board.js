@@ -18,11 +18,15 @@ async function createBoardTable() {
   try {
     await QUERY`
       CREATE TABLE ${TABLE(TABLE_NAME)} (
-        board_id int NOT NULL primary key,
+        board_id SERIAL primary key,
         board_title text,
         board_contents text,
         author text,
-        board_time timestamptz not null default now()
+        author_id text,
+        board_time timestamptz not null default now(),
+        is_analysis boolean default FALSE,
+        positive_val double precision DEFAULT 0.0::double precision NOT NULL,
+        negative_val double precision DEFAULT 0.0::double precision NOT NULL
       );
     `;
     console.log("[DB Info] createBoardTable() Done");
