@@ -1,7 +1,0 @@
-hello_2:
-    handler: apis/api-sample-2/handler.hello_2
-    events:
-      - http:
-          path: sample/hello_2
-          method: get
-          cors: true
