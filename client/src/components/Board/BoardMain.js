@@ -75,8 +75,6 @@ const ChatBox = styled.div`
 `;
 
 function BoardMain() {
-  let user = useSelector((state) => state.user.loginSuccess);
-  console.log(user);
   return (
     <>
       <Header title="자유게시판" link="/board"></Header>
