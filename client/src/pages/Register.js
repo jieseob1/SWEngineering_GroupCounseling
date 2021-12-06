@@ -61,25 +61,26 @@ function Register({ history }) {
     if (overIdLength) {
       return;
     }
-    axios
-      .post(`${DEV_SERVER}/register/checkId/${userId}`, { id: userId })
-      // 이 부분 추가적으로 고치기
-      .then((response) => {
-        console.log(response);
-        if (response.status === 200) {
-          setInput({
-            ...inputs,
-            usableId: true,
-          });
-          alert("사용가능한 아이디입니다.");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("다른 아이디를 입력해주세요");
-      });
+    //   axios
+    //     .post(`${DEV_SERVER}/register/checkId/${userId}`, { id: userId })
+    //     // 이 부분 추가적으로 고치기
+    //     .then((response) => {
+    //       console.log(response);
+    //       if (response.status === 200) {
+    //         setInput({
+    //           ...inputs,
+    //           usableId: true,
+    //         });
+    //         alert("사용가능한 아이디입니다.");
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //       alert("다른 아이디를 입력해주세요");
+    //     });
+    // };
+    // 중복아이디 체크
   };
-  // 중복아이디 체크
 
   const handleOption = (e) => {
     setOption(e.target.value);
@@ -113,7 +114,7 @@ function Register({ history }) {
     } else {
       dispatch(registerUser(body))
         .then((response) => {
-          if (response.payload.success) {
+          if (response.payload.status) {
             alert("회원가입을 완료했습니다.");
             history.push("/");
           } else {
