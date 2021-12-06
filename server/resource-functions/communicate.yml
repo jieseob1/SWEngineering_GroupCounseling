@@ -31,6 +31,23 @@ chat-room-initialize:
           - Access-Control-Allow-Origin
         allowCredentials: false
 
+view-chats:
+  handler: apis/communicate/handler.view_chats
+  events:
+    - http:
+        path: chat/view-chats
+        method: get
+        headers:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+          - X-Amz-Security-Token
+          - X-Amz-User-Agent
+          - Access-Control-Allow-Headers
+          - Access-Control-Allow-Origin
+        allowCredentials: false
+
 create-chat-room:
   handler: apis/communicate/handler.create_chat_room
   events:

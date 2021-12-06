@@ -11,6 +11,7 @@ const { QUERY, VALUES, TABLE, EQ, SET, ROLLBACK } = POOL;
 const TABLE_NAME = "board_list";
 
 module.exports.initializer = async () => {
+  await deleteBoardTable();
   await createBoardTable();
 };
 

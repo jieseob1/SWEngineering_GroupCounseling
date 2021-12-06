@@ -202,6 +202,19 @@ join_chat_room = async (event) => {
   return success("ok");
 };
 
+view_chats = async (event) => {
+  const params = event.queryStringParameters;
+
+  if (!utils.hasKeys(params, ["page"])) {
+    return error("access error");
+  }
+  const chat_rooms = await Room.getChatRoomsByPage(params.page);
+  if (chat_rooms === undefined) {
+    return error("Some errors in view_chats");
+  }
+  return success(chat_rooms);
+};
+
 leave_chat_room = async (event) => {
   // 해당 함수는 특정 사용자가 룸을 떠나고 싶을 때 쓰는 함수
 };
@@ -498,6 +511,7 @@ module.exports = {
   create_chat_room: create_chat_room,
   delete_chat_room: delete_chat_room,
   join_chat_room: join_chat_room,
+  view_chats: view_chats,
 
   save_chat_log: save_chat_log,
   get_chat_log: get_chat_log,

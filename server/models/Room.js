@@ -82,6 +82,18 @@ async function findRoomByInfo_internal(informations) {
   return fetched || [];
 }
 
+async function findRoomsByPage_internal(page) {
+  try {
+    const page_index = (page - 1) * 5;
+    var fetched = await QUERY`
+    SELECT * FROM ${TABLE(TABLE_NAME)} LIMIT 5 OFFSET ${page_index}`;
+  } catch (err) {
+    console.log(err);
+    return undefined;
+  }
+  return fetched || [];
+}
+
 async function checkRoombyId(room_id) {
   try {
     var fetched = await QUERY`
@@ -185,6 +197,19 @@ module.exports.removeUserFromRoom = async (room_id, userid) => {
     console.log(err);
   }
   return false;
+};
+
+module.exports.getChatRoomsByPage = async (page) => {
+  try {
+    const room_list = await findRoomsByPage_internal(page);
+    if (room_list === undefined) {
+      return undefined;
+    }
+    return room_list;
+  } catch (err) {
+    console.log(err);
+    return undefined;
+  }
 };
 
 module.exports.modifyRoomInfo = async ({ room_id, changedObject }) => {};
