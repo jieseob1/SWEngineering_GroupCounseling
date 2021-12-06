@@ -293,7 +293,7 @@ get_chat_log = async (event) => {
 room_join_test = async (event) => {
   // await Room.initializer();
   const obj = {
-    room_title: "This is test room",
+    room_title: "testroom2",
     room_description: "this is test description",
     // joined_users: "{admin}"
   };
@@ -512,6 +512,8 @@ module.exports = {
   delete_chat_room: delete_chat_room,
   join_chat_room: join_chat_room,
   view_chats: view_chats,
+
+  room_join_test: room_join_test,
 
   save_chat_log: save_chat_log,
   get_chat_log: get_chat_log,

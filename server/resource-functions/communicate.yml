@@ -35,7 +35,7 @@ view-chats:
   handler: apis/communicate/handler.view_chats
   events:
     - http:
-        path: chat/view-chats
+        path: communicate/view-chats
         method: get
         headers:
           - Content-Type
@@ -85,6 +85,14 @@ get-chat-log:
   events:
     - http:
         path: communicate/get-chat-log
+        method: get
+        cors: true
+
+room-join-test:
+  handler: apis/communicate/handler.room_join_test
+  events:
+    - http:
+        path: communicate/room-join-test
         method: get
         cors: true
 
