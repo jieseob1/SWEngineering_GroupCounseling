@@ -14,15 +14,18 @@ module.exports.register = async (event) => {
   const _queryParam = JSON.parse(event.body);
   // console.log(_queryParam);
   try {
-    var _records_info = await axios.get(
+    var _records_info = await axios.post(
       config.server_info.concat("/dev/user/check"),
+      _queryParam,
       {
-        params: _queryParam,
+        headers: { "Content-Type": "application/json" },
       }
     );
   } catch (err) {
+    console.log(err);
     return error("some errors in register handler");
   }
+  console.log(_records_info.data);
   if (_records_info.data.status === "success") {
     await User.insertNewUser(_queryParam);
     return success("register successful");
@@ -65,8 +68,9 @@ module.exports.login = async (event) => {
   };
 };
 module.exports.check = async (event) => {
-  const _queryParam = event.queryStringParameters;
-  // const _queryParam = querystring.stringify(event.body);
+  // const _queryParam = event.queryStringParameters;
+  console.log(event.body);
+  const _queryParam = JSON.parse(event.body);
 
   if (!utils.hasKeys(_queryParam, ["userid", "userpw"])) {
     // exception code 400 : missing arguments
@@ -101,19 +105,25 @@ module.exports.delete = async (event) => {
     return error("some errors in delete handler");
   }
 };
+
+module.exports.logout = async (event) => {
+  const param = JSON.parse(event.body);
+  if (!utils.hasKeys(param, ["token"])) {
+    return error("invalid token");
+  }
+};
+
 module.exports.token_test = async (event) => {
   const _queryParam = event.queryStringParameters;
-  console.log(JSON.parse(event.body));
-  return success(event);
 
   if (!utils.hasKeys(_queryParam, ["token"])) {
     return error("access error");
   }
   try {
     const { token } = _queryParam;
-    const decoded = await jwt.verify(token, config.secret);
+    var decoded = jwt.verify(token, config.secret);
+    return success(decoded);
   } catch (err) {
     return error(err);
   }
-  return success("Valid token");
 };
