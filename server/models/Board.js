@@ -101,7 +101,7 @@ async function getBoardCount() {
 
 async function getBoardList(page = 0) {
   try {
-    const pageIndex = (page - 1) * 10;
+    const pageIndex = (page - 1) * 5;
     var fetched = await QUERY`
     SELECT * FROM ${TABLE(TABLE_NAME)} LIMIT 5 OFFSET ${pageIndex}`;
   } catch (err) {

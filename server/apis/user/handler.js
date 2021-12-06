@@ -72,6 +72,26 @@ module.exports.login = async (event) => {
     ),
   };
 };
+
+module.exports.profile = async (event) => {
+  const param = JSON.parse(event.body);
+
+  if (!utils.hasKeys(param, ["token"])) {
+    return error("access error");
+  }
+  try {
+    const { userid, userpw } = jwt.verify(param.token, config.secret);
+
+    const _fetched = await User.findOne({ userid: userid, userpw: userpw });
+    if (_fetched.length !== 1) {
+      return error({ status: "failed", message: "some errors in user record" });
+    }
+    return success(_fetched[0]);
+  } catch (err) {
+    return error(err);
+  }
+};
+
 module.exports.check = async (event) => {
   // const _queryParam = event.queryStringParameters;
   console.log(event.body);
