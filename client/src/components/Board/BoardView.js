@@ -17,60 +17,6 @@ import BestPost from "./Section/BestPost";
 import { useSelector } from "react-redux";
 import { DEV_SERVER } from "../../Config";
 
-const Profilebox = styled.div`
-  width: 100%;
-  text-align: center;
-  margin-bottom: 8px;
-`;
-const Profilebtn = styled.div`
-  display: inline-block;
-  width: 64px;
-  height: 28px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin: 12px 4px;
-  font-size: 13px;
-  line-height: 28px;
-  color: #505050;
-  pointer: cursor;
-`;
-/*제목과 내용 쓰는 칸 + submit 칸*/
-const BoardForm = styled.form`
-  position: relative;
-  height: 165px;
-  border: 1px solid #ddd;
-  margin: 0px -1px;
-  box-sizing: border-box;
-`;
-/*베스트 게시글 탭*/
-const BestPostBox = styled.div`
-  height: 110px;
-  border-bottom: 1px solid #ddd;
-`;
-const StyledDiv = styled.div`
-  color: #505050;
-  text-align: left;
-  margin-top: 10px;
-  font-size: 13px;
-  margin-left: 10px;
-`;
-const FlexBox = styled.div`
-  display: flex;
-  justify-content: start;
-  margin: 0px 0px 0px 0px;
-`;
-const StyledSpan = styled.span`
-  font-size: 10px;
-  color: #505050;
-  margin: 10px 0px 0px 5px;
-`;
-const ProfileImage = styled.img`
-  width: 20px;
-  height: 20px;
-  margin: 10px 5px 10px 10px;
-  border-radius: 6px;
-  pointer: cursor;
-`;
 const PaginationBox = styled.div`
   text-align: center;
   margin-top: 1em;
@@ -82,18 +28,9 @@ const PaginationBox = styled.div`
 function BoardView({ history, match }) {
   // 파라미터:history,match
   const myToken = localStorage.getItem("token");
-  const userFrom = localStorage.getItem("userId");
-  const writerFrom = localStorage.getItem("userNickname"); // writerFrom은 userNickname 관련
   const [totalPage, settotalPage] = useState(0); //전체 페이지 설정
   const [currentPage, setcurrentPage] = useState(1); //현재 페이지 설정
-  const [WriterIcon, setWriterIcon] = useState(true);
-  const [BoardWriter, setBoardWriter] = useState("익명"); //게시판 적는 사람 이름
   const [Content, setContent] = useState([]); //컨텐츠
-  const [inputs, setInput] = useState({
-    boardTitle: "",
-    boardContent: "",
-  });
-  const { boardTitle, boardContent } = inputs;
 
   console.log(myToken);
   useEffect(() => {
@@ -124,65 +61,12 @@ function BoardView({ history, match }) {
     FetchBoard(); //게시판을 가지고 온다
   };
 
-  const onChange = (e) => {
-    const { value, name } = e.target;
-    setInput({
-      ...inputs, //spread 함수
-      [name]: value,
-    });
-  };
-
-  const onIconClick = () => {
-    // 닉네임을 보여줄시, 익명으로 처리할지 보여주는 부분
-    if (WriterIcon) {
-      // writerIcon이 true이게 되면
-      setWriterIcon(false); //writericon을 false로 설정하고
-      setBoardWriter(writerFrom); //닉네임을 설정하게 된다
-    } else {
-      setWriterIcon(true); //writericon이 true가 되면 글쓴이의 아이콘이 보이지 않는다.
-      setBoardWriter("익명");
-    }
-  };
-
-  const onSubmit = (e) => {
-    //제출하는 부분
-    e.preventDefault();
-    if (!boardTitle) {
-      alert(`제목을 작성해주세요`);
-      return;
-    } else if (!boardContent) {
-      alert(`내용을 작성해주세요`);
-      return;
-    } else if (boardContent.length > 300) {
-      alert(`내용을 300자 이내로 작성해주세요`);
-      return;
-    }
-    // 유효성 검증
-
-    let variables = {
-      userFrom: userFrom,
-      boardTitle: boardTitle,
-      boardContent: boardContent,
-      boardWriter: BoardWriter,
-    }; // variable에 필요한 변수들 넣고 post로 서버에 넘겨준다
-    axios.post("/board/upload", variables).then((response) => {
-      if (response.status === 200) {
-        setInput({
-          boardTitle: "",
-          boardContent: "",
-        });
-        FetchBoard(); //게시글 보여주기
-      } else {
-        alert("게시글 업로드에 실패하였습니다.");
-      }
-    });
-  };
-
   const handlePageChange = (e) => {
     //페이지 바꾸면 벌어지는 이벤트
     const currentPage = parseInt(e.target.textContent);
     setcurrentPage(currentPage); // ????
   };
+
   return (
     <>
       <Header title="자유게시판" link="/board" />
