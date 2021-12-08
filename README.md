@@ -41,3 +41,27 @@ localhost:3000
 프로젝트 목표에는 소프트웨어 공학 수업에서 배운 여러 문서에 관한 부분을 프로그래밍을 통해 구현하는 것 까지를 목표로 합니다.
 
 # Server
+
+## Installation and Setup Instructions on server
+
+설치:
+
+클론을 성공한 디렉토리에서 server 디렉토리 내부로 접속합니다.
+
+디렉터리 내부에서 `npm install -g serverless` 를 통해 serverless 모듈을 설치합니다.
+
+`serverless login`
+
+디폴트 브라우저를 통해 서버리스에 대한 계정 인증을 수행합니다
+
+`serverless`
+
+아무런 인자를 제공하지 않고 serverless만을 실행하여 서버리스에 대한 configuration을 수행하고 deploy는 n을 선택합니다
+
+`serverless plugin install -g serverless-dynamodb-local`
+
+dynamodb를 설치하고 그 외의 외부 node 모듈들 또한 설치를 수행해줍니다, 필요한 노드 모듈은 실행할 때 누락 에러가 발생하기 때문에 메시지를 참고하면 알 수 있습니다.
+
+`sls offline start`
+
+offline으로 serverless를 실행하면 모의 테스트 환경용 백엔드 서버가 실행됩니다.
